@@ -60,7 +60,7 @@ public class BlindWall {
                 String imageUrl = imagesUrl.getJSONObject(j).getString("url");
                 imagesUrls.add(imageUrl);
             }
-            imagesUrls = imagesUrls;
+            this.imagesUrls = imagesUrls;
         } catch(JSONException e)
         {
             e.printStackTrace();
@@ -68,4 +68,67 @@ public class BlindWall {
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getNumberOnMap() {
+        return numberOnMap;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getPhotographer() {
+        return photographer;
+    }
+
+    public String getVideoAuthor() {
+        return videoAuthor;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescriptionEnglish() {
+        return descriptionEnglish;
+    }
+
+    public String getDescriptionDutch() {
+        return descriptionDutch;
+    }
+
+    public String getMaterialEnglish() {
+        return materialEnglish;
+    }
+
+    public String getMaterialDutch() {
+        return materialDutch;
+    }
+
+    public List<String> getImagesUrls() {
+        return imagesUrls;
+    }
 }
