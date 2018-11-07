@@ -42,7 +42,7 @@ public class MainCellList extends ArrayAdapter<BlindWall> {
 
         // Set Image with picasso
 
-        String imageUrl = wall.getImagesUrls().get(0);
+        String imageUrl = "https://api.blindwalls.gallery/" + wall.getImagesUrls().get(0);
         Picasso.get().load(imageUrl).into(thumbnail);
         return convertView;
 
