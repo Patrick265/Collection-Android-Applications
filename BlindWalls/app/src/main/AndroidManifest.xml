@@ -25,7 +25,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activity_detailed"></activity>
+        <activity android:name=".Activity_detailed" />
+        <activity android:name=".Pager"></activity>
     </application>
 
 </manifest>
