@@ -25,8 +25,8 @@ public class JSONReader {
             for(int i = 0; i < jsonArray.length(); i++)
             {
                 jsonObject = jsonArray.getJSONObject(i);
-                BlindWall wall = new BlindWall(jsonObject);
-                this.blindWallsWrapper.getBlindWallList().add(wall);
+                //BlindWall wall = new BlindWall(jsonObject);
+                //this.blindWallsWrapper.getBlindWallList().add(wall);
             }
 
         } catch(JSONException e)
