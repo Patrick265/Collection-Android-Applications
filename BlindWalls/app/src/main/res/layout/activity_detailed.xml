@@ -35,7 +35,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/fira_sans_boldtwee"
-                android:text="TextView"
+                android:text="@string/titlename"
                 android:textAllCaps="true"
                 android:textColor="@color/colorText"
                 android:textSize="26sp"
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_bold"
-                    android:text="TextView"
+                    android:text="@string/photographer"
                     android:textAllCaps="true"
                     android:textColor="@color/colorTextBlack"
                     android:textSize="22sp"
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans"
-                    android:text="TextView"
+                    android:text="@string/year"
                     android:textColor="@color/colorTextBlack"
                     android:textSize="18sp"
                     android:textStyle="italic" />
@@ -82,9 +82,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans"
-                    android:text="TextView"
-                    android:textSize="18sp"
-                    android:textColor="@color/colorTextBlack"/>
+                    android:text="@string/description"
+                    android:textColor="@color/colorTextBlack"
+                    android:textSize="18sp" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

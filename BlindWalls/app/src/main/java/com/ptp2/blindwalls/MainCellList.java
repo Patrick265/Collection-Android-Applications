@@ -38,7 +38,7 @@ public class MainCellList extends ArrayAdapter<BlindWall> {
         final ImageView thumbnail = (ImageView) convertView.findViewById(R.id.Cell_Image);
 
         title.setText(wall.getTitle());
-        author.setText(wall.getAuthor());
+        author.setText(wall.getPhotographer());
 
         // Set Image with picasso
 
