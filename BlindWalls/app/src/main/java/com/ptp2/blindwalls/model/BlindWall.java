@@ -2,6 +2,7 @@ package com.ptp2.blindwalls.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 public class BlindWall implements Serializable {
 
@@ -253,12 +254,11 @@ public class BlindWall implements Serializable {
         return author;
     }
 
-    public String getDescriptionEnglish() {
-        return descriptionEnglish;
-    }
-
-    public String getDescriptionDutch() {
-        return descriptionDutch;
+    public String getDescription() {
+        if(Locale.getDefault().getLanguage().equals("nl")) {
+            return this.descriptionDutch;
+        }
+        return this.descriptionEnglish;
     }
 
     public String getMaterialEnglish() {

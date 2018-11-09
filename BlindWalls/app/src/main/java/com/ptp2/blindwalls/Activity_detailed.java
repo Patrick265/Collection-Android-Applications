@@ -45,7 +45,7 @@ public class Activity_detailed extends AppCompatActivity {
 
         photographer.setText(blindWall.getPhotographer());
         year.setText(String.valueOf(blindWall.getYear()));
-        description.setText(blindWall.getDescriptionEnglish());
+        description.setText(blindWall.getDescription());
         title.setText( blindWall.getTitle());
 
        // String imageUrl = "https://api.blindwalls.gallery/" + blindWall.getImagesUrls().get(0);

@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Blind Walls</string>
+    <string name="app_name" translatable="false">Blind Walls</string>
 
     <!-- MAIN -->
     <string name="titlename">TextTitle</string>
     <string name="authorName">TextAuthor</string>
 
     <!-- DETAILED-->
-    <string name="year">TextYear</string>
+    <string name="year" translatable="false">TextYear</string>
     <string name="description">TextDescription</string>
     <string name="photographer">TextPhotographer</string>
 </resources>

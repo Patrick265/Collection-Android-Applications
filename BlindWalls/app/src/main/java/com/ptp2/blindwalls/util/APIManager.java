@@ -1,6 +1,7 @@
 package com.ptp2.blindwalls.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ public class APIManager {
     private RequestQueue queue;
     private BlindWallsWrapper wrapper;
     private BlindWallListener listener;
+    private Resources resource;
 
 
     public APIManager(Context context, BlindWallListener listener) {
@@ -32,6 +34,7 @@ public class APIManager {
         this.queue = Volley.newRequestQueue(this.context);
         this.wrapper = BlindWallsWrapper.getInstance();
         this.listener = listener;
+
     }
 
 
