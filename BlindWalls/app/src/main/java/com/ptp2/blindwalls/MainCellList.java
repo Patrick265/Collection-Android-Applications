@@ -1,50 +1,46 @@
 package com.ptp2.blindwalls;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 import com.ptp2.blindwalls.model.BlindWall;
+import com.ptp2.blindwalls.util.OnBlindWallClickListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
 
-public class MainCellList extends ArrayAdapter<BlindWall> {
+public class MainCellList extends RecyclerView.Adapter<BlindWallViewHolder> {
 
-    public MainCellList(Context context, List<BlindWall> items) {
-        super( context, 0, items);
+
+    private BlindWallsWrapper wrapper;
+    private OnBlindWallClickListener listener;
+
+    public MainCellList(BlindWallsWrapper wrapper, OnBlindWallClickListener listener) {
+        this.wrapper = wrapper;
+        this.listener = listener;
     }
 
+    @NonNull
+    @Override
+    public BlindWallViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_main_cell_list, viewGroup, false);
+
+        return new BlindWallViewHolder(itemView);
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(@NonNull BlindWallViewHolder blindWallViewHolder, int i) {
+        BlindWall wall = this.wrapper.getBlindWallList().get(i);
+        blindWallViewHolder.getPhotographer().setText(wall.getPhotographer());
+        blindWallViewHolder.getTitle().setText(wall.getTitle());
+        Picasso.get().load("https://api.blindwalls.gallery/" + wall.getImagesUrls().get(0)).into(blindWallViewHolder.getThumbnail());
+        blindWallViewHolder.bindWall(wall, this.listener);
+    }
 
-        BlindWall wall = getItem(position);
-
-        if( convertView == null ) {
-            convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.activity_main_cell_list,
-                    parent,
-                    false
-            );
-        }
-
-        // Koppelen datasource aan UI
-        TextView title = (TextView) convertView.findViewById(R.id.Cell_Title);
-        TextView author = (TextView) convertView.findViewById(R.id.Cell_Author);
-        final ImageView thumbnail = (ImageView) convertView.findViewById(R.id.Cell_Image);
-
-        title.setText(wall.getTitle());
-        author.setText(wall.getPhotographer());
-
-        // Set Image with picasso
-
-        String imageUrl = "https://api.blindwalls.gallery/" + wall.getImagesUrls().get(0);
-        Picasso.get().load(imageUrl).into(thumbnail);
-        return convertView;
-
+    @Override
+    public int getItemCount() {
+        return this.wrapper.getBlindWallList().size();
     }
 }
