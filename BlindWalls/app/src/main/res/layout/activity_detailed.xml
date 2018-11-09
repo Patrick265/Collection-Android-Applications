@@ -36,6 +36,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/fira_sans_boldtwee"
                 android:text="TextView"
+                android:textAllCaps="true"
                 android:textColor="@color/colorText"
                 android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="@+id/detailed_picture"
@@ -58,8 +59,11 @@
                     android:id="@+id/detailed_photographer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_bold"
                     android:text="TextView"
-                    android:textSize="18sp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorTextBlack"
+                    android:textSize="22sp"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="296dp" />
 
@@ -67,15 +71,20 @@
                     android:id="@+id/detailed_year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorTextBlack"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/detailed_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans"
                     android:text="TextView"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@color/colorTextBlack"/>
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
