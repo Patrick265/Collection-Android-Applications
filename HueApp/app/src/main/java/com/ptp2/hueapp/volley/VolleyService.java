@@ -5,10 +5,15 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.model.Light;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class VolleyService {
 
@@ -24,7 +29,7 @@ public class VolleyService {
     private VolleyService(Context context) {
         this.context = context;
         this.portNumber = 80;
-        this.url = "https://localhost:" + portNumber + "/api/";
+        this.url = "http://192.168.0.102" + "/api/";
         this.username = "17203f23f6c3c4e527ab7a73acaf94a";
     }
 
@@ -37,20 +42,23 @@ public class VolleyService {
     }
 
     public void doRequest(String requestUrl, final String requestBody, int requestMethode) {
-        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
-        StringRequest stringRequest = new StringRequest(requestMethode, requestUrl, (String response) -> {
-            Log.i("ResponseVolley", response);
-            this.requestResponse = response;
-        }, (VolleyError error) -> {
-            Log.e("VOLLEYERROR", "ERROR WITH VOLLEY");
-            error.printStackTrace();
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("devicetype","tomApp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, url, body, response -> {
+            try {
+                Log.d("WEW",response.get(0).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        };
-    }
+        }, error -> Log.d("WEW",error.getStackTrace().toString()));
+        
+        queue.add(customJsonArrayRequest);
+        }
 
     public void retrieveAllData() {
         String url = this.url + this.username + "/lights";
