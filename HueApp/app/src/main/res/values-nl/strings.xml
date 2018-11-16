@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HueApp</string>
+    <string name="all_lights">Alle lichten</string>
+    <string name="bedroom">Slaapkamer</string>
+    <string name="kitchen">Keuken</string>
+    <string name="living_room">Woonkamer</string>
+    <string name="pair">Koppelen</string>
+</resources>

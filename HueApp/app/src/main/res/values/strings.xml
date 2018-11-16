@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">HueApp</string>
-    <string name="all_lights">All Lights</string>
+    <string name="app_name" translatable="false">Hue App</string>
+    <string name="all_lights">All lights</string>
+    <string name="living_room">Living room</string>
+    <string name="bedroom">Bedroom</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="pair">Pair</string>
 </resources>
