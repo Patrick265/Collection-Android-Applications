@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HueApp</string>
+    <string name="all_lights">All Lights</string>
 </resources>

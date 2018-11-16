@@ -6,16 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/main_tab_layout"
+        style="@style/FragmentText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorSelectedTab"
+        app:tabTextAppearance="@style/FragmentText"
+        app:tabTextColor="@color/colorText">
+
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/main_allLights_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_lights" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/main_living_room_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Living room" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/main_bedroom_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bedroom" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/main_kitchen_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kitchen" />
+    </android.support.design.widget.TabLayout>
+
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="416dp"
+        android:layout_marginTop="506dp"
         android:text="Button"
+        android:padding="0dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorSelectedTab"
+        android:fontFamily="@font/fira_sans_bold"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_tab_layout" />
 </android.support.constraint.ConstraintLayout>
