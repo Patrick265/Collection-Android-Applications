@@ -26,6 +26,5 @@ public class MainActivity extends AppCompatActivity {
         mainButtonPair.setOnClickListener(view -> {
             this.service.pair(this);
         });
-       // this.service.retrieveAllData();
     }
 }

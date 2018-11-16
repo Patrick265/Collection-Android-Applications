@@ -7,16 +7,15 @@ import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.model.Light;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VolleyService {
 
@@ -24,6 +23,7 @@ public class VolleyService {
 
     private Context context;
     private String requestResponse;
+    private List<Light> lights = new ArrayList<>();
 
     private final String url;
     private final int portNumber;
@@ -66,6 +66,7 @@ public class VolleyService {
                     pairButton.setText("Succesfully paired");
                     pairButton.setAlpha(0.5f);
                     pairButton.setEnabled(false);
+                    retrieveAllData();
                 }
                 else
                 {
@@ -74,36 +75,81 @@ public class VolleyService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Log.d("WEW",error.getStackTrace().toString()));
+        }, error -> Log.d("WEW", error.getStackTrace().toString()));
+
         queue.add(customJsonArrayRequest);
     }
 
-    public void doRequest(String requestUrl, final String requestBody, int requestMethode) { }
+    public void doJsonRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        if (requestBody == null) {
+            CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
+                for(int i = 0; i < response.length() + 1; i++)
+                {
+                    try {
+                        JSONObject object = response.getJSONObject(String.valueOf(i)).getJSONObject("state");
+                        Light light = new Light(
+                                object.getBoolean("on"),
+                                object.getInt("sat"),
+                                object.getInt("bri"),
+                                object.getInt("hue")
+                        );
+                        lights.add(light);
+                       // Log.d("WEW", response.getJSONObject(String.valueOf(i)).getJSONObject("state").getString("sat"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.d("WEW", String.valueOf(lights.size()));
+            }, error -> Log.d("WEW", error.getStackTrace().toString()));
+            queue.add(customJsonObjectRequest);
+        }
+        else
+        {
+            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, url, requestBody, response -> {
+
+            }, error -> Log.d("WEW", error.getStackTrace().toString()));
+        }
+        }
 
     public void retrieveAllData() {
         String url = this.url + this.username + "/lights";
         Log.i("DATA", url);
-        this.doRequest(url,null, Request.Method.GET);
+        this.doJsonRequest(url,null, Request.Method.GET);
     }
 
 
-    public void retrieveLigthData(int index) {
+    public void retrieveLightData(int index) {
         String url = this.url + this.username + "/lights/" + index;
-        this.doRequest(url,null, Request.Method.GET);
+        this.doJsonRequest(url,null, Request.Method.GET);
     }
 
     public void turnOn(Light light, boolean on)
     {
         String url = this.url + this.username + "/lights/" + light.getIndex() + "/state";
-        String body = "{ \"on\":" + on + "}";
-        this.doRequest(url,body, Request.Method.PUT);
+        JSONObject body = new JSONObject();
+        try {
+            body.put("on",on);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        this.doJsonRequest(url,body, Request.Method.PUT);
         light.setTurnedOn(on);
     }
 
     public void changeColor(Light light, int saturation, int brightness, int value) {
         String url = this.url + this.username + "/lights/" + light.getIndex() + "/state";
-        String body = "{\"on\":" + true + "," + "\"sat\":" + saturation + "," + "\"bri\": " + brightness + "," + "\"hue\":" + value + "}";
 
+        JSONObject object = new JSONObject();
+        try {
+            object.put("on", true);
+            object.put("sat", saturation);
+            object.put("bri", brightness);
+            object.put("hue", value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         light.setSaturation(saturation);
         light.setBrightness(brightness);
         light.setValue(value);
