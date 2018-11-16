@@ -56,7 +56,7 @@ public class VolleyService {
                 e.printStackTrace();
             }
         }, error -> Log.d("WEW",error.getStackTrace().toString()));
-        
+
         queue.add(customJsonArrayRequest);
         }
 
