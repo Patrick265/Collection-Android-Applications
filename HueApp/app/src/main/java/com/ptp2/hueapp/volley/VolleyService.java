@@ -1,7 +1,9 @@
 package com.ptp2.hueapp.volley;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.model.Light;
 
 import org.json.JSONArray;
@@ -25,12 +28,14 @@ public class VolleyService {
     private final String url;
     private final int portNumber;
     private String username;
+    private boolean linked;
 
     private VolleyService(Context context) {
         this.context = context;
         this.portNumber = 80;
         this.url = "http://192.168.0.102" + "/api/";
-        this.username = "17203f23f6c3c4e527ab7a73acaf94a";
+        this.linked = false;
+        this.username = null;
     }
 
 
@@ -41,24 +46,39 @@ public class VolleyService {
         return service;
     }
 
-    public void doRequest(String requestUrl, final String requestBody, int requestMethode) {
+    public void pair(Activity activity)
+    {
         JSONObject body = new JSONObject();
         try {
-            body.put("devicetype","tomApp");
+            body.put("devicetype","PatrickTom");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         RequestQueue queue = Volley.newRequestQueue(this.context);
         CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, url, body, response -> {
             try {
-                Log.d("WEW",response.get(0).toString());
+                Button pairButton = activity.findViewById(R.id.main_par_button);
+                String status = response.get(0).toString();
+                if(status.contains("success"))
+                {
+                    username = response.getJSONObject(0).getJSONObject("success").getString("username");
+                    linked = true;
+                    pairButton.setText("Succesfully paired");
+                    pairButton.setAlpha(0.5f);
+                    pairButton.setEnabled(false);
+                }
+                else
+                {
+                    pairButton.setText("Error pairing");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }, error -> Log.d("WEW",error.getStackTrace().toString()));
-
         queue.add(customJsonArrayRequest);
-        }
+    }
+
+    public void doRequest(String requestUrl, final String requestBody, int requestMethode) { }
 
     public void retrieveAllData() {
         String url = this.url + this.username + "/lights";
@@ -89,6 +109,9 @@ public class VolleyService {
         light.setValue(value);
     }
 
+    public boolean isLinked() {
+        return linked;
+    }
 
     public String getUrl() {
         return url;
