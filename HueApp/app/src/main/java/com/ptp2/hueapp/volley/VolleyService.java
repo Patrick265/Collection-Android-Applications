@@ -2,6 +2,8 @@ package com.ptp2.hueapp.volley;
 
 import android.app.Activity;
 import android.content.Context;
+
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Button;
 
@@ -9,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
+import com.ptp2.hueapp.layout.fragment.allLights_fragment;
 import com.ptp2.hueapp.model.Light;
 
 import org.json.JSONException;
@@ -23,19 +26,23 @@ public class VolleyService {
 
     private Context context;
     private String requestResponse;
-    private List<Light> lights = new ArrayList<>();
+    private List<Light> lights;
 
     private final String url;
     private final int portNumber;
     private String username;
     private boolean linked;
+    private List<Fragment> fragments;
 
     private VolleyService(Context context) {
+        this.lights = new ArrayList<>();
         this.context = context;
         this.portNumber = 80;
-        this.url = "http://192.168.0.102" + "/api/";
+        this.url = "http://192.168.2.105" + "/api/";
         this.linked = false;
         this.username = null;
+        this.fragments = new ArrayList<>();
+
     }
 
 
@@ -46,7 +53,7 @@ public class VolleyService {
         return service;
     }
 
-    public void pair(Activity activity)
+    public void pair(Activity activity, allLights_fragment fragment)
     {
         JSONObject body = new JSONObject();
         try {
@@ -88,20 +95,22 @@ public class VolleyService {
                 {
                     try {
                         JSONObject object = response.getJSONObject(String.valueOf(i)).getJSONObject("state");
-                        Light light = new Light(
-                                object.getBoolean("on"),
+                        Light light = new Light("Light", object.getBoolean("on"),
                                 object.getInt("sat"),
                                 object.getInt("bri"),
                                 object.getInt("hue")
                         );
-                        lights.add(light);
-                       // Log.d("WEW", response.getJSONObject(String.valueOf(i)).getJSONObject("state").getString("sat"));
+                        this.lights.add(light);
+                       Log.d("WEW", String.valueOf(lights.size()));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d("WEW", String.valueOf(lights.size()));
+                Log.d("WEWFINALFRAG", String.valueOf(this.fragments.size()));
+                allLights_fragment fragment = (allLights_fragment) this.fragments.get(0);
+                fragment.getLights().clear();
+                fragment.update(this.lights);
             }, error -> Log.d("WEW", error.getStackTrace().toString()));
             queue.add(customJsonObjectRequest);
         }
@@ -111,7 +120,7 @@ public class VolleyService {
 
             }, error -> Log.d("WEW", error.getStackTrace().toString()));
         }
-        }
+    }
 
     public void retrieveAllData() {
         String url = this.url + this.username + "/lights";
@@ -152,7 +161,7 @@ public class VolleyService {
         }
         light.setSaturation(saturation);
         light.setBrightness(brightness);
-        light.setValue(value);
+        light.setHue(value);
     }
 
     public boolean isLinked() {
@@ -165,5 +174,13 @@ public class VolleyService {
 
     public int getPortNumber() {
         return portNumber;
+    }
+
+    public List<Light> getLights() {
+        return lights;
+    }
+
+    public List<Fragment> getFragments() {
+        return fragments;
     }
 }
