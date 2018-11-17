@@ -100,6 +100,7 @@ public class VolleyService {
                                 object.getInt("bri"),
                                 object.getInt("hue")
                         );
+
                         this.lights.add(light);
                        Log.d("WEW", String.valueOf(lights.size()));
 
@@ -116,9 +117,17 @@ public class VolleyService {
         }
         else
         {
-            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, url, requestBody, response -> {
-
+            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, requestUrl, requestBody, response -> {
+                try {
+                    if(response.get(0).toString().contains("success"))
+                    {
+                        Log.d("WEW","Toggled the light");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }, error -> Log.d("WEW", error.getStackTrace().toString()));
+            queue.add(customJsonArrayRequest);
         }
     }
 
@@ -144,6 +153,7 @@ public class VolleyService {
             e.printStackTrace();
         }
         this.doJsonRequest(url,body, Request.Method.PUT);
+
         light.setTurnedOn(on);
     }
 
@@ -159,6 +169,7 @@ public class VolleyService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        this.doJsonRequest(url,object, Request.Method.PUT);
         light.setSaturation(saturation);
         light.setBrightness(brightness);
         light.setHue(value);
