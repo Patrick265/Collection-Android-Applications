@@ -38,7 +38,7 @@ public class VolleyService {
         this.lights = new ArrayList<>();
         this.context = context;
         this.portNumber = 80;
-        this.url = "http://192.168.2.105" + "/api/";
+        this.url = "http://192.168.0.102" + "/api/";
         this.linked = false;
         this.username = null;
         this.fragments = new ArrayList<>();
@@ -91,7 +91,7 @@ public class VolleyService {
         RequestQueue queue = Volley.newRequestQueue(this.context);
         if (requestBody == null) {
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
-                for(int i = 0; i < response.length() + 1; i++)
+                for(int i = 1; i < response.length() + 1; i++)
                 {
                     try {
                         JSONObject object = response.getJSONObject(String.valueOf(i)).getJSONObject("state");

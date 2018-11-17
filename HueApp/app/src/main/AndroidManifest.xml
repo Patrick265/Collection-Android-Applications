@@ -25,7 +25,8 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".layout.fragment.allLights_fragment" />
-        <activity android:name=".layout.adapter.ListAdapter"></activity>
+        <activity android:name=".layout.adapter.ListAdapter" />
+        <activity android:name=".Activity_detailed"></activity>
     </application>
 
 </manifest>

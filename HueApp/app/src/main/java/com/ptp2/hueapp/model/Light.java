@@ -1,6 +1,8 @@
 package com.ptp2.hueapp.model;
 
-public class Light {
+import java.io.Serializable;
+
+public class Light implements Serializable {
 
     private String name;
     private int saturation;
