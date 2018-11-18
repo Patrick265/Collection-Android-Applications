@@ -19,28 +19,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/txt_state"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txt_hue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            <TableRow
+                android:layout_width="195dp"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txt_bri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+                <TextView
+                    android:id="@+id/txt_state"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-        <TextView
-            android:id="@+id/txt_sat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+                <Switch
+                    android:id="@+id/state_switch"
+                    style="@android:style/Widget.Material.CompoundButton.Switch"
+                    android:layout_width="124dp"
+                    android:layout_height="wrap_content"
+                    android:text="Switch" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/txt_hue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/txt_bri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/txt_sat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </TableRow>
+        </TableLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

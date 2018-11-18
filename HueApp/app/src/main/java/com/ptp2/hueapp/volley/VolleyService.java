@@ -9,16 +9,19 @@ import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.layout.fragment.allLights_fragment;
 import com.ptp2.hueapp.model.Light;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class VolleyService {
 
@@ -33,6 +36,7 @@ public class VolleyService {
     private String username;
     private boolean linked;
     private List<Fragment> fragments;
+    private boolean succes = false;
 
     private VolleyService(Context context) {
         this.lights = new ArrayList<>();
@@ -87,22 +91,21 @@ public class VolleyService {
         queue.add(customJsonArrayRequest);
     }
 
-    public void doJsonRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
+    public void doJsonObjectRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
         RequestQueue queue = Volley.newRequestQueue(this.context);
         if (requestBody == null) {
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
-                for(int i = 1; i < response.length() + 1; i++)
-                {
+                for (int i = 1; i < response.length() + 1; i++) {
                     try {
                         JSONObject object = response.getJSONObject(String.valueOf(i)).getJSONObject("state");
                         Light light = new Light("Light", object.getBoolean("on"),
                                 object.getInt("sat"),
                                 object.getInt("bri"),
-                                object.getInt("hue")
+                                object.getInt("hue"),
+                                i
                         );
-
                         this.lights.add(light);
-                       Log.d("WEW", String.valueOf(lights.size()));
+                        Log.d("WEW", String.valueOf(lights.size()));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -115,46 +118,54 @@ public class VolleyService {
             }, error -> Log.d("WEW", error.getStackTrace().toString()));
             queue.add(customJsonObjectRequest);
         }
-        else
-        {
-            CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, requestUrl, requestBody, response -> {
+    }
+
+    public boolean doJsonArrayRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
+        succes = false;
+        RequestQueue queue = Volley.newRequestQueue(this.context);
+        CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, requestUrl, requestBody, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
                 try {
-                    if(response.get(0).toString().contains("success"))
-                    {
-                        Log.d("WEW","Toggled the light");
+                    if (response.get(0).toString().contains("success")) {
+                        succes = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }, error -> Log.d("WEW", error.getStackTrace().toString()));
-            queue.add(customJsonArrayRequest);
-        }
+            }
+        }, error -> Log.d("WEW", error.getStackTrace().toString()));
+        queue.add(customJsonArrayRequest);
+        return succes;
     }
 
     public void retrieveAllData() {
         String url = this.url + this.username + "/lights";
         Log.i("DATA", url);
-        this.doJsonRequest(url,null, Request.Method.GET);
+        this.doJsonObjectRequest(url,null, Request.Method.GET);
     }
 
 
     public void retrieveLightData(int index) {
         String url = this.url + this.username + "/lights/" + index;
-        this.doJsonRequest(url,null, Request.Method.GET);
+        this.doJsonObjectRequest(url,null, Request.Method.GET);
     }
 
-    public void turnOn(Light light, boolean on)
+    public boolean turnOn(Light light, boolean on)
     {
-        String url = this.url + this.username + "/lights/" + light.getIndex() + "/state";
+        String url = this.url + this.username + "/lights/" + light.getIndex()  + "/state";
         JSONObject body = new JSONObject();
         try {
             body.put("on",on);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.doJsonRequest(url,body, Request.Method.PUT);
-
-        light.setTurnedOn(on);
+        if(this.doJsonArrayRequest(url,body, Request.Method.PUT))
+        {
+            return true;
+        }
+        return false;
     }
 
     public void changeColor(Light light, int saturation, int brightness, int value) {
@@ -169,7 +180,7 @@ public class VolleyService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.doJsonRequest(url,object, Request.Method.PUT);
+        this.doJsonObjectRequest(url,object, Request.Method.PUT);
         light.setSaturation(saturation);
         light.setBrightness(brightness);
         light.setHue(value);

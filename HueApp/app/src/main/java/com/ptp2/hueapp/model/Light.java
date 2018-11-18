@@ -12,12 +12,13 @@ public class Light implements Serializable {
     private int index;
     private boolean turnedOn;
 
-    public Light(String name, boolean turnedOn, int saturation, int brightness, int hue) {
+    public Light(String name, boolean turnedOn, int saturation, int brightness, int hue, int index) {
         this.name = name;
         this.turnedOn = turnedOn;
         this.saturation = saturation;
         this.brightness = brightness;
         this.hue = hue;
+        this.index = index;
     }
 
     public void setColor(int saturation, int brightness, int value) {

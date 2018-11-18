@@ -56,8 +56,6 @@ public class allLights_fragment extends Fragment implements ListOnItemClickListe
         this.adapter.setLights(this.lights);
         this.adapter.notifyDataSetChanged();
         this.adapter.notifyItemInserted(this.lights.size() - 1);
-
-
     }
 
     public List<Light> getLights() {
