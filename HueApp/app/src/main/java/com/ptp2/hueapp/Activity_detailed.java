@@ -39,7 +39,8 @@ public class Activity_detailed extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        light = (Light) intent.getSerializableExtra("LIGHT");
+        Light lel = (Light) intent.getSerializableExtra("LIGHT");
+        light = volleyService.getLights().get(lel.getIndex() - 1);
         initalise();
         initaliseSpinner();
     }

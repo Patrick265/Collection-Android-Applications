@@ -104,7 +104,6 @@ public class VolleyService {
                                 i
                         );
                         this.lights.add(light);
-                        Log.d("WEW", String.valueOf(lights.size()));
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -133,6 +132,8 @@ public class VolleyService {
                 }
             }
         }, error -> Log.d("WEW", error.getStackTrace().toString()));
+        allLights_fragment fragment = (allLights_fragment) this.fragments.get(0);
+        fragment.update(this.lights);
         queue.add(customJsonArrayRequest);
     }
 

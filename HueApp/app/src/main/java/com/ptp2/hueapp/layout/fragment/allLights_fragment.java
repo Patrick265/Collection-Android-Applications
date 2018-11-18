@@ -46,16 +46,13 @@ public class allLights_fragment extends Fragment implements ListOnItemClickListe
             Intent intent = new Intent(view.getContext(), Activity_detailed.class);
             intent.putExtra("LIGHT",light);
             startActivity(intent);
-        }, this.lights);
+        }, service.getLights());
         list.setAdapter(adapter);
         return view;
     }
 
     public void update(List<Light> lights) {
-        this.lights = lights;
-        this.adapter.setLights(this.lights);
         this.adapter.notifyDataSetChanged();
-        this.adapter.notifyItemInserted(this.lights.size() - 1);
     }
 
     public List<Light> getLights() {

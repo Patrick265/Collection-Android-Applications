@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         this.allFragment = new allLights_fragment();
         this.service.getFragments().add(this.allFragment);
 
-
-
         this.tabLayout = findViewById(R.id.main_tab_layout);
         this.viewPager = findViewById(R.id.main_view_pager);
         this.pageAdapter = new PageAdapter(getSupportFragmentManager());
