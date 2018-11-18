@@ -70,6 +70,19 @@ public class Activity_detailed extends AppCompatActivity {
             this.lightName.setText("");
         }
 
+        if(light.isTurnedOn())
+        {
+            hueBar.setEnabled(true);
+            saturationBar.setEnabled(true);
+            brightnessBar.setEnabled(true);
+        }
+        else
+        {
+            hueBar.setEnabled(false);
+            saturationBar.setEnabled(false);
+            brightnessBar.setEnabled(false);
+        }
+
         this.hueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
