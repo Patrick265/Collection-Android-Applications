@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.layout.fragment.allLights_fragment;
 import com.ptp2.hueapp.model.Light;
+import com.ptp2.hueapp.util.VolleyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,17 +37,17 @@ public class VolleyService {
     private String username;
     private boolean linked;
     private List<Fragment> fragments;
-    private boolean succes = false;
+    private RequestQueue queue;
 
     private VolleyService(Context context) {
         this.lights = new ArrayList<>();
         this.context = context;
         this.portNumber = 80;
-        this.url = "http://192.168.2.105" + "/api/";
+        this.url = "http://192.168.0.102" + "/api/";
         this.linked = false;
         this.username = null;
         this.fragments = new ArrayList<>();
-
+        this.queue = Volley.newRequestQueue(this.context);
     }
 
 
@@ -65,7 +66,6 @@ public class VolleyService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestQueue queue = Volley.newRequestQueue(this.context);
         CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, url, body, response -> {
             try {
                 Button pairButton = activity.findViewById(R.id.main_par_button);
@@ -92,7 +92,6 @@ public class VolleyService {
     }
 
     public void doJsonObjectRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
-        RequestQueue queue = Volley.newRequestQueue(this.context);
         if (requestBody == null) {
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
                 for (int i = 1; i < response.length() + 1; i++) {
@@ -120,16 +119,14 @@ public class VolleyService {
         }
     }
 
-    public boolean doJsonArrayRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
-        succes = false;
-        RequestQueue queue = Volley.newRequestQueue(this.context);
+    public void doJsonArrayRequest(String requestUrl, JSONObject requestBody, int requestMethode, VolleyCallback callback) {
         CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(requestMethode, requestUrl, requestBody, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 
                 try {
                     if (response.get(0).toString().contains("success")) {
-                        succes = true;
+                        callback.onSucces();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -137,7 +134,6 @@ public class VolleyService {
             }
         }, error -> Log.d("WEW", error.getStackTrace().toString()));
         queue.add(customJsonArrayRequest);
-        return succes;
     }
 
     public void retrieveAllData() {
@@ -152,7 +148,7 @@ public class VolleyService {
         this.doJsonObjectRequest(url,null, Request.Method.GET);
     }
 
-    public boolean turnOn(Light light, boolean on)
+    public void turnOn(Light light, boolean on,VolleyCallback volleyCallback)
     {
         String url = this.url + this.username + "/lights/" + light.getIndex()  + "/state";
         JSONObject body = new JSONObject();
@@ -161,14 +157,10 @@ public class VolleyService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(this.doJsonArrayRequest(url,body, Request.Method.PUT))
-        {
-            return true;
-        }
-        return false;
+        this.doJsonArrayRequest(url, body, Request.Method.PUT, volleyCallback);
     }
 
-    public void changeColor(Light light, int saturation, int brightness, int value) {
+    public void changeColor(Light light, int saturation, int brightness, int value, VolleyCallback volleyCallback) {
         String url = this.url + this.username + "/lights/" + light.getIndex() + "/state";
 
         JSONObject object = new JSONObject();
@@ -180,10 +172,7 @@ public class VolleyService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.doJsonObjectRequest(url,object, Request.Method.PUT);
-        light.setSaturation(saturation);
-        light.setBrightness(brightness);
-        light.setHue(value);
+        this.doJsonArrayRequest(url, object, Request.Method.PUT, volleyCallback);
     }
 
     public boolean isLinked() {

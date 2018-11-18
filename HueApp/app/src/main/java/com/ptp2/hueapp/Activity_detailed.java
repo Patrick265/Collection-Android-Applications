@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import com.ptp2.hueapp.model.Light;
+import com.ptp2.hueapp.util.VolleyCallback;
 import com.ptp2.hueapp.volley.VolleyService;
 
 import java.util.ArrayList;
@@ -43,6 +44,14 @@ public class Activity_detailed extends AppCompatActivity {
         initaliseSpinner();
     }
 
+    public Light getLight() {
+        return light;
+    }
+
+    public void setLight(Light light) {
+        this.light = light;
+    }
+
     private void initalise() {
         this.hueBar = findViewById(R.id.detailed_seekbar_hue);
         this.saturationBar = findViewById(R.id.detailed_seekbar_saturation);
@@ -60,15 +69,115 @@ public class Activity_detailed extends AppCompatActivity {
             this.lightName.setText("");
         }
 
+        this.hueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                volleyService.changeColor(light,light.getSaturation(),light.getBrightness(), i * 182, new VolleyCallback() {
+                    @Override
+                    public void onSucces() {
+                        getLight().setHue(i * 182);
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        this.saturationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                volleyService.changeColor(light, (int)(i * 2.55), light.getBrightness(), light.getHue(), new VolleyCallback() {
+                    @Override
+                    public void onSucces() {
+                        getLight().setSaturation((int)(i * 2.55));
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        this.brightnessBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                volleyService.changeColor(light, light.getSaturation(), (int)(i * 2.55), light.getHue(), new VolleyCallback() {
+                    @Override
+                    public void onSucces() {
+                        getLight().setBrightness((int)(i * 2.55));
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         this.lightSwitch.setChecked(light.isTurnedOn());
 
         this.lightSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(volleyService.turnOn(light,b))
-            {
-                light.setTurnedOn(b);
-            }
+            light.setTurnedOn(b);
+            volleyService.turnOn(light, b, new VolleyCallback() {
+                @Override
+                public void onSucces() {
+                    if(light.isTurnedOn())
+                    {
+                        hueBar.setEnabled(true);
+                        saturationBar.setEnabled(true);
+                        brightnessBar.setEnabled(true);
+                    }
+                    else
+                    {
+                        hueBar.setEnabled(false);
+                        saturationBar.setEnabled(false);
+                        brightnessBar.setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
         });
+
     }
 
     public void initaliseSpinner() {
@@ -84,4 +193,6 @@ public class Activity_detailed extends AppCompatActivity {
         this.spinner.setAdapter(this.adapter);
 
     }
+
+
 }
