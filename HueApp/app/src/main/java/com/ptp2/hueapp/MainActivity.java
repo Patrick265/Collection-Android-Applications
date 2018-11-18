@@ -1,19 +1,15 @@
 package com.ptp2.hueapp;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import com.ptp2.hueapp.layout.adapter.PageAdapter;
 import com.ptp2.hueapp.layout.fragment.allLights_fragment;
 import com.ptp2.hueapp.volley.VolleyService;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private PageAdapter pageAdapter;
     private allLights_fragment allFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,4 +5,5 @@
     <string name="bedroom">Bedroom</string>
     <string name="kitchen">Kitchen</string>
     <string name="pair">Pair</string>
+    <string name="state">State</string>
 </resources>

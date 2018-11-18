@@ -6,75 +6,140 @@
     android:layout_height="match_parent"
     tools:context=".Activity_detailed">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="195dp"
-                android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/detailed_light_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:inputType="textPersonName"
+                android:text="LightName"
+                android:textColor="@color/colorSelectedTab"
+                android:textAppearance="@style/DetailedTextWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/txt_state"
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
+    </FrameLayout>
 
-                <Switch
-                    android:id="@+id/state_switch"
-                    style="@android:style/Widget.Material.CompoundButton.Switch"
-                    android:layout_width="124dp"
-                    android:layout_height="wrap_content"
-                    android:text="Switch" />
+    <TextView
+        android:id="@+id/detailed_txt_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/state"
+        android:textAppearance="@style/DetailedText"
+        app:layout_constraintEnd_toStartOf="@+id/detailed_state_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-            </TableRow>
+    <Switch
+        android:id="@+id/detailed_state_switch"
+        style="@android:style/Widget.Material.CompoundButton.Switch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detailed_txt_state"
+        app:layout_constraintTop_toTopOf="@+id/detailed_txt_state" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/detailed_txt_hue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Hue"
+        android:textAppearance="@style/DetailedText"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_state" />
 
-                <TextView
-                    android:id="@+id/txt_hue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </TableRow>
+    <SeekBar
+        android:id="@+id/detailed_seekbar_hue"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="16dp"
+        android:max="360"
+        app:layout_constraintEnd_toEndOf="@+id/detailed_state_switch"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_hue" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/detailed_txt_saturation"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
+        android:text="Saturation"
+        android:textAppearance="@style/DetailedText"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_hue" />
 
-                <TextView
-                    android:id="@+id/txt_bri"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </TableRow>
+    <SeekBar
+        android:id="@+id/detailed_seekbar_saturation"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="16dp"
+        android:max="360"
+        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_hue"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_saturation" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/detailed_txt_brightness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Brightness"
+        android:textAppearance="@style/DetailedText"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_saturation" />
 
-                <TextView
-                    android:id="@+id/txt_sat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </TableRow>
-        </TableLayout>
+    <SeekBar
+        android:id="@+id/detailed_seekbar_brightness"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="16dp"
+        android:max="360"
+        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_saturation"
+        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_brightness" />
 
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/detailed_spinner_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/detasiled_txt_Category"
+        app:layout_constraintStart_toStartOf="@+id/detasiled_txt_Category"
+        app:layout_constraintTop_toBottomOf="@+id/detasiled_txt_Category" />
+
+    <TextView
+        android:id="@+id/detasiled_txt_Category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Category"
+        android:textAppearance="@style/DetailedText"
+        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_brightness"
+        app:layout_constraintStart_toStartOf="@+id/detailed_seekbar_brightness"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_brightness" />
+
 </android.support.constraint.ConstraintLayout>

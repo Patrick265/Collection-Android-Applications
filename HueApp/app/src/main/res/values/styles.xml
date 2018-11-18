@@ -15,5 +15,19 @@
         <item name="android:fontFamily">@font/fira_sans_bold</item>
     </style>
 
+    <style name="DetailedText" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorTextBlack</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/fira_sans_bold</item>
+    </style>
+
+    <style name="DetailedTextWhite" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/fira_sans_bold</item>
+    </style>
+
 
 </resources>
