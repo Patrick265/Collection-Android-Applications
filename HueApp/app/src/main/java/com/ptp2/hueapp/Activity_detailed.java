@@ -75,8 +75,8 @@ public class Activity_detailed extends AppCompatActivity {
 
 
         this.hueBar.setProgress(this.light.getHue() / 182);
-        this.saturationBar.setProgress((int) (this.light.getSaturation() / 2.55));
-        this.brightnessBar.setProgress((int) (this.light.getBrightness() / 2.55));
+        this.saturationBar.setProgress((int) (this.light.getSaturation() / 2.54));
+        this.brightnessBar.setProgress((int) (this.light.getBrightness() / 2.54));
 
         float hue = light.getHue() / 182;
         float[] hsv = new float[]{hue, 0.9f, 0.9f};
@@ -181,10 +181,10 @@ public class Activity_detailed extends AppCompatActivity {
         this.saturationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                volleyService.changeColor(light, (int)(i * 2.55), light.getBrightness(), light.getHue(), new VolleyCallback() {
+                volleyService.changeColor(light, (int)(i * 2.54), light.getBrightness(), light.getHue(), new VolleyCallback() {
                     @Override
                     public void onSucces() {
-                        getLight().setSaturation((int)(i * 2.55));
+                        getLight().setSaturation((int)(i * 2.54));
                     }
 
                     @Override
@@ -208,10 +208,10 @@ public class Activity_detailed extends AppCompatActivity {
         this.brightnessBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                volleyService.changeColor(light, light.getSaturation(), (int)(i * 2.55), light.getHue(), new VolleyCallback() {
+                volleyService.changeColor(light, light.getSaturation(), (int)(i * 2.54), light.getHue(), new VolleyCallback() {
                     @Override
                     public void onSucces() {
-                        getLight().setBrightness((int)(i * 2.55));
+                        getLight().setBrightness((int)(i * 2.54));
                     }
 
                     @Override
