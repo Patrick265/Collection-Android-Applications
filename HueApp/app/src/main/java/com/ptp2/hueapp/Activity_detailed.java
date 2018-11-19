@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -83,34 +84,6 @@ public class Activity_detailed extends AppCompatActivity {
         picker.setColor(Color.HSVToColor(255, hsv));
         oldHueVal = (int) hsv[0] * 182;
 
-        picker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color) {
-                int red = Color.red(color);
-                int green = Color.green(color);
-                int blue = Color.blue(color);
-                float[] hsv = new float[3];
-                Color.RGBToHSV(red, green, blue, hsv);
-                int hue = (int) (hsv[0] * 182);
-                if(Math.abs(hue - oldHueVal) > 500)
-                {
-                    oldHueVal = hue;
-                    volleyService.changeColor(light, light.getSaturation(), light.getBrightness(), (int) (hsv[0] * 182), new VolleyCallback() {
-                        @Override
-                        public void onSucces() {
-                            getLight().setHue((int)hsv[0] * 182);
-                            hueBar.setProgress(getLight().getHue() / 182);
-                        }
-
-                        @Override
-                        public void onFail() {
-
-                        }
-                    });
-                }
-            }
-            }
-        );
 
         this.lightName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -136,12 +109,14 @@ public class Activity_detailed extends AppCompatActivity {
 
         if(light.isTurnedOn())
         {
+            picker.setClickable(true);
             hueBar.setEnabled(true);
             saturationBar.setEnabled(true);
             brightnessBar.setEnabled(true);
         }
         else
         {
+            picker.setClickable(false);
             hueBar.setEnabled(false);
             saturationBar.setEnabled(false);
             brightnessBar.setEnabled(false);
@@ -151,13 +126,13 @@ public class Activity_detailed extends AppCompatActivity {
         this.hueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                float hue = light.getHue() / 182;
+                float[] hsv = new float[]{hue, 0.9f, 0.9f};
+                picker.setColor(Color.HSVToColor(255, hsv));
                 volleyService.changeColor(light,light.getSaturation(),light.getBrightness(), i * 182, new VolleyCallback() {
                     @Override
                     public void onSucces() {
                         getLight().setHue(i * 182);
-                        float hue = light.getHue() / 182;
-                        float[] hsv = new float[]{hue, 0.9f, 0.9f};
-                        picker.setColor(Color.HSVToColor(255, hsv));
                     }
 
                     @Override
@@ -244,12 +219,14 @@ public class Activity_detailed extends AppCompatActivity {
                         hueBar.setEnabled(true);
                         saturationBar.setEnabled(true);
                         brightnessBar.setEnabled(true);
+                        picker.setEnabled(true);
                     }
                     else
                     {
                         hueBar.setEnabled(false);
                         saturationBar.setEnabled(false);
                         brightnessBar.setEnabled(false);
+                        picker.setEnabled(false);
                     }
                 }
 
@@ -260,6 +237,33 @@ public class Activity_detailed extends AppCompatActivity {
             });
         });
 
+
+        picker.setOnColorSelectedListener(color -> {
+                    if (picker.isEnabled()) {
+                        int red = Color.red(color);
+                        int green = Color.green(color);
+                        int blue = Color.blue(color);
+                        float[] hsv1 = new float[3];
+                        Color.RGBToHSV(red, green, blue, hsv1);
+                        int hue1 = (int) (hsv1[0] * 182);
+                        if (Math.abs(hue1 - oldHueVal) > 10) {
+                            oldHueVal = hue1;
+                            volleyService.changeColor(light, light.getSaturation(), light.getBrightness(), (int) (hsv1[0] * 182), new VolleyCallback() {
+                                @Override
+                                public void onSucces() {
+                                    getLight().setHue((int) hsv1[0] * 182);
+                                    hueBar.setProgress(getLight().getHue() / 182);
+                                }
+
+                                @Override
+                                public void onFail() {
+
+                                }
+                            });
+                        }
+                    }
+                }
+        );
     }
 
     public void initaliseSpinner() {

@@ -61,6 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="14dp"
                 android:layout_marginTop="16dp"
+                android:progress="1"
                 android:max="360"
                 app:layout_constraintEnd_toEndOf="@+id/detailed_state_switch"
                 app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
