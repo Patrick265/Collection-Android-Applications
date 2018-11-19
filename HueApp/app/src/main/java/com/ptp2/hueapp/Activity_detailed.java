@@ -1,11 +1,13 @@
 package com.ptp2.hueapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.larswerkman.holocolorpicker.ColorPicker;
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.VolleyCallback;
 import com.ptp2.hueapp.volley.VolleyService;
@@ -28,6 +31,9 @@ public class Activity_detailed extends AppCompatActivity {
     private SeekBar brightnessBar;
     private EditText lightName;
     private Switch lightSwitch;
+    private ColorPicker picker;
+    private int oldHueVal;
+
 
     private Light light;
     private VolleyService volleyService;
@@ -41,7 +47,8 @@ public class Activity_detailed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
         this.volleyService = VolleyService.getInstance(getApplicationContext());
-
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Intent intent = getIntent();
         Light lel = (Light) intent.getSerializableExtra("LIGHT");
@@ -64,20 +71,46 @@ public class Activity_detailed extends AppCompatActivity {
         this.brightnessBar = findViewById(R.id.detailed_seekbar_brightness);
         this.lightName = findViewById(R.id.detailed_light_name);
         this.lightSwitch = findViewById(R.id.detailed_state_switch);
+        this.picker = findViewById(R.id.picker);
 
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), color_picker.class);
-                intent.putExtra("COLOR",light);
-                startActivity(intent);
-            }
-        });
 
         this.hueBar.setProgress(this.light.getHue() / 182);
         this.saturationBar.setProgress((int) (this.light.getSaturation() / 2.55));
         this.brightnessBar.setProgress((int) (this.light.getBrightness() / 2.55));
+
+        float hue = light.getHue() / 182;
+        float[] hsv = new float[]{hue, 0.9f, 0.9f};
+        picker.setColor(Color.HSVToColor(255, hsv));
+        oldHueVal = (int) hsv[0] * 182;
+
+        picker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color) {
+                int red = Color.red(color);
+                int green = Color.green(color);
+                int blue = Color.blue(color);
+                float[] hsv = new float[3];
+                Color.RGBToHSV(red, green, blue, hsv);
+                int hue = (int) (hsv[0] * 182);
+                if(Math.abs(hue - oldHueVal) > 500)
+                {
+                    oldHueVal = hue;
+                    volleyService.changeColor(light, light.getSaturation(), light.getBrightness(), (int) (hsv[0] * 182), new VolleyCallback() {
+                        @Override
+                        public void onSucces() {
+                            getLight().setHue((int)hsv[0] * 182);
+                            hueBar.setProgress(getLight().getHue() / 182);
+                        }
+
+                        @Override
+                        public void onFail() {
+
+                        }
+                    });
+                }
+            }
+            }
+        );
 
         this.lightName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,6 +155,9 @@ public class Activity_detailed extends AppCompatActivity {
                     @Override
                     public void onSucces() {
                         getLight().setHue(i * 182);
+                        float hue = light.getHue() / 182;
+                        float[] hsv = new float[]{hue, 0.9f, 0.9f};
+                        picker.setColor(Color.HSVToColor(255, hsv));
                     }
 
                     @Override

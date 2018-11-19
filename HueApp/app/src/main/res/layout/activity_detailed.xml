@@ -6,150 +6,162 @@
     android:layout_height="match_parent"
     tools:context=".Activity_detailed">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/detailed_light_name"
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/detailed_light_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@android:color/transparent"
+                        android:inputType="textPersonName"
+                        android:text="LightName"
+                        android:textAppearance="@style/DetailedTextWhite"
+                        android:textColor="@color/colorSelectedTab"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/detailed_txt_saturation"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginTop="16dp"
+                android:text="Saturation"
+                android:textAppearance="@style/DetailedText"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_hue" />
+
+            <SeekBar
+                android:id="@+id/detailed_seekbar_hue"
+                android:layout_width="0dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="16dp"
+                android:max="360"
+                app:layout_constraintEnd_toEndOf="@+id/detailed_state_switch"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_txt_hue" />
+
+            <TextView
+                android:id="@+id/detailed_txt_state"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                android:inputType="textPersonName"
-                android:text="LightName"
-                android:textColor="@color/colorSelectedTab"
-                android:textAppearance="@style/DetailedTextWhite"
+                android:text="@string/state"
+                android:textAppearance="@style/DetailedText"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_state_switch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+            <SeekBar
+                android:id="@+id/detailed_seekbar_saturation"
+                android:layout_width="0dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="16dp"
+                android:max="360"
+                app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_hue"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_txt_saturation" />
+
+            <Switch
+                android:id="@+id/detailed_state_switch"
+                style="@android:style/Widget.Material.CompoundButton.Switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/detailed_txt_state"
+                app:layout_constraintTop_toTopOf="@+id/detailed_txt_state" />
+
+            <SeekBar
+                android:id="@+id/detailed_seekbar_brightness"
+                android:layout_width="0dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="16dp"
+                android:max="360"
+                app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_saturation"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_txt_brightness" />
+
+            <Spinner
+                android:id="@+id/detailed_spinner_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/detasiled_txt_Category"
+                app:layout_constraintStart_toStartOf="@+id/detasiled_txt_Category"
+                app:layout_constraintTop_toBottomOf="@+id/detasiled_txt_Category" />
+
+            <TextView
+                android:id="@+id/detailed_txt_hue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Hue"
+                android:textAppearance="@style/DetailedText"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_txt_state" />
+
+            <TextView
+                android:id="@+id/detailed_txt_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Brightness"
+                android:textAppearance="@style/DetailedText"
+                app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_saturation" />
+
+            <TextView
+                android:id="@+id/detasiled_txt_Category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Category"
+                android:textAppearance="@style/DetailedText"
+                app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_brightness"
+                app:layout_constraintStart_toStartOf="@+id/detailed_seekbar_brightness"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_brightness" />
+
+            <com.larswerkman.holocolorpicker.ColorPicker
+                android:id="@+id/picker"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/detailed_spinner_category" />
+
         </android.support.constraint.ConstraintLayout>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/detailed_txt_state"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/state"
-        android:textAppearance="@style/DetailedText"
-        app:layout_constraintEnd_toStartOf="@+id/detailed_state_switch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
-    <Switch
-        android:id="@+id/detailed_state_switch"
-        style="@android:style/Widget.Material.CompoundButton.Switch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/detailed_txt_state"
-        app:layout_constraintTop_toTopOf="@+id/detailed_txt_state" />
-
-    <TextView
-        android:id="@+id/detailed_txt_hue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Hue"
-        android:textAppearance="@style/DetailedText"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_state" />
-
-    <SeekBar
-        android:id="@+id/detailed_seekbar_hue"
-        android:layout_width="0dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="16dp"
-        android:max="360"
-        app:layout_constraintEnd_toEndOf="@+id/detailed_state_switch"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_hue" />
-
-    <TextView
-        android:id="@+id/detailed_txt_saturation"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginTop="16dp"
-        android:text="Saturation"
-        android:textAppearance="@style/DetailedText"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_hue" />
-
-    <SeekBar
-        android:id="@+id/detailed_seekbar_saturation"
-        android:layout_width="0dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="16dp"
-        android:max="360"
-        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_hue"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_saturation" />
-
-    <TextView
-        android:id="@+id/detailed_txt_brightness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Brightness"
-        android:textAppearance="@style/DetailedText"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_saturation" />
-
-    <SeekBar
-        android:id="@+id/detailed_seekbar_brightness"
-        android:layout_width="0dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="16dp"
-        android:max="360"
-        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_saturation"
-        app:layout_constraintStart_toStartOf="@+id/detailed_txt_hue"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_txt_brightness" />
-
-    <Spinner
-        android:id="@+id/detailed_spinner_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/detasiled_txt_Category"
-        app:layout_constraintStart_toStartOf="@+id/detasiled_txt_Category"
-        app:layout_constraintTop_toBottomOf="@+id/detasiled_txt_Category" />
-
-    <TextView
-        android:id="@+id/detasiled_txt_Category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Category"
-        android:textAppearance="@style/DetailedText"
-        app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_brightness"
-        app:layout_constraintStart_toStartOf="@+id/detailed_seekbar_brightness"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_brightness" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
