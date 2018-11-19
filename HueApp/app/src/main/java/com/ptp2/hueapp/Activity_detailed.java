@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -62,6 +64,16 @@ public class Activity_detailed extends AppCompatActivity {
         this.brightnessBar = findViewById(R.id.detailed_seekbar_brightness);
         this.lightName = findViewById(R.id.detailed_light_name);
         this.lightSwitch = findViewById(R.id.detailed_state_switch);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), color_picker.class);
+                intent.putExtra("COLOR",light);
+                startActivity(intent);
+            }
+        });
 
         this.hueBar.setProgress(this.light.getHue() / 182);
         this.saturationBar.setProgress((int) (this.light.getSaturation() / 2.55));

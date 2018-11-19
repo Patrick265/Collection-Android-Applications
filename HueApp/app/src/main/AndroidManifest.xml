@@ -26,7 +26,8 @@
 
         <activity android:name=".layout.fragment.allLights_fragment" />
         <activity android:name=".layout.adapter.ListAdapter" />
-        <activity android:name=".Activity_detailed"></activity>
+        <activity android:name=".Activity_detailed" />
+        <activity android:name=".color_picker"></activity>
     </application>
 
 </manifest>
