@@ -3,11 +3,14 @@ package com.ptp2.hueapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.VolleyCallback;
@@ -64,6 +67,22 @@ public class Activity_detailed extends AppCompatActivity {
         this.saturationBar.setProgress((int) (this.light.getSaturation() / 2.55));
         this.brightnessBar.setProgress((int) (this.light.getBrightness() / 2.55));
 
+        this.lightName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                light.setName(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         if(this.light.getName() != null ) {
             this.lightName.setText(this.light.getName());
         } else {
@@ -82,6 +101,7 @@ public class Activity_detailed extends AppCompatActivity {
             saturationBar.setEnabled(false);
             brightnessBar.setEnabled(false);
         }
+
 
         this.hueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

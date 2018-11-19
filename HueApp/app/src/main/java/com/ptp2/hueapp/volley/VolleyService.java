@@ -43,7 +43,7 @@ public class VolleyService {
         this.lights = new ArrayList<>();
         this.context = context;
         this.portNumber = 80;
-        this.url = "http://192.168.0.102" + "/api/";
+        this.url = "http://192.168.223.2" + "/api/";
         this.linked = false;
         this.username = null;
         this.fragments = new ArrayList<>();
