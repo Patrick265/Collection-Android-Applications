@@ -6,4 +6,5 @@
     <string name="kitchen">Kitchen</string>
     <string name="pair">Pair</string>
     <string name="state">State</string>
+    <string name="pair_simulator">Pair Simulator</string>
 </resources>

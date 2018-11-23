@@ -42,6 +42,10 @@ public class PageAdapter extends FragmentPagerAdapter {
         this.fragmentsTitles.add(title);
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
     public List<Fragment> getFragments() {
         return fragments;
     }

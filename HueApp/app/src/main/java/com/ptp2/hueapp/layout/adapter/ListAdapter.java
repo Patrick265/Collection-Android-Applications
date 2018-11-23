@@ -13,6 +13,7 @@ import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.ListOnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<LightViewHolder> {
 
     private ListOnItemClickListener listener;
-    private List<Light> lights;
+    private List<Light> lights = new ArrayList<>();
 
     public ListAdapter(ListOnItemClickListener listener, List<Light> lights) {
         this.listener = listener;

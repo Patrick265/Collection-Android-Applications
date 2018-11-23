@@ -10,15 +10,19 @@ public class Light implements Serializable {
     private int hue;
 
     private int index;
-    private boolean turnedOn;
+    private int trueIndex;
 
-    public Light(String name, boolean turnedOn, int saturation, int brightness, int hue, int index) {
+    private boolean turnedOn;
+    private String category;
+    public Light(String name, boolean turnedOn, int saturation, int brightness, int hue, int index, int trueIndex) {
         this.name = name;
         this.turnedOn = turnedOn;
         this.saturation = saturation;
         this.brightness = brightness;
         this.hue = hue;
         this.index = index;
+        this.trueIndex = trueIndex;
+        this.category = "Unassigned";
     }
 
     public void setColor(int saturation, int brightness, int value) {
@@ -70,5 +74,17 @@ public class Light implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getTrueIndex() {
+        return trueIndex;
     }
 }

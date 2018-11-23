@@ -6,4 +6,5 @@
     <string name="kitchen">Keuken</string>
     <string name="living_room">Woonkamer</string>
     <string name="pair">Koppelen</string>
+    <string name="pair_simulator">Pair Simulator</string>
 </resources>

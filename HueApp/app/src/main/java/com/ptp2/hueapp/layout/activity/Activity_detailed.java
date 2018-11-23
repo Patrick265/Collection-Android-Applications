@@ -1,4 +1,4 @@
-package com.ptp2.hueapp;
+package com.ptp2.hueapp.layout.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,15 +9,19 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.larswerkman.holocolorpicker.ColorPicker;
+import com.ptp2.hueapp.R;
+import com.ptp2.hueapp.data.LightData;
+import com.ptp2.hueapp.layout.fragment.FragmentConfig;
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.VolleyCallback;
 import com.ptp2.hueapp.volley.VolleyService;
@@ -25,7 +29,7 @@ import com.ptp2.hueapp.volley.VolleyService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activity_detailed extends AppCompatActivity {
+public class Activity_detailed extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private SeekBar hueBar;
     private SeekBar saturationBar;
@@ -38,33 +42,30 @@ public class Activity_detailed extends AppCompatActivity {
 
     private Light light;
     private VolleyService volleyService;
+    private LightData lightData;
 
     private List<String> categories;
     private Spinner spinner;
     private ArrayAdapter<String> adapter;
+    private final FragmentConfig manager = FragmentConfig.getInstance();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
         this.volleyService = VolleyService.getInstance(getApplicationContext());
+        this.lightData = LightData.getInstance();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Intent intent = getIntent();
         Light lel = (Light) intent.getSerializableExtra("LIGHT");
-        light = volleyService.getLights().get(lel.getIndex() - 1);
+        light = this.lightData.getUnAssignedLights().get(lel.getTrueIndex());
+
         initalise();
         initaliseSpinner();
     }
 
-    public Light getLight() {
-        return light;
-    }
-
-    public void setLight(Light light) {
-        this.light = light;
-    }
 
     private void initalise() {
         this.hueBar = findViewById(R.id.detailed_seekbar_hue);
@@ -94,6 +95,7 @@ public class Activity_detailed extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 light.setName(charSequence.toString());
+                manager.update();
             }
 
             @Override
@@ -133,6 +135,7 @@ public class Activity_detailed extends AppCompatActivity {
                     @Override
                     public void onSucces() {
                         getLight().setHue(i * 182);
+                        manager.update();
                     }
 
                     @Override
@@ -160,6 +163,7 @@ public class Activity_detailed extends AppCompatActivity {
                     @Override
                     public void onSucces() {
                         getLight().setSaturation((int)(i * 2.54));
+                        manager.update();
                     }
 
                     @Override
@@ -187,6 +191,7 @@ public class Activity_detailed extends AppCompatActivity {
                     @Override
                     public void onSucces() {
                         getLight().setBrightness((int)(i * 2.54));
+                        manager.update();
                     }
 
                     @Override
@@ -253,6 +258,8 @@ public class Activity_detailed extends AppCompatActivity {
                                 public void onSucces() {
                                     getLight().setHue((int) hsv1[0] * 182);
                                     hueBar.setProgress(getLight().getHue() / 182);
+                                    manager.update();
+
                                 }
 
                                 @Override
@@ -273,12 +280,68 @@ public class Activity_detailed extends AppCompatActivity {
         this.categories.add("Living room");
         this.categories.add("Kitchen");
         this.categories.add("Bedroom");
-        this.categories.add("unassigned");
+        this.categories.add("Unassigned");
         this.adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, this.categories);
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.spinner.setAdapter(this.adapter);
+        this.spinner.setOnItemSelectedListener(this);
+        this.spinner.setSelection(getIndex(this.spinner, this.light.getCategory()));
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public Light getLight() {
+        return light;
+    }
+
+    public void setLight(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("LIGHT CATEGORY", this.light.getCategory());
+
+        String item = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        this.light.setCategory(item);
+        switch(item) {
+            case "Living room":
+                this.lightData.getLivingroomLights().add(light);
+                this.manager.insertDataLivingRoom();
+                //this.manager.update();
+            case "Kitchen":
+                this.lightData.getKitchenLights().add(light);
+                this.manager.insertDataKitchen();
+                //this.manager.update();
+            case "Bedroom":
+                this.lightData.getBedroomLights().add(light);
+                this.manager.insertDataBedroom();
+                //this.manager.update();
+        }
+        Log.i("LIGHT CATEGORY", this.light.getCategory());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
+    public void move(String item, String newCategory) {
+        if(!newCategory.equals("Unassigned")) {
+
+        }
+
+    }
 
 }

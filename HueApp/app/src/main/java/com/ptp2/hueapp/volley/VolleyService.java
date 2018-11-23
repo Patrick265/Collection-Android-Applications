@@ -3,7 +3,6 @@ package com.ptp2.hueapp.volley;
 import android.app.Activity;
 import android.content.Context;
 
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Button;
 
@@ -12,7 +11,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
-import com.ptp2.hueapp.layout.fragment.allLights_fragment;
+import com.ptp2.hueapp.data.LightData;
+import com.ptp2.hueapp.layout.fragment.FragmentConfig;
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.VolleyCallback;
 
@@ -20,34 +20,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class VolleyService {
 
     private static VolleyService service;
 
+    private LightData lightData;
     private Context context;
-    private String requestResponse;
-    private List<Light> lights;
-
-    private final String url;
+    private String url;
+    private final String ipAdress;
     private final int portNumber;
     private String username;
     private boolean linked;
-    private List<Fragment> fragments;
     private RequestQueue queue;
+    private FragmentConfig manager;
+    private String requestResponse;
 
     private VolleyService(Context context) {
-        this.lights = new ArrayList<>();
         this.context = context;
+        this.ipAdress = "145.49.62.158";
         this.portNumber = 80;
-        this.url = "http://192.168.0.102" + "/api/";
+        this.url = "http:/" + ipAdress + "/api/";
         this.linked = false;
-        this.username = null;
-        this.fragments = new ArrayList<>();
+        this.username = "iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB";
+        this.manager = FragmentConfig.getInstance();
         this.queue = Volley.newRequestQueue(this.context);
+        this.lightData = LightData.getInstance();
     }
 
 
@@ -58,7 +55,7 @@ public class VolleyService {
         return service;
     }
 
-    public void pair(Activity activity, allLights_fragment fragment)
+    public void pair(Activity activity)
     {
         JSONObject body = new JSONObject();
         try {
@@ -68,20 +65,27 @@ public class VolleyService {
         }
         CustomJsonArrayRequest customJsonArrayRequest = new CustomJsonArrayRequest(Request.Method.POST, url, body, response -> {
             try {
-                Button pairButton = activity.findViewById(R.id.main_par_button);
+                Button pairSimButton = activity.findViewById(R.id.main_par_button_simulator);
                 String status = response.get(0).toString();
                 if(status.contains("success"))
                 {
                     username = response.getJSONObject(0).getJSONObject("success").getString("username");
                     linked = true;
-                    pairButton.setText("Succesfully paired");
+                    pairSimButton.setText("Succesfully paired");
+                    pairSimButton.setAlpha(0.5f);
+                    pairSimButton.setEnabled(false);
+
+                    Button pairButton = activity.findViewById(R.id.main_par_button);
+                    pairButton.setText("Succesfully Paired");
                     pairButton.setAlpha(0.5f);
                     pairButton.setEnabled(false);
-                    retrieveAllData();
+
+                    retrieveAllData(activity, false);
+
                 }
                 else
                 {
-                    pairButton.setText("Error pairing");
+                    pairSimButton.setText("Error pairing");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -94,25 +98,24 @@ public class VolleyService {
     public void doJsonObjectRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
         if (requestBody == null) {
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
+                int z = 0;
                 for (int i = 1; i < response.length() + 1; i++) {
                     try {
+
                         JSONObject object = response.getJSONObject(String.valueOf(i)).getJSONObject("state");
                         Light light = new Light("Light", object.getBoolean("on"),
                                 object.getInt("sat"),
                                 object.getInt("bri"),
                                 object.getInt("hue"),
-                                i
-                        );
-                        this.lights.add(light);
-
+                                i,
+                                z);
+                            this.lightData.getUnAssignedLights().add(light);
+                            this.manager.insertDataAllFragment();
+                            z++;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d("WEWFINALFRAG", String.valueOf(this.fragments.size()));
-                allLights_fragment fragment = (allLights_fragment) this.fragments.get(0);
-                fragment.getLights().clear();
-                fragment.update(this.lights);
             }, error -> Log.d("WEW", error.getStackTrace().toString()));
             queue.add(customJsonObjectRequest);
         }
@@ -132,15 +135,28 @@ public class VolleyService {
                 }
             }
         }, error -> Log.d("WEW", error.getStackTrace().toString()));
-        allLights_fragment fragment = (allLights_fragment) this.fragments.get(0);
-        fragment.update(this.lights);
+
         queue.add(customJsonArrayRequest);
     }
 
-    public void retrieveAllData() {
-        String url = this.url + this.username + "/lights";
+    public void retrieveAllData(Activity activity,boolean school) {
+        if(school)
+        {
+            this.url = "http://145.48.205.33/api/iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB/lights/";
+        }
+        else {
+            this.url = this.url + this.username + "/lights";
+        }
+
         Log.i("DATA", url);
-        this.doJsonObjectRequest(url,null, Request.Method.GET);
+        if(this.username != null && this.username.equals("iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB")) {
+            Button pairButton = activity.findViewById(R.id.main_par_button_simulator);
+            pairButton.setText("Succesfully Paired");
+            pairButton.setAlpha(0.5f);
+            pairButton.setEnabled(false);
+        }
+        this.doJsonObjectRequest(this.url,null, Request.Method.GET);
+
     }
 
 
@@ -151,7 +167,7 @@ public class VolleyService {
 
     public void turnOn(Light light, boolean on,VolleyCallback volleyCallback)
     {
-        String url = this.url + this.username + "/lights/" + light.getIndex()  + "/state";
+        String url = this.url + light.getIndex()  + "/state";
         JSONObject body = new JSONObject();
         try {
             body.put("on",on);
@@ -162,7 +178,7 @@ public class VolleyService {
     }
 
     public void changeColor(Light light, int saturation, int brightness, int value, VolleyCallback volleyCallback) {
-        String url = this.url + this.username + "/lights/" + light.getIndex() + "/state";
+        String url = this.url + light.getIndex() + "/state";
 
         JSONObject object = new JSONObject();
         try {
@@ -174,25 +190,5 @@ public class VolleyService {
             e.printStackTrace();
         }
         this.doJsonArrayRequest(url, object, Request.Method.PUT, volleyCallback);
-    }
-
-    public boolean isLinked() {
-        return linked;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public int getPortNumber() {
-        return portNumber;
-    }
-
-    public List<Light> getLights() {
-        return lights;
-    }
-
-    public List<Fragment> getFragments() {
-        return fragments;
     }
 }
