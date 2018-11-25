@@ -5,6 +5,7 @@ package com.ptp2.hueapp.layout.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.data.LightData;
@@ -71,17 +72,19 @@ public class FragmentConfig {
     }
 
     public void update() {
+        Log.i("SIZE", "UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
+        Log.i("SIZE", "KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
+        Log.i("SIZE", "BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
+        Log.i("SIZE", "LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
+
         this.allFragment.getAdapter().notifyDataSetChanged();
-        this.kitchenFragment.getAdapter().getLights().clear();
-        this.kitchenFragment.getAdapter().getLights().addAll(this.lightData.getKitchenLights());
         this.kitchenFragment.getAdapter().notifyDataSetChanged();
-
-        this.bedroomFragment.getAdapter().getLights().clear();
-        this.bedroomFragment.getAdapter().getLights().addAll(this.lightData.getBedroomLights());
         this.bedroomFragment.getAdapter().notifyDataSetChanged();
-
-        this.livingRoomFragment.getAdapter().getLights().clear();
-        this.livingRoomFragment.getAdapter().getLights().addAll(this.lightData.getLivingroomLights());
         this.livingRoomFragment.getAdapter().notifyDataSetChanged();
+
+        Log.i("SIZE", "2 - UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
+        Log.i("SIZE", "2 - KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
+        Log.i("SIZE", "2 - BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
+        Log.i("SIZE", "2 - LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
     }
 }

@@ -37,7 +37,7 @@ public class VolleyService {
 
     private VolleyService(Context context) {
         this.context = context;
-        this.ipAdress = "145.49.62.158";
+        this.ipAdress = "192.168.1.7";
         this.portNumber = 80;
         this.url = "http:/" + ipAdress + "/api/";
         this.linked = false;
@@ -150,7 +150,12 @@ public class VolleyService {
 
         Log.i("DATA", url);
         if(this.username != null && this.username.equals("iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB")) {
-            Button pairButton = activity.findViewById(R.id.main_par_button_simulator);
+            Button pairSimButton = activity.findViewById(R.id.main_par_button_simulator);
+            pairSimButton.setText("Succesfully paired");
+            pairSimButton.setAlpha(0.5f);
+            pairSimButton.setEnabled(false);
+
+            Button pairButton = activity.findViewById(R.id.main_par_button);
             pairButton.setText("Succesfully Paired");
             pairButton.setAlpha(0.5f);
             pairButton.setEnabled(false);

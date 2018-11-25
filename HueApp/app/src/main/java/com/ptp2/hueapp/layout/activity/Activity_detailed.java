@@ -23,6 +23,7 @@ import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.data.LightData;
 import com.ptp2.hueapp.layout.fragment.FragmentConfig;
 import com.ptp2.hueapp.model.Light;
+import com.ptp2.hueapp.util.ListUtil;
 import com.ptp2.hueapp.util.VolleyCallback;
 import com.ptp2.hueapp.volley.VolleyService;
 
@@ -314,21 +315,9 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
         String item = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        move(item);
         this.light.setCategory(item);
-        switch(item) {
-            case "Living room":
-                this.lightData.getLivingroomLights().add(light);
-                this.manager.insertDataLivingRoom();
-                //this.manager.update();
-            case "Kitchen":
-                this.lightData.getKitchenLights().add(light);
-                this.manager.insertDataKitchen();
-                //this.manager.update();
-            case "Bedroom":
-                this.lightData.getBedroomLights().add(light);
-                this.manager.insertDataBedroom();
-                //this.manager.update();
-        }
+        this.manager.update();
         Log.i("LIGHT CATEGORY", this.light.getCategory());
     }
 
@@ -337,11 +326,74 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
     }
 
-    public void move(String item, String newCategory) {
-        if(!newCategory.equals("Unassigned")) {
+    public void move(String newCategory)
+    {
+        if (!this.light.getCategory().equals("Unassigned"))
+        {
+            if (this.light.getCategory().equals("Kitchen"))
+            {
+                switch (newCategory)
+                {
+                    case "Living room":
+                        this.lightData.getLivingroomLights().add(this.light);
+                        ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
+                        break;
+                    case "Bedroom":
+                        this.lightData.getBedroomLights().add(this.light);
+                        ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
+                        break;
+                    case "Unassigned":
+                        ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
+                        break;
+                }
+            } else
+            {
+                if (this.light.getCategory().equals("Bedroom"))
+                {
+                    switch (newCategory)
+                    {
+                        case "Living room":
+                            this.lightData.getLivingroomLights().add(this.light);
+                            ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
+                            break;
+                        case "Kitchen":
+                            this.lightData.getKitchenLights().add(this.light);
+                            ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
+                            break;
+                    }
+                } else
+                {
+                    if (this.light.getCategory().equals("Living room"))
+                    {
+                        switch (newCategory)
+                        {
+                            case "Bedroom":
+                                this.lightData.getBedroomLights().add(this.light);
+                                ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                                break;
+                            case "Kitchen":
+                                this.lightData.getKitchenLights().add(this.light);
+                                ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                                break;
+                        }
+                    }
+                }
 
+
+            }
+
+        } else {
+            switch (newCategory) {
+                case "Bedroom":
+                    this.lightData.getBedroomLights().add(this.light);
+                    break;
+                case "Living room":
+                    this.lightData.getLivingroomLights().add(this.light);
+                    break;
+                case "Kitchen":
+                    this.lightData.getKitchenLights().add(this.light);
+                    break;
+            }
         }
-
     }
-
 }
