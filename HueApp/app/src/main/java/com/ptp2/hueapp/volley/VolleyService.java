@@ -37,7 +37,7 @@ public class VolleyService {
 
     private VolleyService(Context context) {
         this.context = context;
-        this.ipAdress = "192.168.1.7";
+        this.ipAdress = "192.168.0.102";
         this.portNumber = 80;
         this.url = "http:/" + ipAdress + "/api/";
         this.linked = false;
@@ -145,7 +145,7 @@ public class VolleyService {
             this.url = "http://145.48.205.33/api/iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB/lights/";
         }
         else {
-            this.url = this.url + this.username + "/lights";
+            this.url = this.url + this.username + "/lights/";
         }
 
         Log.i("DATA", url);

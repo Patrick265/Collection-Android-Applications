@@ -135,7 +135,7 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
                 volleyService.changeColor(light,light.getSaturation(),light.getBrightness(), i * 182, new VolleyCallback() {
                     @Override
                     public void onSucces() {
-                        getLight().setHue(i * 182);
+                        light.setHue(i * 182);
                         manager.update();
                     }
 
@@ -163,7 +163,7 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
                 volleyService.changeColor(light, (int)(i * 2.54), light.getBrightness(), light.getHue(), new VolleyCallback() {
                     @Override
                     public void onSucces() {
-                        getLight().setSaturation((int)(i * 2.54));
+                        light.setSaturation((int)(i * 2.54));
                         manager.update();
                     }
 
@@ -257,7 +257,7 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
                             volleyService.changeColor(light, light.getSaturation(), light.getBrightness(), (int) (hsv1[0] * 182), new VolleyCallback() {
                                 @Override
                                 public void onSucces() {
-                                    getLight().setHue((int) hsv1[0] * 182);
+                                    light.setHue((int) hsv1[0] * 182);
                                     hueBar.setProgress(getLight().getHue() / 182);
                                     manager.update();
 
