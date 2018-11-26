@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.data.LightData;
 import com.ptp2.hueapp.layout.activity.Activity_detailed;
@@ -44,6 +46,12 @@ public class allLights_fragment extends Fragment{
         this.layoutManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setLayoutManager(this.layoutManager);
+
+        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(() -> {
+            service.doJsonObjectRequest(service.getUrl(),null,Request.Method.GET);
+            pullToRefresh.setRefreshing(false);
+        });
 
         return view;
     }

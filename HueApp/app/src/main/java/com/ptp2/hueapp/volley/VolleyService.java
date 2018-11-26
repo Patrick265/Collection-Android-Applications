@@ -37,7 +37,7 @@ public class VolleyService {
 
     private VolleyService(Context context) {
         this.context = context;
-        this.ipAdress = "192.168.0.102";
+        this.ipAdress = "192.168.223.2";
         this.portNumber = 80;
         this.url = "http:/" + ipAdress + "/api/";
         this.linked = false;
@@ -97,6 +97,11 @@ public class VolleyService {
 
     public void doJsonObjectRequest(String requestUrl, JSONObject requestBody, int requestMethode) {
         if (requestBody == null) {
+            this.lightData.getUnAssignedLights().clear();
+            this.lightData.getLivingroomLights().clear();
+            this.lightData.getBedroomLights().clear();
+            this.lightData.getKitchenLights().clear();
+            this.manager.update();
             CustomJsonObjectRequest customJsonObjectRequest = new CustomJsonObjectRequest(requestMethode, requestUrl, requestBody, response -> {
                 int z = 0;
                 for (int i = 1; i < response.length() + 1; i++) {
@@ -195,5 +200,13 @@ public class VolleyService {
             e.printStackTrace();
         }
         this.doJsonArrayRequest(url, object, Request.Method.PUT, volleyCallback);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public FragmentConfig getManager() {
+        return manager;
     }
 }
