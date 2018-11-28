@@ -39,7 +39,7 @@ public class ListAdapter extends RecyclerView.Adapter<LightViewHolder> {
         Light light = this.lights.get(position);
 
         float hue = light.getHue() / 182;
-        float[] hsv = new float[]{hue, 0.9f,0.9f};
+        float[] hsv = new float[]{hue, light.getSaturation() / 255f,light.getBrightness()/255f};
         holder.getBackground().setBackgroundColor(Color.HSVToColor(255,hsv));
         holder.getLightName().setText(light.getName());
         holder.bindLight(light, this.listener);
