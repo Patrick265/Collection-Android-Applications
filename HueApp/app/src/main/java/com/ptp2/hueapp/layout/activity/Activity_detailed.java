@@ -287,10 +287,10 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
         this.spinner = findViewById(R.id.detailed_spinner_category);
         this.categories = new ArrayList<>();
+        this.categories.add(getApplication().getResources().getString(R.string.unassigned));
         this.categories.add(getApplication().getResources().getString(R.string.living_room));
         this.categories.add(getApplication().getResources().getString(R.string.bedroom));
         this.categories.add(getApplication().getResources().getString(R.string.kitchen));
-        this.categories.add(getApplication().getResources().getString(R.string.unassigned));
         this.adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, this.categories);
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.spinner.setAdapter(this.adapter);
@@ -388,17 +388,14 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
                 if(newCategory.equals(bedroom))
                 {
                     this.lightData.getBedroomLights().add(this.light);
-                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
                 }
                 else if(newCategory.equals(livingRoom))
                 {
                     this.lightData.getLivingroomLights().add(this.light);
-                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
                 }
                 else if(newCategory.equals(kitchen))
                 {
                     this.lightData.getKitchenLights().add(this.light);
-                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
                 }
             }
         }
