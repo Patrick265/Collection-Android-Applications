@@ -228,6 +228,7 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
             volleyService.turnOn(light, b, new VolleyCallback() {
                 @Override
                 public void onSucces() {
+                    manager.update();
                     if(light.isTurnedOn())
                     {
                         hueBar.setEnabled(true);

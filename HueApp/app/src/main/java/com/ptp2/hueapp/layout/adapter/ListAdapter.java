@@ -43,6 +43,16 @@ public class ListAdapter extends RecyclerView.Adapter<LightViewHolder> {
         holder.getBackground().setBackgroundColor(Color.HSVToColor(255,hsv));
         holder.getLightName().setText(light.getName());
         holder.bindLight(light, this.listener);
+
+        if(light.isTurnedOn())
+        {
+            holder.getImage().setImageResource(R.color.lightOn);
+        }
+        else
+        {
+            holder.getImage().setImageResource(R.color.lightOff);
+        }
+
     }
 
     @Override

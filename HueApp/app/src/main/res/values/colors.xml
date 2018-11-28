@@ -7,4 +7,6 @@
     <color name="colorSelectedTab">#ffffff</color>
     <color name="colorTextBlack">#2d2d2d</color>
     <color name="colorBackground">#ffffff</color>
+    <color name="lightOn">#ffffff</color>
+    <color name="lightOff">#000000</color>
 </resources>
