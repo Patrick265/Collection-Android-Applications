@@ -86,6 +86,8 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
         picker.setColor(Color.HSVToColor(255, hsv));
         oldHueVal = (int) hsv[0] * 182;
 
+        picker.setShowOldCenterColor(false);
+
 
         this.lightName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,7 +132,7 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 float hue = light.getHue() / 182;
-                float[] hsv = new float[]{hue, 0.9f, 0.9f};
+                float[] hsv = new float[]{hue, light.getSaturation()/255f, light.getBrightness()/255f};
                 picker.setColor(Color.HSVToColor(255, hsv));
                 volleyService.changeColor(light,light.getSaturation(),light.getBrightness(), i * 182, new VolleyCallback() {
                     @Override
@@ -160,6 +162,9 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
         this.saturationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                float hue = light.getHue() / 182;
+                float[] hsv = new float[]{hue, light.getSaturation()/255f, light.getBrightness()/255f};
+                picker.setColor(Color.HSVToColor(255, hsv));
                 volleyService.changeColor(light, (int)(i * 2.54), light.getBrightness(), light.getHue(), new VolleyCallback() {
                     @Override
                     public void onSucces() {
@@ -188,6 +193,9 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
         this.brightnessBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                float hue = light.getHue() / 182;
+                float[] hsv = new float[]{hue, light.getSaturation()/255f, light.getBrightness()/255f};
+                picker.setColor(Color.HSVToColor(255, hsv));
                 volleyService.changeColor(light, light.getSaturation(), (int)(i * 2.54), light.getHue(), new VolleyCallback() {
                     @Override
                     public void onSucces() {

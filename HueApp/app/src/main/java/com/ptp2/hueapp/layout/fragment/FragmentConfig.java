@@ -72,19 +72,19 @@ public class FragmentConfig {
     }
 
     public void update() {
-        Log.i("SIZE", "UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
-        Log.i("SIZE", "KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
-        Log.i("SIZE", "BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
-        Log.i("SIZE", "LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
+//        Log.i("SIZE", "UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
+//        Log.i("SIZE", "KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
+//        Log.i("SIZE", "BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
+//        Log.i("SIZE", "LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
 
         this.allFragment.getAdapter().notifyDataSetChanged();
         this.kitchenFragment.getAdapter().notifyDataSetChanged();
         this.bedroomFragment.getAdapter().notifyDataSetChanged();
         this.livingRoomFragment.getAdapter().notifyDataSetChanged();
 
-        Log.i("SIZE", "2 - UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
-        Log.i("SIZE", "2 - KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
-        Log.i("SIZE", "2 - BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
-        Log.i("SIZE", "2 - LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
+//        Log.i("SIZE", "2 - UNASSIGNED SIZE: " + this.lightData.getUnAssignedLights().size());
+//        Log.i("SIZE", "2 - KITCHEN SIZE: " + this.lightData.getKitchenLights().size());
+//        Log.i("SIZE", "2 - BEDROOM SIZE: " + this.lightData.getBedroomLights().size());
+//        Log.i("SIZE", "2 - LIVING ROOM SIZE: " + this.lightData.getLivingroomLights().size());
     }
 }
