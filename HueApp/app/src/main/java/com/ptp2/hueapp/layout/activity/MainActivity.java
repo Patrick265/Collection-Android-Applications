@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         this.tabLayout = findViewById(R.id.main_tab_layout);
         this.viewPager = findViewById(R.id.main_view_pager);
         this.pageAdapter = new PageAdapter(getSupportFragmentManager());
-        this.pageAdapter.add(this.manager.getAllFragment(), "All Lights");
-        this.pageAdapter.add(this.manager.getKitchenFragment(), "Kitchen");
-        this.pageAdapter.add(this.manager.getBedroomFragment(), "Bedroom");
-        this.pageAdapter.add(this.manager.getLivingRoomFragment(), "Living Room");
+        this.pageAdapter.add(this.manager.getAllFragment(), getApplicationContext().getResources().getString(R.string.all_lights));
+        this.pageAdapter.add(this.manager.getKitchenFragment(), getApplicationContext().getResources().getString(R.string.kitchen));
+        this.pageAdapter.add(this.manager.getBedroomFragment(), getApplicationContext().getResources().getString(R.string.bedroom));
+        this.pageAdapter.add(this.manager.getLivingRoomFragment(), getApplicationContext().getResources().getString(R.string.living_room));
 
         this.viewPager.setAdapter(pageAdapter);
         this.tabLayout.setupWithViewPager(this.viewPager);

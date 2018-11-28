@@ -36,12 +36,13 @@
                         android:layout_marginEnd="16dp"
                         android:background="@android:color/transparent"
                         android:inputType="textPersonName"
-                        android:text="LightName"
+                        android:text="@string/lightname"
                         android:textAppearance="@style/DetailedTextWhite"
                         android:textColor="@color/colorSelectedTab"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:importantForAutofill="no" />
                 </android.support.constraint.ConstraintLayout>
 
             </FrameLayout>
@@ -49,9 +50,9 @@
             <TextView
                 android:id="@+id/detailed_txt_saturation"
                 android:layout_width="wrap_content"
-                android:layout_height="21dp"
+                android:layout_height="24dp"
                 android:layout_marginTop="16dp"
-                android:text="Saturation"
+                android:text="@string/saturation"
                 android:textAppearance="@style/DetailedText"
                 app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_hue" />
@@ -125,7 +126,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Hue"
                 android:textAppearance="@style/DetailedText"
                 app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_txt_state" />
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Brightness"
+                android:text="@string/brightness"
                 android:textAppearance="@style/DetailedText"
                 app:layout_constraintStart_toStartOf="@+id/detailed_txt_state"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_saturation" />
@@ -145,7 +145,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Category"
+                android:text="@string/category"
                 android:textAppearance="@style/DetailedText"
                 app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_brightness"
                 app:layout_constraintStart_toStartOf="@+id/detailed_seekbar_brightness"

@@ -287,10 +287,10 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
         this.spinner = findViewById(R.id.detailed_spinner_category);
         this.categories = new ArrayList<>();
-        this.categories.add("Living room");
-        this.categories.add("Kitchen");
-        this.categories.add("Bedroom");
-        this.categories.add("Unassigned");
+        this.categories.add(getApplication().getResources().getString(R.string.living_room));
+        this.categories.add(getApplication().getResources().getString(R.string.bedroom));
+        this.categories.add(getApplication().getResources().getString(R.string.kitchen));
+        this.categories.add(getApplication().getResources().getString(R.string.unassigned));
         this.adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, this.categories);
         this.adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.spinner.setAdapter(this.adapter);
@@ -337,72 +337,69 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
     public void move(String newCategory)
     {
-        if (!this.light.getCategory().equals("Unassigned"))
+        String unassigned = getApplicationContext().getResources().getString(R.string.unassigned);
+        String kitchen = getApplicationContext().getResources().getString(R.string.kitchen);
+        String livingRoom = getApplicationContext().getResources().getString(R.string.living_room);
+        String bedroom = getApplicationContext().getResources().getString(R.string.bedroom);
+
+
+        if (!this.light.getCategory().equals(unassigned))
         {
-            if (this.light.getCategory().equals("Kitchen"))
+            if (this.light.getCategory().equals(kitchen))
             {
-                switch (newCategory)
-                {
-                    case "Living room":
+                    if(newCategory.equals(livingRoom))
+                    {
                         this.lightData.getLivingroomLights().add(this.light);
                         ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
-                        break;
-                    case "Bedroom":
+                    }
+                    else if(newCategory.equals(bedroom))
+                    {
                         this.lightData.getBedroomLights().add(this.light);
                         ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
-                        break;
-                    case "Unassigned":
-                        ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
-                        break;
-                }
-            } else
-            {
-                if (this.light.getCategory().equals("Bedroom"))
-                {
-                    switch (newCategory)
-                    {
-                        case "Living room":
-                            this.lightData.getLivingroomLights().add(this.light);
-                            ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
-                            break;
-                        case "Kitchen":
-                            this.lightData.getKitchenLights().add(this.light);
-                            ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
-                            break;
                     }
-                } else
-                {
-                    if (this.light.getCategory().equals("Living room"))
+                    else if(newCategory.equals(unassigned))
                     {
-                        switch (newCategory)
-                        {
-                            case "Bedroom":
-                                this.lightData.getBedroomLights().add(this.light);
-                                ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
-                                break;
-                            case "Kitchen":
-                                this.lightData.getKitchenLights().add(this.light);
-                                ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
-                                break;
+                        ListUtil.RemoveItem(this.lightData.getKitchenLights(), this.light.getCategory());
+                    }
+            } else {
+                if (this.light.getCategory().equals(bedroom)) {
+                    if (newCategory.equals(livingRoom)) {
+                        this.lightData.getLivingroomLights().add(this.light);
+                        ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
+                    } else if (newCategory.equals(kitchen)) {
+                        this.lightData.getKitchenLights().add(this.light);
+                        ListUtil.RemoveItem(this.lightData.getBedroomLights(), this.light.getCategory());
+                    }
+                } else {
+                    if (this.light.getCategory().equals(livingRoom)) {
+                        if (newCategory.equals(bedroom)) {
+                            this.lightData.getBedroomLights().add(this.light);
+                            ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                        } else if (newCategory.equals(kitchen)) {
+                            this.lightData.getKitchenLights().add(this.light);
+                            ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
                         }
                     }
                 }
 
 
             }
-
         } else {
-            switch (newCategory) {
-                case "Bedroom":
+                if(newCategory.equals(bedroom))
+                {
                     this.lightData.getBedroomLights().add(this.light);
-                    break;
-                case "Living room":
+                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                }
+                else if(newCategory.equals(livingRoom))
+                {
                     this.lightData.getLivingroomLights().add(this.light);
-                    break;
-                case "Kitchen":
+                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                }
+                else if(newCategory.equals(kitchen))
+                {
                     this.lightData.getKitchenLights().add(this.light);
-                    break;
+                    ListUtil.RemoveItem(this.lightData.getLivingroomLights(), this.light.getCategory());
+                }
             }
         }
     }
-}

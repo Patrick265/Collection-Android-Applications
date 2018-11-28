@@ -6,5 +6,14 @@
     <string name="kitchen">Keuken</string>
     <string name="living_room">Woonkamer</string>
     <string name="pair">Koppelen</string>
-    <string name="pair_simulator">Pair Simulator</string>
+    <string name="pair_simulator">Koppel simulator</string>
+    <string name="lightname">Licht naam</string>
+    <string name="saturation">Verzadiging</string>
+    <string name="brightness">Helderheid</string>
+    <string name="category">Categorie</string>
+    <string name="state">Staat</string>
+    <string name="unassigned">Niet-toegewezen</string>
+    <string name="selected">Geselecteerd</string>
+    <string name="successpair">Succesvol gekoppeld</string>
+    <string name="errorpair">Koppelingsfout</string>
 </resources>

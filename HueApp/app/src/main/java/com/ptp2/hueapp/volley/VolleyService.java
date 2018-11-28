@@ -71,12 +71,12 @@ public class VolleyService {
                 {
                     username = response.getJSONObject(0).getJSONObject("success").getString("username");
                     linked = true;
-                    pairSimButton.setText("Succesfully paired");
+                    pairSimButton.setText(context.getResources().getString(R.string.successpair));
                     pairSimButton.setAlpha(0.5f);
                     pairSimButton.setEnabled(false);
 
                     Button pairButton = activity.findViewById(R.id.main_par_button);
-                    pairButton.setText("Succesfully Paired");
+                    pairButton.setText(context.getResources().getString(R.string.successpair));
                     pairButton.setAlpha(0.5f);
                     pairButton.setEnabled(false);
 
@@ -85,7 +85,7 @@ public class VolleyService {
                 }
                 else
                 {
-                    pairSimButton.setText("Error pairing");
+                    pairSimButton.setText(context.getResources().getString(R.string.errorpair));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,12 +156,12 @@ public class VolleyService {
         Log.i("DATA", url);
         if(this.username != null && this.username.equals("iYrmsQq1wu5FxF9CPqpJCnm1GpPVylKBWDUsNDhB")) {
             Button pairSimButton = activity.findViewById(R.id.main_par_button_simulator);
-            pairSimButton.setText("Succesfully paired");
+            pairSimButton.setText(context.getResources().getString(R.string.successpair));
             pairSimButton.setAlpha(0.5f);
             pairSimButton.setEnabled(false);
 
             Button pairButton = activity.findViewById(R.id.main_par_button);
-            pairButton.setText("Succesfully Paired");
+            pairButton.setText(context.getResources().getString(R.string.successpair));
             pairButton.setAlpha(0.5f);
             pairButton.setEnabled(false);
         }

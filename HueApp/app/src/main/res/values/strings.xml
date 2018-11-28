@@ -6,5 +6,13 @@
     <string name="kitchen">Kitchen</string>
     <string name="pair">Pair</string>
     <string name="state">State</string>
-    <string name="pair_simulator">Pair Simulator</string>
+    <string name="pair_simulator">Pair simulator</string>
+    <string name="saturation">Saturation</string>
+    <string name="brightness">Brightness</string>
+    <string name="category">Category</string>
+    <string name="lightname">Light name</string>
+    <string name="unassigned">Unassigned</string>
+    <string name="selected">Selected</string>
+    <string name="successpair">Successfully paired</string>
+    <string name="errorpair">Error pairing</string>
 </resources>
