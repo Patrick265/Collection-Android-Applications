@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.ptp2.hueapp.R;
 import com.ptp2.hueapp.data.LightData;
+import com.ptp2.hueapp.database.DatabaseHelper;
 import com.ptp2.hueapp.layout.fragment.FragmentConfig;
 import com.ptp2.hueapp.model.Light;
 import com.ptp2.hueapp.util.VolleyCallback;
@@ -34,10 +35,11 @@ public class VolleyService {
     private RequestQueue queue;
     private FragmentConfig manager;
     private String requestResponse;
+    private DatabaseHelper databaseHelper;
 
     private VolleyService(Context context) {
         this.context = context;
-        this.ipAdress = "192.168.223.2";
+        this.ipAdress = "192.168.0.102";
         this.portNumber = 80;
         this.url = "http:/" + ipAdress + "/api/";
         this.linked = false;
@@ -45,6 +47,7 @@ public class VolleyService {
         this.manager = FragmentConfig.getInstance();
         this.queue = Volley.newRequestQueue(this.context);
         this.lightData = LightData.getInstance();
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
 
@@ -208,5 +211,9 @@ public class VolleyService {
 
     public FragmentConfig getManager() {
         return manager;
+    }
+
+    public DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
     }
 }

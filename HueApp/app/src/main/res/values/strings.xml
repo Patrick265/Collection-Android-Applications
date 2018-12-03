@@ -15,4 +15,10 @@
     <string name="selected">Selected</string>
     <string name="successpair">Successfully paired</string>
     <string name="errorpair">Error pairing</string>
+    <string name="hue">Hue</string>
+    <string name="settings">Settings</string>
+    <string name="welcome">Welcome</string>
+    <string name="firstTime">Apparently this is your first time opening the application, please enter your name below.</string>
+    <string name="continueInsert">Continue</string>
+    <string name="username">Username</string>
 </resources>
