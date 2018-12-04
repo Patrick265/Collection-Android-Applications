@@ -22,4 +22,5 @@
     <string name="continueInsert">Continue</string>
     <string name="username">Username</string>
     <string name="editSettings">here you can customize the settings of the application.</string>
+    <string name="ChangePicture">Change setting picture</string>
 </resources>

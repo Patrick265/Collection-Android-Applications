@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryDeep</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDeep2</item>
+        <item name="colorAccent">@color/colorPrimaryDeep3</item>
+    </style>
 
     <style name="FragmentText" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textSize">16sp</item>

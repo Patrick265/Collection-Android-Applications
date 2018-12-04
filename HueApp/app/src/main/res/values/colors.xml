@@ -9,4 +9,7 @@
     <color name="colorBackground">#ffffff</color>
     <color name="lightOn">#ffffff</color>
     <color name="lightOff">#000000</color>
+    <color name="colorPrimaryDeep">#4f000B</color>
+    <color name="colorPrimaryDeep2">#720026</color>
+    <color name="colorPrimaryDeep3">#CE4257</color>
 </resources>
