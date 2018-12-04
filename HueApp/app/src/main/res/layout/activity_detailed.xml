@@ -123,7 +123,7 @@
 
             <TextView
                 android:id="@+id/detailed_txt_hue"
-                android:layout_width="157dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/hue"
@@ -151,18 +151,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/detailed_seekbar_brightness"
                 app:layout_constraintStart_toStartOf="@+id/detailed_seekbar_brightness"
                 app:layout_constraintTop_toBottomOf="@+id/detailed_seekbar_brightness" />
-
-            <Spinner
-                android:id="@+id/sqlspinner"
-                android:layout_width="368dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent" />
 
             <com.larswerkman.holocolorpicker.ColorPicker
                 android:id="@+id/picker"

@@ -22,4 +22,5 @@
     <string name="firstTime">Dit is de eerste keer dat u de applicatie opstart, voer in de balk hieronder alstublieft uw naam in.</string>
     <string name="continueInsert">Doorgaan</string>
     <string name="username">Gebruikersnaam</string>
+    <string name="editSettings">hier kunt u de instellingen van de applicatie aanpassen naar uw wensen.</string>
 </resources>

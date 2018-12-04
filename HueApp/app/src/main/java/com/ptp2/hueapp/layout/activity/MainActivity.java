@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         while (data.moveToNext()) {
             listData.add(data.getString(1));
         }
-        service.getDatabaseHelper().deleteAll();
+        service.getDatabaseHelper().deleteAll(); //Dit is belangrijk, dit zorgt ervoor dat de database geleegd wordt met een reset voor debug redenen, deze moet er later nog uit.
         if (listData.isEmpty()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View inflate = inflater.inflate(R.layout.dialog_signin, null);

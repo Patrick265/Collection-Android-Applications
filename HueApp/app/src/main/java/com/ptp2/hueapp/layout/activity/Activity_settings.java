@@ -29,7 +29,9 @@ public class Activity_settings extends AppCompatActivity {
         }
         if(!listData.isEmpty())
         {
-            textView.setText(listData.get(0));
+            String welcome = getApplication().getResources().getString(R.string.welcome);
+            String info = getApplication().getResources().getString(R.string.editSettings);
+            textView.setText(welcome + " " + listData.get(0) + ", " + info);
         }
     }
 }

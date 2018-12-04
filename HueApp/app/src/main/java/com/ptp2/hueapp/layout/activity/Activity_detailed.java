@@ -67,7 +67,6 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
 
         initalise();
         initaliseSpinner();
-        initialiseSQLSpinner();
     }
 
 
@@ -299,20 +298,6 @@ public class Activity_detailed extends AppCompatActivity implements AdapterView.
         this.spinner.setAdapter(this.adapter);
         this.spinner.setOnItemSelectedListener(this);
         this.spinner.setSelection(getIndex(this.spinner, this.light.getCategory()));
-    }
-
-    public void initialiseSQLSpinner()
-    {
-        this.spinner3 = findViewById(R.id.sqlspinner);
-        Cursor data = volleyService.getDatabaseHelper().getData();
-        ArrayList<String> listData = new ArrayList<>();
-        while(data.moveToNext())
-        {
-            listData.add(data.getString(1));
-        }
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
-        this.spinner3.setAdapter(adapter2);
-
     }
 
     private int getIndex(Spinner spinner, String myString){
