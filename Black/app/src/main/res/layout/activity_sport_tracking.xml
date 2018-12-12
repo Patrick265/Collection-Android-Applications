@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.layout.SportTrackingActivity">
+    tools:context=".view.layout.SportTrackingActivity"
+    android:background="@color/colorPrimary">
+
 
 </android.support.constraint.ConstraintLayout>
