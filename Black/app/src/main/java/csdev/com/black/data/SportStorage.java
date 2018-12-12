@@ -6,8 +6,6 @@ import java.util.List;
 
 import csdev.com.black.model.SportActivity;
 import csdev.com.black.model.SportType;
-import csdev.com.black.model.sportactivities.CyclingActivity;
-import csdev.com.black.model.sportactivities.RunActivity;
 
 public class SportStorage
 {
@@ -28,7 +26,7 @@ public class SportStorage
     }
 
     private void testData() {
-        SportActivity cycleActivity1 = new CyclingActivity("Cycled to Breda",
+        SportActivity cycleActivity1 = new SportActivity("Cycled to Breda",
                                                         LocalDateTime.now(),
                                                         LocalDateTime.now(),
                                                 3,
@@ -36,7 +34,7 @@ public class SportStorage
                                                 5.0,
                                                 SportType.CYCLING);
 
-        SportActivity cycleActivity2 = new CyclingActivity("Cycled to Dongen",
+        SportActivity cycleActivity2 = new SportActivity("Cycled to Dongen",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 2,
@@ -44,7 +42,7 @@ public class SportStorage
                 2.5,
                 SportType.CYCLING);
 
-        SportActivity cycleActivity3 = new CyclingActivity("Cycled to Made",
+        SportActivity cycleActivity3 = new SportActivity("Cycled to Made",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 5,
@@ -53,7 +51,7 @@ public class SportStorage
                 SportType.CYCLING);
 
 
-        SportActivity runActivitiy1 = new RunActivity("Run to Breda",
+        SportActivity runActivitiy1 = new SportActivity("Run to Breda",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 3,
@@ -61,7 +59,7 @@ public class SportStorage
                 5.0,
                 SportType.RUNNING);
 
-        SportActivity runActivitiy2 = new CyclingActivity("Run to Teteringen",
+        SportActivity runActivitiy2 = new SportActivity("Run to Teteringen",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 2,
@@ -69,7 +67,7 @@ public class SportStorage
                 2.5,
                 SportType.RUNNING);
 
-        SportActivity runActivitiy3 = new CyclingActivity("Run to Oosterhout",
+        SportActivity runActivitiy3 = new SportActivity("Run to Oosterhout",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 5,

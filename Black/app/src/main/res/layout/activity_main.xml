@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".view.layout.MainActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_baseline_add_24px" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/main_recycleview"
         android:layout_width="match_parent"

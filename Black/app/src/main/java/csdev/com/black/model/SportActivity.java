@@ -2,9 +2,10 @@ package csdev.com.black.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public abstract class SportActivity implements Serializable
+public class SportActivity implements Serializable
 {
     private final String title;
     private final String id;
@@ -19,17 +20,22 @@ public abstract class SportActivity implements Serializable
     {
         this.title = title;
         this.id = UUID.randomUUID().toString();
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = LocalDateTime.now();
         this.rating = rating;
         this.description = description;
         this.distance = distance;
         this.type = type;
     }
 
-    public void setEndTime(LocalDateTime endTime)
+
+    public LocalDateTime getStartTime()
     {
-        this.endTime = endTime;
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime()
+    {
+        return endTime;
     }
 
     public String getTitle()
@@ -42,15 +48,6 @@ public abstract class SportActivity implements Serializable
         return id;
     }
 
-    public LocalDateTime getStartTime()
-    {
-        return startTime;
-    }
-
-    public LocalDateTime getEndTime()
-    {
-        return endTime;
-    }
 
     public int getRating()
     {

@@ -24,14 +24,13 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/ListCell_imageview_SportActivityType"
-                android:layout_width="100dp"
-                android:layout_height="0dp"
-                android:src="@android:color/darker_gray"
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:src="@android:color/holo_orange_light"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/cardview_light_background" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/ListCell_Title_TextView"
@@ -45,18 +44,20 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ListCell_imageview_SportActivityType"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/ListCell_date_TextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/datetext"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/ListCell_DateIcon"
+                app:layout_constraintEnd_toStartOf="@+id/listCell_distance_TextView"
                 app:layout_constraintStart_toEndOf="@+id/ListCell_DateIcon"
                 app:layout_constraintTop_toTopOf="@+id/ListCell_DateIcon" />
 
@@ -66,10 +67,11 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                android:src="@android:drawable/ic_menu_my_calendar"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ListCell_imageview_SportActivityType"
+                app:layout_constraintEnd_toStartOf="@+id/ListCell_date_TextView"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ListCell_Title_TextView"
                 app:srcCompat="@drawable/ic_baseline_date_range_24px" />
 

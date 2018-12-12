@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import csdev.com.black.R;
@@ -38,9 +39,11 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
         SportActivity activity = this.activityList.get(i);
 
         viewHolder.getTitle().setText(activity.getTitle());
-        viewHolder.getDate().setText(activity.getStartTime().toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy\tHH:mm");
+        viewHolder.getDate().setText(activity.getStartTime().format(formatter));
         String distance = activity.getDistance() + " Km";
         viewHolder.getDistance().setText(distance);
+        viewHolder.bindActivity(activity, this.listener);
 
     }
 
