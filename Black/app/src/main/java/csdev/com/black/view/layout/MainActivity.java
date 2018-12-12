@@ -1,6 +1,7 @@
 package csdev.com.black.view.layout;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,12 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
 
-import csdev.com.black.DetailedActivity;
 import csdev.com.black.R;
 import csdev.com.black.data.SportStorage;
-import csdev.com.black.model.SportActivity;
 import csdev.com.black.view.adapter.ListCell;
-import csdev.com.black.view.adapter.ListOnItemClickListener;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -21,6 +19,7 @@ public class MainActivity extends AppCompatActivity
     private ListCell adapter;
     private SportStorage storage;
     private LayoutManager layoutManager;
+    private FloatingActionButton newActivityButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,20 +30,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initalise() {
+        this.newActivityButton = findViewById(R.id.main_fab);
         this.storage = SportStorage.getInstance();
         this.listView = findViewById(R.id.main_recycleview);
-        this.adapter = new ListCell(new ListOnItemClickListener()
+        this.adapter = new ListCell(activity ->
         {
-            @Override
-            public void onItemClick(SportActivity activity)
-            {
-                Log.i("CLICKED2MAIN", "MAIN");
-                Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
-                intent.putExtra("SPORTACTIVITY", activity);
-                startActivity(intent);
-            }
+            Log.i("CELL", "Clicked on cell" + activity.getTitle());
+            Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
+            intent.putExtra("SPORTACTIVITY", activity);
+            startActivity(intent);
         }, this.storage.getActivityList());
 
+
+        this.newActivityButton.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(getApplicationContext(), SportTrackingActivity.class);
+            startActivity(intent);
+        });
         this.layoutManager = new LinearLayoutManager(getApplicationContext());
         this.listView.setAdapter(this.adapter);
         this.listView.setLayoutManager(this.layoutManager);

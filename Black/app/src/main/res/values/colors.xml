@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#df0c0c</color>
+    <color name="colorPrimary">#292e42</color>
+    <color name="colorPrimaryDark">#353a50</color>
+    <color name="colorAccent">#ffffff</color>
+
+    <!-- COLORS FOR CATEGORY'S-->
+    <color name="BicycleColor">#C940EA</color>
+    <color name="RunningColor">#ff9057</color>
+    <color name="WalkingColor">#FEBD35</color>
+
 </resources>

@@ -1,9 +1,10 @@
-package csdev.com.black;
+package csdev.com.black.view.layout;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import csdev.com.black.R;
 import csdev.com.black.model.SportActivity;
 
 public class DetailedActivity extends AppCompatActivity

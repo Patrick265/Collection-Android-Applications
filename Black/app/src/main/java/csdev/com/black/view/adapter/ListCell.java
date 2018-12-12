@@ -1,6 +1,7 @@
 package csdev.com.black.view.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -38,8 +39,23 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
     {
         SportActivity activity = this.activityList.get(i);
 
+
+        switch (activity.getType())
+        {
+            case CYCLING:
+                viewHolder.getCategory().setImageResource(R.color.BicycleColor);
+                break;
+            case RUNNING:
+                viewHolder.getCategory().setImageResource(R.color.RunningColor);
+                break;
+            case WALKING:
+                viewHolder.getCategory().setImageResource(R.color.WalkingColor);
+                break;
+        }
+
+
         viewHolder.getTitle().setText(activity.getTitle());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy\tHH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy\tHH:mm");
         viewHolder.getDate().setText(activity.getStartTime().format(formatter));
         String distance = activity.getDistance() + " Km";
         viewHolder.getDistance().setText(distance);

@@ -16,7 +16,7 @@ public class ViewHolder extends RecyclerView.ViewHolder
     private TextView title;
     private TextView date;
     private TextView distance;
-    private ImageView icon;
+    private ImageView category;
 
     public ViewHolder(@NonNull View view)
     {
@@ -24,7 +24,8 @@ public class ViewHolder extends RecyclerView.ViewHolder
         super(view);
         this.title = view.findViewById(R.id.ListCell_Title_TextView);
         this.date = view.findViewById(R.id.ListCell_date_TextView);
-        this.distance = view.findViewById(R.id.listCell_distance_TextView);
+        this.distance = view.findViewById(R.id.ListCell_distance_TextView);
+        this.category = view.findViewById(R.id.ListCell_category);
     }
 
     public void bindActivity(final SportActivity activty, final ListOnItemClickListener listener) {
@@ -51,8 +52,10 @@ public class ViewHolder extends RecyclerView.ViewHolder
         return distance;
     }
 
-    public ImageView getIcon()
+    public ImageView getCategory()
     {
-        return icon;
+        return category;
     }
+
+
 }

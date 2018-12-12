@@ -22,7 +22,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".DetailedActivity"></activity>
+        <activity android:name=".view.layout.DetailedActivity" />
+        <activity android:name=".view.layout.SportTrackingActivity"></activity>
     </application>
 
 </manifest>
