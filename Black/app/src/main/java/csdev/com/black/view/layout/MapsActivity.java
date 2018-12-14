@@ -65,7 +65,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (mCurrLocationMarker != null) {
                         mCurrLocationMarker.remove();
                     }
-
+                    if(gpsClass != null)
+                    {
+                        gpsClass.updatePolygon(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                    }
                     //Place current location marker
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -100,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        gpsClass = new GPSClass(polygon,mGoogleMap);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mGoogleMap.setMaxZoomPreference(22);
         mGoogleMap.setMinZoomPreference(10);
@@ -111,6 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(1000); // two minute interval
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(5);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
