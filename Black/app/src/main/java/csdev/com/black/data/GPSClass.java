@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -24,7 +25,7 @@ public class GPSClass implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("Message: ","Location changed, " + location.getAccuracy() + " , " + location.getLatitude()+ "," + location.getLongitude());
+        Log.i("WOLLA","Location changed, " + location.getAccuracy() + " , " + location.getLatitude()+ "," + location.getLongitude());
         updatePolygon(location.getLatitude(),location.getLongitude());
     }
 
