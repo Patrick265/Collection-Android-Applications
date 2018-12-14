@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.layout.MainActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/main_fab"
@@ -14,7 +14,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
 
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
