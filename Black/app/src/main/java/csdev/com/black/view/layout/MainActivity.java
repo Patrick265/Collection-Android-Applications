@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
 
         this.newActivityButton.setOnClickListener(v ->
         {
-            Intent intent = new Intent(getApplicationContext(), SportTrackingActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
             startActivity(intent);
         });
         this.layoutManager = new LinearLayoutManager(getApplicationContext());
