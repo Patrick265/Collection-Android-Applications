@@ -17,36 +17,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
 
-public class GPSClass implements LocationListener {
+public class PolylineDraw {
 
     private List<LatLng> polygon;
     private GoogleMap mMap;
 
-    public GPSClass(List<LatLng> polygon, GoogleMap mMap) {
+    public PolylineDraw(List<LatLng> polygon, GoogleMap mMap) {
         this.polygon = polygon;
         this.mMap = mMap;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-       // Log.i("WOLLA","Location changed, " + location.getAccuracy() + " , " + location.getLatitude()+ "," + location.getLongitude());
-       // updatePolygon(location.getLatitude(),location.getLongitude());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
     public void updatePolygon( double latitude, double longitude){
         polygon.add(new LatLng(latitude,longitude));
         PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
