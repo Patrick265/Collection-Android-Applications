@@ -2,8 +2,8 @@ package csdev.com.black.view.layout;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import csdev.com.black.R;
+import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
 
@@ -53,27 +53,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mLocationCallback = new LocationCallbackHandler(mGoogleMap);
         googleMapSettings(mGoogleMap);
-        requestLocationSettings();
-
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        } else {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-            mGoogleMap.setMyLocationEnabled(true);
-            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        LocationCallbackHandler loc = LocationCallbackHandler.getInstance();
+        loc.setActivity(this);
+        if(loc != null)
+        {
+            loc.setmMap(mGoogleMap);
         }
+
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (ContextCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                //Location Permission already granted
+//                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+//                mGoogleMap.setMyLocationEnabled(true);
+//            } else {
+//                //Request Location Permission
+//                checkLocationPermission();
+//            }
+//        } else {
+//            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+//            mGoogleMap.setMyLocationEnabled(true);
+//            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+//        }
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap)
@@ -92,7 +95,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(1000); // two minute interval
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(12);
+        mLocationRequest.setSmallestDisplacement(0);
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
