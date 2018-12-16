@@ -95,6 +95,11 @@ public class MyService extends Service {
         super.onDestroy();
     }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        stopSelf();
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
