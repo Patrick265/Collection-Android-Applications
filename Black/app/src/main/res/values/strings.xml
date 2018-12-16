@@ -4,4 +4,8 @@
     <string name="datetext">DateText</string>
     <string name="distancetext">DistanceText</string>
     <string name="title_activity_maps">Map</string>
+    <string name="titledetailed">TitleDetailed</string>
+    <string name="description_detailed">Description Detailed</string>
+    <string name="date_detailed">date_detailed</string>
+    <string name="detailed_distance">detailed_distance</string>
 </resources>
