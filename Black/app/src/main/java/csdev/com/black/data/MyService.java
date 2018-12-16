@@ -31,6 +31,9 @@ public class MyService extends Service {
 
     LocationRequest mLocationRequest;
     FusedLocationProviderClient mFusedLocationClient;
+    LocationCallbackHandler locationCallbackHandler;
+    Looper looper;
+    HandlerThread handlerThread;
 
     @Override
     public void onCreate() {
@@ -55,18 +58,19 @@ public class MyService extends Service {
         startForeground(1, notification);
 
 
-        HandlerThread handlerThread = new HandlerThread("MyHandlerThread");
+        handlerThread = new HandlerThread("MyHandlerThread");
+        looper = handlerThread.getLooper();
         handlerThread.start();
-        Looper looper = handlerThread.getLooper();
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000); // two minute interval
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setInterval(4000); // two minute interval
+        mLocationRequest.setFastestInterval(4000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(12);
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        LocationCallbackHandler locationCallbackHandler = new LocationCallbackHandler();
+        locationCallbackHandler = new LocationCallbackHandler();
 
 
 
@@ -87,6 +91,7 @@ public class MyService extends Service {
 
     @Override
     public void onDestroy() {
+        mFusedLocationClient.removeLocationUpdates(locationCallbackHandler);
         super.onDestroy();
     }
 

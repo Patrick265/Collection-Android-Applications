@@ -88,16 +88,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
     }
-
-    public void requestLocationSettings()
-    {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000); // two minute interval
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(0);
-    }
-
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
