@@ -1,15 +1,19 @@
 package csdev.com.black.view.layout;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -35,14 +39,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private LocationCallbackHandler mLocationCallback;
+    private Button mapButton;
+    private Context context;
+    private LocationCallbackHandler loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        this.context = getApplicationContext();
+        loc = LocationCallbackHandler.getInstance();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mapButton = findViewById(R.id.btn_map);
+        mapButton.setEnabled(false);
+        mapButton.setOnClickListener(v -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                         startForegroundService(new Intent(context,MyService.class));
+        }
+        else
+        {
+            checkLocationPermission();
+        }
 
+        }
+        else { startForegroundService(new Intent(context,MyService.class)); }
+        });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -55,11 +78,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap = googleMap;
         googleMapSettings(mGoogleMap);
         LocationCallbackHandler loc = LocationCallbackHandler.getInstance();
-        loc.setActivity(this);
         if(loc != null)
         {
             loc.setmMap(mGoogleMap);
+            loc.setActivity(this);
         }
+        mapButton.setEnabled(true);
 
 //        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (ContextCompat.checkSelfPermission(this,
@@ -100,17 +124,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+                dialogBuilder
                         .setTitle("Location Permission Needed")
                         .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapsActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
-                            }
+                        .setPositiveButton("OK", (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(MapsActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    MY_PERMISSIONS_REQUEST_LOCATION );
                         })
                         .create()
                         .show();
@@ -139,9 +161,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
-                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                        mGoogleMap.setMyLocationEnabled(true);
+                        startForegroundService(new Intent(context,MyService.class));
                     }
 
                 } else {

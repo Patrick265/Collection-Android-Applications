@@ -66,7 +66,7 @@ public class MyService extends Service {
         mLocationRequest.setInterval(4000); // two minute interval
         mLocationRequest.setFastestInterval(4000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(12);
+        mLocationRequest.setSmallestDisplacement(0);
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
