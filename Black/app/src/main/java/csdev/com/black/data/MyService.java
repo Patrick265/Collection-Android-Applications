@@ -42,7 +42,7 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String input = intent.getStringExtra("inputExtra");
+       // String input = intent.getStringExtra("inputExtra");
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -50,13 +50,12 @@ public class MyService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Example Service")
-                .setContentText(input)
+                .setContentText("Oof")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(1, notification);
-
 
         handlerThread = new HandlerThread("MyHandlerThread");
         looper = handlerThread.getLooper();
@@ -68,9 +67,10 @@ public class MyService extends Service {
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setSmallestDisplacement(0);
 
+        LocationCallbackHandler locationCallbackHandler = LocationCallbackHandler.getInstance();
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationCallbackHandler = new LocationCallbackHandler();
 
 
 

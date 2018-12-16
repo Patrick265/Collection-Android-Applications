@@ -49,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         this.context = getApplicationContext();
-        loc = LocationCallbackHandler.getInstance();
+        loc = new LocationCallbackHandler();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mapButton = findViewById(R.id.btn_map);
         mapButton.setEnabled(false);
@@ -57,6 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                          startForegroundService(new Intent(context,MyService.class));
+                            loc.setmMap(mGoogleMap);
+                            loc.setActivity(this);
         }
         else
         {
@@ -77,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         googleMapSettings(mGoogleMap);
-        LocationCallbackHandler loc = LocationCallbackHandler.getInstance();
         if(loc != null)
         {
             loc.setmMap(mGoogleMap);
