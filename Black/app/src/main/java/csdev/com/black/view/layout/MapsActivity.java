@@ -42,7 +42,6 @@ import csdev.com.black.data.LocationCallbackHandler;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
     private GoogleMap mGoogleMap;
-    private FusedLocationProviderClient mFusedLocationClient;
     private Button mapButton;
     private Context context;
     private LocationCallbackHandler loc;
@@ -89,23 +88,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap = googleMap;
         googleMapSettings(mGoogleMap);
         mapButton.setEnabled(true);
-
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (ContextCompat.checkSelfPermission(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)
-//                    == PackageManager.PERMISSION_GRANTED) {
-//                //Location Permission already granted
-//                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//                mGoogleMap.setMyLocationEnabled(true);
-//            } else {
-//                //Request Location Permission
-//                checkLocationPermission();
-//            }
-//        } else {
-//            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//            mGoogleMap.setMyLocationEnabled(true);
-//            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//        }
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
