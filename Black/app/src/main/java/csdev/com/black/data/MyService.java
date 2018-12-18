@@ -62,12 +62,12 @@ public class MyService extends Service {
         handlerThread.start();
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(4000); // two minute interval
+        mLocationRequest.setInterval(4000);
         mLocationRequest.setFastestInterval(4000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setSmallestDisplacement(0);
 
-        LocationCallbackHandler locationCallbackHandler = LocationCallbackHandler.getInstance();
+        locationCallbackHandler = LocationCallbackHandler.getInstance();
 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -92,6 +92,7 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         mFusedLocationClient.removeLocationUpdates(locationCallbackHandler);
+        stopSelf();
         super.onDestroy();
     }
 
