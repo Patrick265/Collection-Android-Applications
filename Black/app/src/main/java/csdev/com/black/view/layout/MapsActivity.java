@@ -76,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firstTime = true;
         polygon = new ArrayList<>();
         dMessage = new Dialog(this);
+        dMessage.setCanceledOnTouchOutside(false);
+        dMessage.setCancelable(false);
 
         loc = new LocationCallbackHandler();
         loc.addListener(this);
