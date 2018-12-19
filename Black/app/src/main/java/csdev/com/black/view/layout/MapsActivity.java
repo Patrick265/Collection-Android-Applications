@@ -1,13 +1,17 @@
 package csdev.com.black.view.layout;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Looper;
+import android.service.voice.VoiceInteractionSession;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -16,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,13 +48,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mGoogleMap;
     private Button mapButton;
+    private Button mapButtonStop;
     private Context context;
     private LocationCallbackHandler loc;
-    private Marker mCurrLocationMarker;
     private Location mLastLocation;
     private Boolean firstTime;
     private PolylineDraw polylineDraw;
     private List<LatLng> polygon;
+    private Dialog dMessage;
+    private boolean startTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,29 +64,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         this.context = getApplicationContext();
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            startForegroundService(new Intent(context, MyService.class));
+        } else {
+            checkLocationPermission();
+        }
+
+        startTracking = false;
         polylineDraw = new PolylineDraw();
         firstTime = true;
         polygon = new ArrayList<>();
+        dMessage = new Dialog(this);
+
         loc = new LocationCallbackHandler();
         loc.addListener(this);
-        mapButton = findViewById(R.id.btn_map);
-        mapButton.setEnabled(false);
-        mapButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    startForegroundService(new Intent(context, MyService.class));
-                } else {
-                    checkLocationPermission();
-                }
 
-            } else {
-                startForegroundService(new Intent(context, MyService.class));
+        mapButtonStop = findViewById(R.id.btn_map2);
+        mapButtonStop.setEnabled(false);
+        mapButtonStop.setVisibility(View.GONE);
+
+        mapButtonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTracking = false;
+                showMessage();
             }
         });
+
+
+        mapButton = findViewById(R.id.btn_map);
+        mapButton.setEnabled(true);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTracking = true;
+                mapButton.setEnabled(false);
+                mapButton.setVisibility(View.GONE);
+                mapButtonStop.setVisibility(View.VISIBLE);
+                mapButtonStop.setEnabled(true);
+            }
+        });
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -88,6 +121,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap = googleMap;
         googleMapSettings(mGoogleMap);
         mapButton.setEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
@@ -158,7 +196,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -169,31 +206,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationAvailable(Location location) {
         if (mGoogleMap != null) {
-            this.runOnUiThread(() -> {
-                //The last location in the list is the newest
-                if (firstTime) {
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-                    firstTime = false;
-                }
-                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
-                mLastLocation = location;
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
-                }
-                if (polylineDraw != null) {
-                    polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(),mGoogleMap, polygon);
-                }
-                //Place current location marker
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            if (firstTime) {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                firstTime = false;
+            }
+            if (startTracking) {
+                this.runOnUiThread(() -> {
+                    //The last location in the list is the newest
+                    mLastLocation = location;
+                    if (polylineDraw != null) {
+                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
+                    }
+                });
+            }
+        }
+    }
 
-                //move map camera
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            });
+    private void showMessage() {
+        try {
+            dMessage.setContentView(R.layout.activity_insert_info_fragment);
+            dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dMessage.show();
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
         }
     }
 }
