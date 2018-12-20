@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
 
 import csdev.com.black.R;
+import csdev.com.black.data.MyService;
 import csdev.com.black.data.SportStorage;
 import csdev.com.black.view.adapter.ListCell;
 

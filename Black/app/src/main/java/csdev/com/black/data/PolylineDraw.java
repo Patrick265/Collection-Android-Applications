@@ -19,15 +19,10 @@ import java.util.List;
 
 public class PolylineDraw {
 
-    private List<LatLng> polygon;
-    private GoogleMap mMap;
-
-    public PolylineDraw(List<LatLng> polygon, GoogleMap mMap) {
-        this.polygon = polygon;
-        this.mMap = mMap;
+    public PolylineDraw() {
     }
 
-    public void updatePolygon( double latitude, double longitude){
+    public void updatePolygon( double latitude, double longitude,GoogleMap mMap,List<LatLng> polygon){
         polygon.add(new LatLng(latitude,longitude));
         PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
         options.addAll(polygon);

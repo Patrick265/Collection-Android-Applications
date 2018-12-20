@@ -1,15 +1,26 @@
 package csdev.com.black.view.layout;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Build;
 import android.os.Looper;
+import android.service.voice.VoiceInteractionSession;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -19,65 +30,107 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import csdev.com.black.R;
+import csdev.com.black.data.LocationCallbackListener;
+import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
     private GoogleMap mGoogleMap;
+    private Button mapButton;
+    private Button mapButtonStop;
+    private Context context;
+    private LocationCallbackHandler loc;
+    private Location mLastLocation;
+    private Boolean firstTime;
     private PolylineDraw polylineDraw;
     private List<LatLng> polygon;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest mLocationRequest;
-    private LocationCallbackHandler mLocationCallback;
+    private Dialog dMessage;
+    private boolean startTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        this.context = getApplicationContext();
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            startForegroundService(new Intent(context, MyService.class));
+        } else {
+            checkLocationPermission();
+        }
+
+        startTracking = false;
+        polylineDraw = new PolylineDraw();
+        firstTime = true;
+        polygon = new ArrayList<>();
+        dMessage = new Dialog(this);
+        dMessage.setCanceledOnTouchOutside(false);
+        dMessage.setCancelable(false);
+
+        loc = new LocationCallbackHandler();
+        loc.addListener(this);
+
+        mapButtonStop = findViewById(R.id.btn_map2);
+        mapButtonStop.setEnabled(false);
+        mapButtonStop.setVisibility(View.GONE);
+
+        mapButtonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTracking = false;
+                showMessage();
+            }
+        });
+
+
+        mapButton = findViewById(R.id.btn_map);
+        mapButton.setEnabled(true);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTracking = true;
+                mapButton.setEnabled(false);
+                mapButton.setVisibility(View.GONE);
+                mapButtonStop.setVisibility(View.VISIBLE);
+                mapButtonStop.setEnabled(true);
+            }
+        });
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mLocationCallback = new LocationCallbackHandler(mGoogleMap);
         googleMapSettings(mGoogleMap);
-        requestLocationSettings();
-
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        } else {
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-            mGoogleMap.setMyLocationEnabled(true);
-            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mapButton.setEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
-    public void googleMapSettings(GoogleMap mGoogleMap)
-    {
+    public void googleMapSettings(GoogleMap mGoogleMap) {
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mGoogleMap.setMaxZoomPreference(22);
         mGoogleMap.setMinZoomPreference(10);
@@ -86,16 +139,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
-    public void requestLocationSettings()
-    {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000); // two minute interval
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(12);
-    }
-
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -107,17 +152,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+                dialogBuilder
                         .setTitle("Location Permission Needed")
                         .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapsActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
-                            }
+                        .setPositiveButton("OK", (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(MapsActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    MY_PERMISSIONS_REQUEST_LOCATION);
                         })
                         .create()
                         .show();
@@ -127,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
@@ -146,9 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
-                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                        mGoogleMap.setMyLocationEnabled(true);
+                        startForegroundService(new Intent(context, MyService.class));
                     }
 
                 } else {
@@ -157,11 +198,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
             // permissions this app might request
+        }
+    }
+
+    @Override
+    public void onLocationAvailable(Location location) {
+        if (mGoogleMap != null) {
+            if (firstTime) {
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                firstTime = false;
+            }
+            if (startTracking) {
+                this.runOnUiThread(() -> {
+                    //The last location in the list is the newest
+                    mLastLocation = location;
+                    if (polylineDraw != null) {
+                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
+                    }
+                });
+            }
+        }
+    }
+
+    private void showMessage() {
+        try {
+            dMessage.setContentView(R.layout.activity_insert_info_fragment);
+            dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dMessage.show();
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
         }
     }
 }

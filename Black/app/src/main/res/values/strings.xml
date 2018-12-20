@@ -8,4 +8,6 @@
     <string name="description_detailed">Description Detailed</string>
     <string name="date_detailed">date_detailed</string>
     <string name="detailed_distance">detailed_distance</string>
+    <string name="startBtn" translatable="false">Start</string>
+    <string name="stopBtn" translatable="false">Stop</string>
 </resources>
