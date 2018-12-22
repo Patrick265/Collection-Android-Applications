@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<LatLng> polygon;
     private Dialog dMessage;
     private Boolean startTracking;
+    private TextView distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         loc = new LocationCallbackHandler();
         loc.addListener(this);
 
+        distance = findViewById(R.id.txt_distance);
         mapButtonStop = findViewById(R.id.btn_map2);
         mapButtonStop.setEnabled(false);
         mapButtonStop.setVisibility(View.GONE);
@@ -218,6 +221,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mLastLocation = location;
                     if (polylineDraw != null) {
                         polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
+                        if(distance != null) {
+                            distance.setText((int)SphericalUtil.computeLength(polygon) + " meter");
+                        }
                     }
                 });
             }
