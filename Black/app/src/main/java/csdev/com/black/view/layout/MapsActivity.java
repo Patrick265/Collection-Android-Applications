@@ -56,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PolylineDraw polylineDraw;
     private List<LatLng> polygon;
     private Dialog dMessage;
-    private boolean startTracking;
+    private Boolean startTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         polylineDraw = new PolylineDraw();
         firstTime = true;
         polygon = new ArrayList<>();
+
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
         dMessage.setCancelable(false);
@@ -89,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapButtonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTracking = false;
                 showMessage();
             }
         });
@@ -229,6 +229,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dMessage.setContentView(R.layout.activity_insert_info_fragment);
             dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dMessage.show();
+            Button ok = dMessage.findViewById(R.id.btn_confirmationOK);
+            Button cancel = dMessage.findViewById(R.id.btn_confirmationCancel);
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startTracking = false;
+                }
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dMessage.hide();
+                }
+            });
 
         } catch (Exception e) {
             Log.d("ERROR", e.toString());

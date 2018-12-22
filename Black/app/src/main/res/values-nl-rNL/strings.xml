@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Black</string>
+    <string name="okButton">Bevestigen</string>
+    <string name="cancelButton">Annuleren</string>
+    <string name="confirmationText">Weet u zeker dat u wilt stoppen met het traceren van de route? De huidige route wordt gestopt en U wordt verzocht om informatie te verschaffen voor de opslag van de route</string>
+    <string name="confirmationTitleText">Bevestigingsscherm</string>
 </resources>

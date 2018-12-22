@@ -65,7 +65,7 @@ public class MyService extends Service {
         mLocationRequest.setInterval(4000);
         mLocationRequest.setFastestInterval(4000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(0);
+        mLocationRequest.setSmallestDisplacement(5);
 
         locationCallbackHandler = LocationCallbackHandler.getInstance();
 

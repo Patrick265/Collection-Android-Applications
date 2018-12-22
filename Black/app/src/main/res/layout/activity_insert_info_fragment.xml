@@ -6,7 +6,8 @@
     android:layout_height="230dp"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:visibility="visible">
 
     <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -52,7 +53,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/roboto"
-                android:text="Title"
+                android:text="@string/confirmationTitleText"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -61,42 +62,39 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/not_Message"
-                android:layout_width="0dp"
+                android:id="@+id/not_monName"
+                android:layout_width="332dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/roboto"
-                android:scrollbars="vertical"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                app:layout_constraintEnd_toEndOf="@+id/not_Background"
-                app:layout_constraintStart_toStartOf="@+id/not_Background"
+                android:text="@string/confirmationText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/not_Background" />
 
-            <TextView
-                android:id="@+id/not_monName"
+            <Button
+                android:id="@+id/btn_confirmationCancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/not_Message"
-                app:layout_constraintEnd_toEndOf="@+id/not_Message"
-                app:layout_constraintStart_toStartOf="@+id/not_Message"
-                app:layout_constraintTop_toTopOf="@+id/not_Message" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="116dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/cancelButton"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.076"
+                app:layout_constraintEnd_toStartOf="@+id/btn_confirmationOK"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_confirmationOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="68dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/okButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
