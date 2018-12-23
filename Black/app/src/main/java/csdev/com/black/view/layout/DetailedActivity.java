@@ -40,19 +40,20 @@ public class DetailedActivity extends AppCompatActivity
         this.description.setText(activity.getDescription());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy\tHH:mm");
-        this.date.setText(activity.getStartTime().format(formatter));
+        this.date.setText(activity.getStartTime());
 
         this.distance.setText(activity.getDistance() + " Km");
 
+
         switch (activity.getType())
         {
-            case CYCLING:
+            case "Cycling":
                 this.category.setImageResource(R.color.BicycleColor);
                 break;
-            case RUNNING:
+            case "Running":
                 this.category.setImageResource(R.color.RunningColor);
                 break;
-            case WALKING:
+            case "Walking":
                 this.category.setImageResource(R.color.WalkingColor);
                 break;
         }

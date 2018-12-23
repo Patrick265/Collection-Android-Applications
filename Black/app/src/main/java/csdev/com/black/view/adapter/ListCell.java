@@ -39,21 +39,20 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
 
         switch (activity.getType())
         {
-            case CYCLING:
+            case "Cycling":
                 viewHolder.getCategory().setImageResource(R.color.BicycleColor);
                 break;
-            case RUNNING:
+            case "Running":
                 viewHolder.getCategory().setImageResource(R.color.RunningColor);
                 break;
-            case WALKING:
+            case "Walking":
                 viewHolder.getCategory().setImageResource(R.color.WalkingColor);
                 break;
         }
 
 
         viewHolder.getTitle().setText(activity.getTitle());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy\tHH:mm");
-        viewHolder.getDate().setText(activity.getStartTime().format(formatter));
+        viewHolder.getDate().setText(activity.getStartTime());
         String distance = activity.getDistance() + " Km";
         viewHolder.getDistance().setText(distance);
         viewHolder.bindActivity(activity, this.listener);

@@ -9,16 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import csdev.com.black.R;
-import csdev.com.black.data.MyService;
-import csdev.com.black.data.SportStorage;
+import csdev.com.black.model.SportActivity;
+import csdev.com.black.service.DBHandler;
 import csdev.com.black.view.adapter.ListCell;
 
 public class MainActivity extends AppCompatActivity
 {
     private RecyclerView listView;
     private ListCell adapter;
-    private SportStorage storage;
+    private DBHandler handler;
+    private ArrayList<SportActivity> activities;
     private LayoutManager layoutManager;
     private FloatingActionButton newActivityButton;
 
@@ -31,8 +34,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initalise() {
+        this.handler = new DBHandler(getApplicationContext());
+        this.activities = this.handler.retrieveAll();
         this.newActivityButton = findViewById(R.id.main_fab);
-        this.storage = SportStorage.getInstance();
         this.listView = findViewById(R.id.main_recycleview);
         this.adapter = new ListCell(activity ->
         {
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
             intent.putExtra("SPORTACTIVITY", activity);
             startActivity(intent);
-        }, this.storage.getActivityList());
+        }, this.activities);
 
 
         this.newActivityButton.setOnClickListener(v ->
