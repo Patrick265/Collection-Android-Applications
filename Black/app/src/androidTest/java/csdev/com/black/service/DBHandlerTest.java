@@ -42,11 +42,11 @@ public class DBHandlerTest
     }
 
     public void temp() {
-        this.coordinates.add(new LatLng(50,51));
-        this.coordinates.add(new LatLng(51,52));
-        this.coordinates.add(new LatLng(52,53));
-        this.coordinates.add(new LatLng(53,54));
-        this.coordinates.add(new LatLng(54,55));
+        this.coordinates.add(new Coordinate(50,51));
+        this.coordinates.add(new Coordinate(51,52));
+        this.coordinates.add(new Coordinate(52,53));
+        this.coordinates.add(new Coordinate(53,54));
+        this.coordinates.add(new Coordinate(54,55));
         SportActivity cycleActivity1 = new SportActivity("Cycled to Breda",
                 LocalDateTime.now(),
                 LocalDateTime.now(),

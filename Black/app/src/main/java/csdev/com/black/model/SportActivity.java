@@ -48,10 +48,6 @@ public class SportActivity implements Serializable
         this.type = type;
     }
 
-
-
-
-
     public void setCoordinates(ArrayList<Coordinate> coordinates)
     {
         this.coordinates = coordinates;

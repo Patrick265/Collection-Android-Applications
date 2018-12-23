@@ -74,7 +74,8 @@ public class DBHandler extends SQLiteOpenHelper
             cursor.close();
             return activities;
         }else {
-            throw new Error("Entries in Database is 0 or lower, so no data is in the database");
+            //throw new Error("Entries in Database is 0 or lower, so no data is in the database");
+            return activities;
         }
     }
 

@@ -3,15 +3,11 @@ package csdev.com.black.view.layout;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.os.Build;
-import android.os.Looper;
-import android.service.voice.VoiceInteractionSession;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -23,20 +19,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import csdev.com.black.R;
@@ -44,6 +37,7 @@ import csdev.com.black.data.LocationCallbackListener;
 import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
+import csdev.com.black.model.Coordinate;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
@@ -59,6 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Dialog dMessage;
     private Boolean startTracking;
     private TextView distance;
+    private int distanceInteger;
+    private String startDate;
+    private SimpleDateFormat sdfDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         this.context = getApplicationContext();
+        sdfDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             startForegroundService(new Intent(context, MyService.class));
@@ -77,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         polylineDraw = new PolylineDraw();
         firstTime = true;
         polygon = new ArrayList<>();
+        distanceInteger = 0;
 
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
@@ -105,6 +104,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 startTracking = true;
+                Date now = new Date();
+                startDate = sdfDate.format(now);
                 mapButton.setEnabled(false);
                 mapButton.setVisibility(View.GONE);
                 mapButtonStop.setVisibility(View.VISIBLE);
@@ -222,7 +223,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (polylineDraw != null) {
                         polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
                         if(distance != null) {
-                            distance.setText((int)SphericalUtil.computeLength(polygon) + " meter");
+                            distanceInteger = (int)SphericalUtil.computeLength(polygon);
+                            distance.setText(distanceInteger + " meter");
                         }
                     }
                 });
@@ -232,7 +234,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void showMessage() {
         try {
-            dMessage.setContentView(R.layout.activity_insert_info_fragment);
+            dMessage.setContentView(R.layout.activity_confirmation);
             dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dMessage.show();
             Button ok = dMessage.findViewById(R.id.btn_confirmationOK);
@@ -241,7 +243,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startTracking = false;
+                    bundleUp();
                 }
             });
             cancel.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +256,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             Log.d("ERROR", e.toString());
         }
+    }
+
+    private void bundleUp()
+    {
+        startTracking = false;
+
+        Intent intent = new Intent(getApplicationContext(), EnteringDetails.class);
+        Bundle bundle = new Bundle();
+
+        Date date = new Date();
+        String endDate = sdfDate.format(date);
+
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for(LatLng poly : polygon)
+        {
+            coordinates.add(new Coordinate(poly.latitude,poly.longitude));
+        }
+
+        bundle.putSerializable("distance", distanceInteger);
+        bundle.putSerializable("latlngList", coordinates);
+        bundle.putSerializable("start", startDate );
+        bundle.putSerializable("end", endDate);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
 

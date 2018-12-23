@@ -54,7 +54,8 @@
         <activity
             android:name=".view.layout.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".InsertInfoFragment"></activity>
+        <activity android:name=".view.layout.InsertInfoFragment" />
+        <activity android:name=".view.layout.EnteringDetails"></activity>
     </application>
 
 </manifest>
