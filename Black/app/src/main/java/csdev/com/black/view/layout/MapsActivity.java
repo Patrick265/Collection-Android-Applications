@@ -55,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double distanceInteger;
     private String startDate;
     private SimpleDateFormat sdfDate;
+    private Boolean startButtonControl;
+    private Boolean stopButtonControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,38 +86,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         loc.addListener(this);
 
         distance = findViewById(R.id.txt_distance);
+
         mapButtonStop = findViewById(R.id.btn_map2);
-        mapButtonStop.setEnabled(false);
-        mapButtonStop.setVisibility(View.GONE);
+        stopButtonControl = false;
+
+        mapButtonStop.setAlpha(0.5f);
+        mapButton = findViewById(R.id.btn_map);
+        startButtonControl = false;
+
 
         mapButtonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMessage();
+                if(stopButtonControl)
+                {
+                    showMessage();
+                }
             }
         });
-
-
-        mapButton = findViewById(R.id.btn_map);
-        mapButton.setEnabled(true);
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTracking = true;
-                Date now = new Date();
-                startDate = sdfDate.format(now);
-                mapButton.setEnabled(false);
-                mapButton.setVisibility(View.GONE);
-                mapButtonStop.setVisibility(View.VISIBLE);
-                mapButtonStop.setEnabled(true);
+                if(startButtonControl)
+                {
+                    startTracking = true;
+                    Date now = new Date();
+                    startDate = sdfDate.format(now);
+                    startButtonControl = false;
+                   // mapButton.setFocusable(false);
+                    mapButton.setAlpha(0.5f);
+                    stopButtonControl = true;
+                  //  mapButtonStop.setFocusable(true);
+                    mapButtonStop.setAlpha(1f);
+                }
             }
         });
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.detailed_map);
         mapFragment.getMapAsync(this);
 
     }
@@ -125,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         googleMapSettings(mGoogleMap);
-        mapButton.setEnabled(true);
+        startButtonControl = true;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -274,11 +285,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         bundle.putSerializable("distance", distanceInteger);
-        bundle.putSerializable("latlngList", coordinates);
+        bundle.putSerializable("coordinates", coordinates);
         bundle.putSerializable("start", startDate );
         bundle.putSerializable("end", endDate);
         bundle.putSerializable("avgspeed", 0.0);
         intent.putExtras(bundle);
+        stopButtonControl = false;
+        mapButtonStop.setAlpha(0.5f);
         startActivity(intent);
     }
 }

@@ -82,20 +82,21 @@
     <EditText
         android:id="@+id/entering_edittext_description"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="95dp"
         android:layout_marginTop="8dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:gravity="top"
+        android:autofillHints=""
         android:background="@drawable/rounded_edit_text"
+        android:gravity="top"
         android:inputType="textMultiLine"
         android:maxLines="2000"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="@+id/entering_TextView_description"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/entering_TextView_description"
-        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_description"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_description" />
 
     <TextView
         android:id="@+id/entering_TextView_Rating"
@@ -177,7 +178,7 @@
         android:id="@+id/entering_button_finished"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_style"
 
         android:text="@string/save"

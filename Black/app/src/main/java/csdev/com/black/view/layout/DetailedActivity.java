@@ -1,26 +1,39 @@
 package csdev.com.black.view.layout;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.lang.reflect.Array;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import csdev.com.black.R;
+import csdev.com.black.data.PolylineDraw;
+import csdev.com.black.model.Coordinate;
 import csdev.com.black.model.SportActivity;
 
-public class DetailedActivity extends AppCompatActivity
+public class DetailedActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
-    private MapView map;
+    private GoogleMap mGoogleMap;
     private TextView title;
     private TextView description;
     private TextView date;
     private TextView distance;
+    private ArrayList<LatLng> latLngList;
+    private PolylineDraw polylineDraw;
+    private SportActivity activity;
 
     private ImageView category;
 
@@ -33,7 +46,7 @@ public class DetailedActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        SportActivity activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
+        this.activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
         initalise();
 
         this.title.setText(activity.getTitle());
@@ -59,15 +72,42 @@ public class DetailedActivity extends AppCompatActivity
         }
     }
 
+    private void convertCoordinates(ArrayList<Coordinate> coordinateList)
+    {
+        latLngList = new ArrayList<>();
+        for(Coordinate c : coordinateList)
+        {
+           latLngList.add(new LatLng(c.getLatitude(),c.getLongitude()));
+        }
+    }
+
     private void initalise() {
-        this.map = findViewById(R.id.detailed_map);
 
         this.title = findViewById(R.id.detailed_title);
         this.description = findViewById(R.id.detailed_text_description);
         this.date = findViewById(R.id.detailed_date_text);
         this.distance = findViewById(R.id.detailed_distance_text);
+        this.polylineDraw = new PolylineDraw();
 
         this.category = findViewById(R.id.detailed_category_image);
 
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.detailed_map);
+        mapFragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        convertCoordinates(activity.getCoordinates());
+        if(!latLngList.isEmpty()) {
+            polylineDraw.addAllPolygon(latLngList, mGoogleMap);
+        }
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
     }
 }
