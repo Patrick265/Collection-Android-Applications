@@ -14,4 +14,10 @@
     <string name="cancelButton">Cancel</string>
     <string name="confirmationText">Are you sure that you want to end tracking the route? The current route will be stopped and you\'ll be asked to put in details for saving the route.</string>
     <string name="confirmationTitleText">Confirmation screen</string>
+    <string name="well_done">Well Done!</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="save">Save</string>
+    <string name="rate">Rate your sport activity</string>
 </resources>

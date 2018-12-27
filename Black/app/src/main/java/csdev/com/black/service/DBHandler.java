@@ -106,7 +106,7 @@ public class DBHandler extends SQLiteOpenHelper
         }
     }
 
-    public void Insert(SportActivity activity) {
+    public void insert(SportActivity activity) {
         ContentValues values = new ContentValues();
         values.put(DBQuery.COL_MAIN_ID, activity.getId());
         values.put(DBQuery.COL_MAIN_TITLE, activity.getTitle());
@@ -122,14 +122,17 @@ public class DBHandler extends SQLiteOpenHelper
 
         values.clear();
 
-        for (Coordinate l : activity.getCoordinates()) {
+        if(activity.getCoordinates() != null ) {
+            for (Coordinate l : activity.getCoordinates()) {
                 values.put(DBQuery.COL_COORDINATES_ID, activity.getId());
                 values.put(DBQuery.COL_COORDINATES_LATITUDE, l.getLatitude());
                 values.put(DBQuery.COL_COORDINATES_LONGITUDE, l.getLongitude());
 
-            getWritableDatabase().insert(DBQuery.HEADERCOORDINATES, null, values);
-            values.clear();
+                getWritableDatabase().insert(DBQuery.HEADERCOORDINATES, null, values);
+                values.clear();
+            }
         }
+
     }
 
     public void update(SportActivity activity) {

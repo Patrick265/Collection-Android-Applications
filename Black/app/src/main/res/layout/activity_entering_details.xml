@@ -4,72 +4,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".view.layout.EnteringDetails">
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
+
+    <TextView
+        android:id="@+id/entering_message"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="title"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/well_done"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/entering_text_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="description"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/title"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_title"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_title"
+        app:layout_constraintTop_toBottomOf="@+id/entering_message" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="269dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="336dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/entering_edittext_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:autofillHints=""
+        android:background="@drawable/rounded_edit_text"
+        android:fontFamily="@font/roboto"
+        android:inputType="text"
+        android:maxLines="1000"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entering_text_title" />
 
     <TextView
-        android:id="@+id/final_start"
-        android:layout_width="wrap_content"
+        android:id="@+id/entering_TextView_description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/description"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_text_title"
+        app:layout_constraintStart_toStartOf="@+id/entering_text_title"
+        app:layout_constraintTop_toBottomOf="@+id/entering_edittext_title" />
+
+    <EditText
+        android:id="@+id/entering_edittext_description"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="top"
+        android:background="@drawable/rounded_edit_text"
+        android:inputType="textMultiLine"
+        android:maxLines="2000"
+        app:layout_constraintEnd_toEndOf="@+id/entering_TextView_description"
+        app:layout_constraintStart_toStartOf="@+id/entering_TextView_description"
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_description"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/entering_TextView_Rating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/rate"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_description"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_description"
+        app:layout_constraintTop_toBottomOf="@+id/entering_edittext_description" />
+
+    <SeekBar
+        android:id="@+id/entering_SeekBar_Rating"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:layout_marginEnd="8dp"
+        android:colorControlActivated="@color/SelectedSeekbar"
+        android:max="5"
+        android:maxHeight="5dp"
+        android:progress="0"
+        android:progressDrawable="@drawable/seekbar_style"
+
+        android:thumb="@drawable/seekbar_thumb"
+        app:layout_constraintEnd_toStartOf="@+id/entering_TextView_Rating_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_Rating" />
 
     <TextView
-        android:id="@+id/final_end"
+        android:id="@+id/entering_TextView_Rating_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/final_distance"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/final_start" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="0 / 5"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/entering_SeekBar_Rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_Rating" />
 
     <TextView
-        android:id="@+id/final_distance"
-        android:layout_width="wrap_content"
+        android:id="@+id/entering_TextView_category"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="196dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/category"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_Rating_text" />
+
+    <Spinner
+        android:id="@+id/entering_Spinner_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_description"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_description"
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_category" />
+
+    <Button
+        android:id="@+id/entering_button_finished"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_style"
+
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/entering_Spinner_category"
+        app:layout_constraintStart_toStartOf="@+id/entering_Spinner_category"
+        app:layout_constraintTop_toBottomOf="@+id/entering_Spinner_category" />
+
 </android.support.constraint.ConstraintLayout>

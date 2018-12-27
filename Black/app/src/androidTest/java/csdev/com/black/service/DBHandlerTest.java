@@ -3,8 +3,6 @@ package csdev.com.black.service;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -33,7 +31,7 @@ public class DBHandlerTest
     public void insert()
     {
         temp();
-        handler.Insert(activityList.get(0));
+        handler.insert(activityList.get(0));
     }
 
     @Test

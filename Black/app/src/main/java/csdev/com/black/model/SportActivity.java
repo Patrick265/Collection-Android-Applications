@@ -8,15 +8,15 @@ import java.util.UUID;
 
 public class SportActivity implements Serializable
 {
-    private final String title;
-    private final String id;
-    private final String startTime;
+    private String title;
+    private String id;
+    private String startTime;
     private String endTime;
-    private final int rating;
-    private final String description;
-    private final double distance;
-    private final double averageSpeed;
-    private final String type;
+    private int rating;
+    private String description;
+    private double distance;
+    private double averageSpeed;
+    private String type;
     private ArrayList<Coordinate> coordinates;
     private DateTimeFormatter formatter;
 
@@ -48,19 +48,15 @@ public class SportActivity implements Serializable
         this.type = type;
     }
 
+    public SportActivity()
+    {
+        this.id = UUID.randomUUID().toString();
+        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:MM");
+    }
+
     public void setCoordinates(ArrayList<Coordinate> coordinates)
     {
         this.coordinates = coordinates;
-    }
-
-    public double getAverageSpeed()
-    {
-        return averageSpeed;
-    }
-
-    public ArrayList<Coordinate> getCoordinates()
-    {
-        return coordinates;
     }
 
     public String getTitle()
@@ -88,16 +84,6 @@ public class SportActivity implements Serializable
         this.endTime = endTime;
     }
 
-    public DateTimeFormatter getFormatter()
-    {
-        return formatter;
-    }
-
-    public void setFormatter(DateTimeFormatter formatter)
-    {
-        this.formatter = formatter;
-    }
-
     public int getRating()
     {
         return rating;
@@ -113,26 +99,85 @@ public class SportActivity implements Serializable
         return distance;
     }
 
+    public double getAverageSpeed()
+    {
+        return averageSpeed;
+    }
+
     public String getType()
     {
         return type;
+    }
+
+    public ArrayList<Coordinate> getCoordinates()
+    {
+        return coordinates;
+    }
+
+    public DateTimeFormatter getFormatter()
+    {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter)
+    {
+        this.formatter = formatter;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    public void setStartTime(String startTime)
+    {
+        this.startTime = startTime;
+    }
+
+    public void setRating(int rating)
+    {
+        this.rating = rating;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public void setDistance(double distance)
+    {
+        this.distance = distance;
+    }
+
+    public void setAverageSpeed(double averageSpeed)
+    {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
     }
 
     @Override
     public String toString()
     {
         return "SportActivity{" +
-                "title='" + title + '\'' +
-                ", id='" + id + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", rating=" + rating +
-                ", description='" + description + '\'' +
-                ", distance=" + distance +
-                ", averageSpeed=" + averageSpeed +
-                ", type='" + type + '\'' +
-                ", coordinates=" + coordinates +
-                ", formatter=" + formatter +
+                "title='" + title + '\'' + "\n" +
+                ", id='" + id + '\'' +  "\n" +
+                ", startTime='" + startTime + '\'' +  "\n" +
+                ", endTime='" + endTime + '\'' +  "\n" +
+                ", rating=" + rating +  "\n" +
+                ", description='" + description + '\'' +  "\n" +
+                ", distance=" + distance +  "\n" +
+                ", averageSpeed=" + averageSpeed +  "\n" +
+                ", type='" + type + '\'' +  "\n" +
+                ", coordinates=" + coordinates +  "\n" +
                 '}';
     }
 }

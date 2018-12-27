@@ -28,7 +28,6 @@ import com.google.maps.android.SphericalUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Dialog dMessage;
     private Boolean startTracking;
     private TextView distance;
-    private int distanceInteger;
+    private double distanceInteger;
     private String startDate;
     private SimpleDateFormat sdfDate;
 
@@ -278,6 +277,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putSerializable("latlngList", coordinates);
         bundle.putSerializable("start", startDate );
         bundle.putSerializable("end", endDate);
+        bundle.putSerializable("avgspeed", 0.0);
         intent.putExtras(bundle);
         startActivity(intent);
     }

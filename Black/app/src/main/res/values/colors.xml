@@ -3,10 +3,15 @@
     <color name="colorPrimary">#353a50</color>
     <color name="colorPrimaryDark">#292e42</color>
     <color name="colorAccent">#ffffff</color>
+    <color name="colorAccentOff">#ebebeb</color>
 
     <!-- COLORS FOR CATEGORY'S-->
     <color name="BicycleColor">#C940EA</color>
     <color name="RunningColor">#ff9057</color>
     <color name="WalkingColor">#FEBD35</color>
 
+
+    <color name="BackgroundSeekbar">#555c79</color>
+    <color name="SelectedSeekbar">#febd35</color>
+    <color name="DotSeekbar">#ffffff</color>
 </resources>
