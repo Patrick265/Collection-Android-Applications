@@ -5,81 +5,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.layout.MapsActivity">
+    tools:context=".view.layout.MapsActivity"
+    android:background="@color/colorPrimaryDark">
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="513dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="500dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".view.layout.MapsActivity" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btn_map"
-            android:layout_width="121dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="148dp"
-            android:layout_marginEnd="148dp"
-            android:layout_marginBottom="8dp"
-            android:singleLine="true"
-            android:text="@string/startBtn"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btn_map2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="148dp"
-            android:layout_marginEnd="148dp"
-            android:layout_marginBottom="8dp"
-            android:singleLine="true"
-            android:text="Stop"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </LinearLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <Button
+        android:id="@+id/btn_map2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_style"
+        android:singleLine="true"
+        android:text="Stop"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_map"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_map"
+        app:layout_constraintTop_toTopOf="@+id/btn_map" />
+
+    <Button
+        android:id="@+id/btn_map"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_style"
+        android:singleLine="true"
+        android:text="@string/startBtn"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/btn_map2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
 
     <TextView
         android:id="@+id/txt_distance"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Distance:"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_map"
+        app:layout_constraintStart_toStartOf="@+id/btn_map"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map" />
+
+    <TextView
+        android:id="@+id/txt_speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fontFamily="@font/roboto_light"
+        android:text="Average Speed:"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_map"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_map"
+        app:layout_constraintTop_toBottomOf="@+id/txt_distance" />
 
 </android.support.constraint.ConstraintLayout>
