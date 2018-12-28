@@ -45,15 +45,19 @@ public class PolylineDraw {
         mMap.animateCamera(cu);
     }
 
-    public void updatePolygon(double latitude, double longitude, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines){
-        polygon.add(new LatLng(latitude,longitude));
+    public void updatePolygon(LatLng old,LatLng fresh, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines, String identifier){
+        polygon.add(fresh);
+        ArrayList<LatLng> cur = new ArrayList<>();
+        cur.add(old);
+        cur.add(fresh);
 
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
-                .addAll(polygon)
+                .addAll(cur)
                 .width(15)
                 .color(Color.BLUE)
                 .geodesic(true));
         polyline.setClickable(true);
+        polyline.setTag(identifier);
         polylines.add(polyline);
 
 

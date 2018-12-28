@@ -146,15 +146,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        mGoogleMap.setOnPolylineClickListener(polyline -> {
-
-            int polyId = Integer.valueOf(polyline.getId().substring(2));
-            for(PolylineInfo p : infos)
-            {
-                if(p.getId() == polyId)
+        mGoogleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+                for(PolylineInfo p : infos)
                 {
-                    Toast.makeText(getApplicationContext(), p.getLength() + " seconds" , Toast.LENGTH_SHORT).show();
-                    Log.i("WOW", p.toString());
+                    if(polyline.getTag().equals(String.valueOf(p.getId())))
+                    {
+                       // Toast.makeText(getApplicationContext(), "Length: " + p.getLength(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Time: " + p.getTime(), Toast.LENGTH_SHORT).show();
+                        polyline.setColor(Color.RED);
+                        Log.i("WOW", p.getLength() + "");
+                    }
                 }
             }
         });
@@ -246,32 +249,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (startTracking) {
                 this.runOnUiThread(() -> {
                     //The last location in the list is the newest
-                    LatLng old = null;
-                    if(mLastLocation != null) {
-                        old = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-                    }
+                    Location mPrevloc = mLastLocation;
                     mLastLocation = location;
-                    LatLng fresh = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-                    ArrayList<LatLng> ab = new ArrayList<>();
-                    ab.add(old);
-                    ab.add(fresh);
 
+                    if(mPrevloc != null) {
+                        LatLng fresh = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                        LatLng old = new LatLng(mPrevloc.getLatitude(), mPrevloc.getLongitude());
+                        ArrayList<LatLng> hide = new ArrayList<>();
+                        hide.add(old);
+                        hide.add(fresh);
 
-                    if (polylineDraw != null) {
-                        i++;
-                        if(polygon.size() > 1)
-                        {
-                            int difference = (int) (SystemClock.elapsedRealtime() - startTime);
-                            difference = difference / 1000;
-                            infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(ab)),difference, i));
+                        if (polylineDraw != null) {
+                            i++;
+                            if (polygon.size() >= 1) {
+                                int difference = (int) (SystemClock.elapsedRealtime() - startTime);
+                                difference = difference / 1000;
+                                     infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
+                                Log.i("WAW", String.valueOf(i) + " MAKING OBJECT");
+
+                            }
+
+                            polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                            Log.i("WAW", String.valueOf(i) + " TAGGING");
+                            distanceInteger = (int) SphericalUtil.computeLength(polygon);
+                            distance.setText(distanceInteger + " meter");
+
                         }
-
-                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon, polyLines);
-                        distanceInteger = (int)SphericalUtil.computeLength(polygon);
-                        distance.setText(distanceInteger + " meter");
-
                     }
-                    ab.clear();
                 });
             }
         }
