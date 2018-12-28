@@ -44,15 +44,15 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
        // String input = intent.getStringExtra("inputExtra");
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+     //   Intent notificationIntent = new Intent(this, MainActivity.class);
+      //  PendingIntent pendingIntent = PendingIntent.getActivity(this,
+         //       0, notificationIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Example Service")
+                .setContentTitle("Black")
                 .setContentText("Oof")
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentIntent(pendingIntent)
+            //    .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(1, notification);
@@ -82,9 +82,6 @@ public class MyService extends Service {
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallbackHandler, looper);
                     }
                 }
-
-        //do heavy work on a background thread
-        //stopSelf();
 
         return START_STICKY;
     }

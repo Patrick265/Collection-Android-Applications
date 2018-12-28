@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class PolylineDraw {
         mMap.clear();
         mMap.addPolyline(options);
 
+
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng latLng : polygon) {
             builder.include(latLng);
@@ -44,7 +46,7 @@ public class PolylineDraw {
 
     public void updatePolygon( double latitude, double longitude,GoogleMap mMap,List<LatLng> polygon){
         polygon.add(new LatLng(latitude,longitude));
-        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true).clickable(true);
         options.addAll(polygon);
         mMap.clear();
         mMap.addPolyline(options);
@@ -60,5 +62,7 @@ public class PolylineDraw {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cu);
     }
+
+
 }
 

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +40,7 @@ import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.PolylineInfo;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
@@ -57,6 +61,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private SimpleDateFormat sdfDate;
     private Boolean startButtonControl;
     private Boolean stopButtonControl;
+    private ArrayList<PolylineInfo> infos;
+    private long startTime;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firstTime = true;
         polygon = new ArrayList<>();
         distanceInteger = 0;
+        i = 0;
+        infos = new ArrayList<>();
 
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
@@ -95,31 +104,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startButtonControl = false;
 
 
-        mapButtonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(stopButtonControl)
-                {
-                    showMessage();
-                }
+        mapButtonStop.setOnClickListener(v -> {
+            if(stopButtonControl)
+            {
+                showMessage();
             }
         });
 
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(startButtonControl)
-                {
-                    startTracking = true;
-                    Date now = new Date();
-                    startDate = sdfDate.format(now);
-                    startButtonControl = false;
-                   // mapButton.setFocusable(false);
-                    mapButton.setAlpha(0.5f);
-                    stopButtonControl = true;
-                  //  mapButtonStop.setFocusable(true);
-                    mapButtonStop.setAlpha(1f);
-                }
+        mapButton.setOnClickListener(v -> {
+            if(startButtonControl)
+            {
+                startTracking = true;
+                startTime = SystemClock.elapsedRealtime();
+                Date now = new Date();
+                startDate = sdfDate.format(now);
+                startButtonControl = false;
+                mapButton.setAlpha(0.5f);
+                stopButtonControl = true;
+                mapButtonStop.setAlpha(1f);
             }
         });
 
@@ -142,6 +144,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        mGoogleMap.setOnPolylineClickListener(polyline -> {
+
+            int polyId = Integer.valueOf(polyline.getId().substring(2));
+            for(PolylineInfo p : infos)
+            {
+                if(p.getId() == polyId)
+                {
+                    Toast.makeText(getApplicationContext(), p.getLength() + " seconds" , Toast.LENGTH_SHORT).show();
+                    Log.i("WOW", p.toString());
+                }
+            }
+        });
+
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
@@ -229,14 +245,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (startTracking) {
                 this.runOnUiThread(() -> {
                     //The last location in the list is the newest
-                    mLastLocation = location;
-                    if (polylineDraw != null) {
-                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
-                        if(distance != null) {
-                            distanceInteger = (int)SphericalUtil.computeLength(polygon);
-                            distance.setText(distanceInteger + " meter");
-                        }
+                    LatLng old = null;
+                    if(mLastLocation != null) {
+                        old = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
                     }
+                    mLastLocation = location;
+                    LatLng fresh = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                    ArrayList<LatLng> ab = new ArrayList<>();
+                    ab.add(old);
+                    ab.add(fresh);
+
+
+                    if (polylineDraw != null) {
+                        i++;
+                        if(polygon.size() > 1)
+                        {
+                            int difference = (int) (SystemClock.elapsedRealtime() - startTime);
+                            difference = difference / 1000;
+                            infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(ab)),difference - infos.get(infos.size()).getTime(), i));
+                        }
+
+                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
+                        distanceInteger = (int)SphericalUtil.computeLength(polygon);
+                        distance.setText(distanceInteger + " meter");
+
+                    }
+                    ab.clear();
                 });
             }
         }
@@ -250,18 +284,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Button ok = dMessage.findViewById(R.id.btn_confirmationOK);
             Button cancel = dMessage.findViewById(R.id.btn_confirmationCancel);
 
-            ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bundleUp();
-                }
-            });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dMessage.hide();
-                }
-            });
+            ok.setOnClickListener(v -> bundleUp());
+            cancel.setOnClickListener(v -> dMessage.hide());
 
         } catch (Exception e) {
             Log.d("ERROR", e.toString());
