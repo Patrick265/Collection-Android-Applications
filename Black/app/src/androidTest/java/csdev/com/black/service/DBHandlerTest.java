@@ -68,4 +68,11 @@ public class DBHandlerTest
         this.handler.onUpgrade(this.handler.getReadableDatabase(), 0 , 1);
     }
 
+    @Test
+    public void delete()
+    {
+        ArrayList<SportActivity> list = this.handler.retrieveAll();
+
+        this.handler.delete(list.get(0));
+    }
 }
