@@ -30,9 +30,13 @@ import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import csdev.com.black.R;
 import csdev.com.black.data.LocationCallbackListener;
@@ -62,9 +66,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean startButtonControl;
     private Boolean stopButtonControl;
     private ArrayList<PolylineInfo> infos;
-    private long startTime;
+    private LocalDateTime startTime;
     private int i;
     private ArrayList<Polyline> polyLines = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(startButtonControl)
             {
                 startTracking = true;
-                startTime = SystemClock.elapsedRealtime();
                 Date now = new Date();
+                startTime = LocalDateTime.now();
                 startDate = sdfDate.format(now);
                 startButtonControl = false;
                 mapButton.setAlpha(0.5f);
@@ -156,7 +161,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                        // Toast.makeText(getApplicationContext(), "Length: " + p.getLength(), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "Time: " + p.getTime(), Toast.LENGTH_SHORT).show();
                         polyline.setColor(Color.RED);
-                        Log.i("WOW", p.getLength() + "");
+                        Log.i("WOW", p.getTime() + " seconds");
                     }
                 }
             }
@@ -249,6 +254,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (startTracking) {
                 this.runOnUiThread(() -> {
                     //The last location in the list is the newest
+
                     Location mPrevloc = mLastLocation;
                     mLastLocation = location;
 
@@ -258,19 +264,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         ArrayList<LatLng> hide = new ArrayList<>();
                         hide.add(old);
                         hide.add(fresh);
+                        LocalDateTime now = LocalDateTime.now();
 
                         if (polylineDraw != null) {
                             i++;
                             if (polygon.size() >= 1) {
-                                int difference = (int) (SystemClock.elapsedRealtime() - startTime);
-                                difference = difference / 1000;
-                                     infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
-                                Log.i("WAW", String.valueOf(i) + " MAKING OBJECT");
-
+                                if(infos.isEmpty())
+                                {
+                                    long difference = Duration.between(startTime, now).toMillis() / 1000;
+                                    infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
+                                    startTime = LocalDateTime.now();
+                                }
+                                else
+                                {
+                                    for(PolylineInfo f : infos)
+                                    {
+                                        if(f.getId() == (i - 1))
+                                        {
+                                            long difference = Duration.between(startTime, now).toMillis() / 1000;
+                                            PolylineInfo p = new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i);
+                                            infos.add(p);
+                                            startTime = LocalDateTime.now();
+                                            Log.i("WOW", p.getTime() + "");
+                                        }
+                                    }
+                                }
                             }
-
                             polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
-                            Log.i("WAW", String.valueOf(i) + " TAGGING");
                             distanceInteger = (int) SphericalUtil.computeLength(polygon);
                             distance.setText(distanceInteger + " meter");
 
