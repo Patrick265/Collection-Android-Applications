@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
@@ -44,12 +45,23 @@ public class PolylineDraw {
         mMap.animateCamera(cu);
     }
 
-    public void updatePolygon( double latitude, double longitude,GoogleMap mMap,List<LatLng> polygon){
+    public void updatePolygon(double latitude, double longitude, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines){
         polygon.add(new LatLng(latitude,longitude));
-        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true).clickable(true);
-        options.addAll(polygon);
-        mMap.clear();
-        mMap.addPolyline(options);
+
+        Polyline polyline = mMap.addPolyline(new PolylineOptions()
+                .addAll(polygon)
+                .width(15)
+                .color(Color.BLUE)
+                .geodesic(true));
+        polyline.setClickable(true);
+        polylines.add(polyline);
+
+
+
+//        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true).clickable(true);
+//        options.addAll(polygon);
+//        mMap.clear();
+//        mMap.addPolyline(options);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng latLng : polygon) {

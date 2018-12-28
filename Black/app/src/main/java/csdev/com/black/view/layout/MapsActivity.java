@@ -64,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<PolylineInfo> infos;
     private long startTime;
     private int i;
+    private ArrayList<Polyline> polyLines = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,10 +263,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         {
                             int difference = (int) (SystemClock.elapsedRealtime() - startTime);
                             difference = difference / 1000;
-                            infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(ab)),difference - infos.get(infos.size()).getTime(), i));
+                            infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(ab)),difference, i));
                         }
 
-                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
+                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon, polyLines);
                         distanceInteger = (int)SphericalUtil.computeLength(polygon);
                         distance.setText(distanceInteger + " meter");
 
