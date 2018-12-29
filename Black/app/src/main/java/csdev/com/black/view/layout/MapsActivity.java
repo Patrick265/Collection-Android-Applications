@@ -276,26 +276,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     long difference = Duration.between(startTime, now).toMillis();
                                     infos.add(new PolylineInfo((SphericalUtil.computeLength(hide)),difference, i));
                                     startTime = LocalDateTime.now();
+                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                    distanceInteger = (int) SphericalUtil.computeLength(polygon);
+                                    distance.setText(distanceInteger + " meter");
                                 }
                                 else
                                 {
-                                    for(PolylineInfo f : infos)
-                                    {
-                                        if(f.getIdentificationID() == (i - 1))
-                                        {
-                                            long difference = Duration.between(startTime, now).toMillis();
-                                            PolylineInfo p = new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i);
-                                            infos.add(p);
-                                            startTime = LocalDateTime.now();
-                                            Log.i("WOW", p.getTime() + "");
-                                        }
-                                    }
+                                    long difference = Duration.between(startTime, now).toMillis();
+                                    infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
+                                    startTime = LocalDateTime.now();
+                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                    distanceInteger = (int) SphericalUtil.computeLength(polygon);
+                                    distance.setText(distanceInteger + " meter");
                                 }
                             }
-                            polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
-                            distanceInteger = (int) SphericalUtil.computeLength(polygon);
-                            distance.setText(distanceInteger + " meter");
-
+                            else
+                            {
+                                polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                distanceInteger = (int) SphericalUtil.computeLength(polygon);
+                                distance.setText(distanceInteger + " meter");
+                            }
                         }
                     }
                 });
