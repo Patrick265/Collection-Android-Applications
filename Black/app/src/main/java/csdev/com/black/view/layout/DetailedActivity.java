@@ -224,8 +224,12 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
                 }
             });
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             Log.d("ERROR", e.toString());
+        }
+
+    }
 
     public void calcDuration(String startTime, String endTime) {
 
@@ -242,8 +246,9 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         }
 
 
-        long years = tempDateTime.until( end, ChronoUnit.YEARS);
+
         LocalDateTime tempDateTime = LocalDateTime.from( start );
+        long years = tempDateTime.until( end, ChronoUnit.YEARS);
 
         tempDateTime = tempDateTime.plusYears( years );
         long months = tempDateTime.until( end, ChronoUnit.MONTHS);
@@ -251,19 +256,20 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         tempDateTime = tempDateTime.plusMonths( months );
 
         long hours = tempDateTime.until( end, ChronoUnit.HOURS);
+        tempDateTime = tempDateTime.plusHours( hours );
 
 
-        tempDateTime = tempDateTime.plusDays( days );
         long days = tempDateTime.until( end, ChronoUnit.DAYS);
-        this.duration.setText(DATEFORMATTER.format(localTime));
+        tempDateTime = tempDateTime.plusDays(days);
 
-        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds);
-        DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
         long seconds = tempDateTime.until( end, ChronoUnit.SECONDS);
 
-        tempDateTime = tempDateTime.plusMinutes( minutes );
         long minutes = tempDateTime.until( end, ChronoUnit.MINUTES);
 
-        tempDateTime = tempDateTime.plusHours( hours );
+        tempDateTime = tempDateTime.plusMinutes( minutes );
+        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds);
+
+        DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+        this.duration.setText(DATEFORMATTER.format(localTime));
     }
 }
