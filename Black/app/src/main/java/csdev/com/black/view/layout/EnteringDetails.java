@@ -63,7 +63,7 @@ public class EnteringDetails extends AppCompatActivity {
 
         this.save.setOnClickListener(l -> {
             if(validate() && this.activity != null) {
-                handler.insert(this.activity);
+                handler.insert(this.activity, null);
                 Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intentToMain);
             }

@@ -9,35 +9,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.SportActivity;
 
 public class DBHandlerTest
 {
     DBHandler handler = new DBHandler(InstrumentationRegistry.getTargetContext());
     private ArrayList<SportActivity> activityList = new ArrayList<>();
-    private ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-
-
-    @Test
-    public void retrieveAll()
-    {
-        ArrayList<SportActivity> activities = handler.retrieveAll();
-        for (SportActivity activity : activities) {
-            Log.i("KDSKNK", activity.toString());
-        }
-    }
-
-    @Test
-    public void insert()
-    {
-        temp();
-        handler.insert(activityList.get(0));
-    }
-
-    @Test
-    public void update()
-    {
-    }
+    private ArrayList<Coordinate> coordinates = new ArrayList<>();
+    private ArrayList<PolylineInfo> polylineInfos= new ArrayList<>();
 
     public void temp() {
         this.coordinates.add(new Coordinate(50,51));
@@ -53,7 +33,13 @@ public class DBHandlerTest
                 5.0,
                 15.0, "Cycling", coordinates);
         this.activityList.add(cycleActivity1);
+        for (int i = 0; i < 5 ; i++)
+        {
+            this.polylineInfos.add(new PolylineInfo(Math.random() * 500, (long) (Math.random() * 500),i));
+        }
+
     }
+
 
     @Test
     public void onCreate()
@@ -69,10 +55,55 @@ public class DBHandlerTest
     }
 
     @Test
+    public void retrieveAll()
+    {
+        ArrayList<SportActivity> activities = handler.retrieveAll();
+        for (SportActivity activity : activities) {
+            Log.i("KDSKNK", activity.toString());
+        }
+    }
+
+    @Test
+    public void insert()
+    {
+        temp();
+        handler.insert(activityList.get(0), this.polylineInfos);
+    }
+
+
+    @Test
     public void delete()
     {
         ArrayList<SportActivity> list = this.handler.retrieveAll();
 
         this.handler.delete(list.get(0));
+    }
+
+
+    @Test
+    public void PRetrieveByActivity()
+    {
+        SportActivity activity = this.handler.retrieveAll().get(1);
+        ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
+        for(PolylineInfo polylineInfo : poly) {
+            Log.d("DEBUGPOLY", polylineInfo.toString());
+        }
+    }
+
+    @Test
+    public void Pupdate()
+    {
+        SportActivity activity = this.handler.retrieveAll().get(1);
+        ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
+        poly.get(0).setLength(500000);
+        this.handler.Pupdate(poly.get(0), activity.getId());
+    }
+
+    @Test
+    public void PDelete()
+    {
+        SportActivity activity = this.handler.retrieveAll().get(1);
+        ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
+        this.handler.PDelete(poly.get(0));
     }
 }
