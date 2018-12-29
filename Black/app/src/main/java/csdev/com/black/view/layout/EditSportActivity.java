@@ -59,6 +59,7 @@ public class EditSportActivity extends AppCompatActivity
                 detail.putExtra("SPORTACTIVITY", this.activity);
                 detail.putExtra("POLYLINEINFO", this.polys);
                 startActivity(detail);
+                finish();
             }
         });
         this.cancelButton.setOnClickListener(l -> {
@@ -66,6 +67,7 @@ public class EditSportActivity extends AppCompatActivity
             detail.putExtra("SPORTACTIVITY", this.activity);
             detail.putExtra("POLYLINEINFO", this.polys);
             startActivity(detail);
+            finish();
         });
     }
 

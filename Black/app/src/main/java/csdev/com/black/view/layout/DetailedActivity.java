@@ -111,18 +111,21 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
             editIntent.putExtra("SPORT", this.activity);
             editIntent.putExtra("POLY", this.infos);
             startActivity(editIntent);
+            finish();
         });
 
         this.deleteButton.setOnClickListener(l -> {
             this.handler.delete(this.activity);
             Intent delete = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(delete);
+            finish();
 
         });
 
         this.returnButton.setOnClickListener(l -> {
             Intent main = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(main);
+            finish();
         });
     }
 
