@@ -158,7 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPolylineClick(Polyline polyline) {
                 for(PolylineInfo p : infos)
                 {
-                    if(polyline.getTag().equals(String.valueOf(p.getId())))
+                    if(polyline.getTag().equals(String.valueOf(p.getIdentificationID())))
                     {
                        // Toast.makeText(getApplicationContext(), "Length: " + p.getLength(), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "Time: " + p.getTime(), Toast.LENGTH_SHORT).show();
@@ -281,7 +281,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 {
                                     for(PolylineInfo f : infos)
                                     {
-                                        if(f.getId() == (i - 1))
+                                        if(f.getIdentificationID() == (i - 1))
                                         {
                                             long difference = Duration.between(startTime, now).toMillis();
                                             PolylineInfo p = new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i);
