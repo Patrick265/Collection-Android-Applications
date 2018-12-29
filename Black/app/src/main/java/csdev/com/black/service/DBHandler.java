@@ -164,6 +164,7 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     public void delete(SportActivity activity) {
+        this.getWritableDatabase().delete(DBQuery.HEADERPOLYLINE, DBQuery.COL_POLYLINEINFO_PAID + " = ?", new String[]{activity.getId()});
         this.getWritableDatabase().delete(DBQuery.HEADERCOORDINATES, DBQuery.COL_COORDINATES_ID + " = ?", new String[]{activity.getId()});
         this.getWritableDatabase().delete(DBQuery.HEADERMAIN, DBQuery.COL_MAIN_ID + " = ?", new String[]{activity.getId()});
     }
