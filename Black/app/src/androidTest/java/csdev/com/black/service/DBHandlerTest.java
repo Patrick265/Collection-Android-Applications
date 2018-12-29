@@ -1,5 +1,6 @@
 package csdev.com.black.service;
 
+import android.database.DatabaseUtils;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
@@ -105,5 +106,13 @@ public class DBHandlerTest
         SportActivity activity = this.handler.retrieveAll().get(1);
         ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
         this.handler.PDelete(poly.get(0));
+    }
+
+    @Test
+    public void tom() {
+
+        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM MAIN", null)));
+        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM COORDINATES", null)));
+        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM POLYLINEINFO", null)));
     }
 }
