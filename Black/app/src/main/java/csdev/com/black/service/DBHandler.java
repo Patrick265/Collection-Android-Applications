@@ -160,7 +160,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DBQuery.COL_MAIN_AVGSPEED, activity.getAverageSpeed());
         values.put(DBQuery.COL_MAIN_TYPE, activity.getType());
 
-        getWritableDatabase().update(DBQuery.HEADERMAIN, values,"ID=" + activity.getId(),null);
+        getWritableDatabase().update(DBQuery.HEADERMAIN, values,"ID = \"" + activity.getId() + "\"",null);
     }
 
     public void delete(SportActivity activity) {

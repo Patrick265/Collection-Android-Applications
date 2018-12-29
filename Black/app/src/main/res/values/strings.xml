@@ -24,4 +24,5 @@
     <string name="polylineInfoDistance">Distance</string>
     <string name="polylineInfoTime">Estimated time</string>
     <string name="polylineInfoSpeed">Estimated velocity</string>
+    <string name="cancel">cancel</string>
 </resources>

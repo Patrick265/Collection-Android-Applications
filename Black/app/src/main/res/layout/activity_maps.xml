@@ -23,12 +23,14 @@
         android:id="@+id/btn_map"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_style"
         android:singleLine="true"
         android:text="@string/startBtn"
         android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/btn_map2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
@@ -36,12 +38,14 @@
         android:id="@+id/btn_map2"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="108dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/button_style"
         android:singleLine="true"
         android:text="Stop"
         android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toEndOf="@+id/btn_map"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
@@ -53,8 +57,6 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailed_map"
         app:layout_constraintVertical_bias="1.0" />

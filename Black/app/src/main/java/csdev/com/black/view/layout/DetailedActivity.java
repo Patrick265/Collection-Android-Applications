@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -60,6 +58,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
     private ImageButton editButton;
     private ImageButton deleteButton;
+    private ImageButton returnButton;
 
     private DBHandler handler;
 
@@ -69,18 +68,17 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
-
+        this.handler = new DBHandler(getApplicationContext());
         Intent intent = getIntent();
-
         this.activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
         this.infos = (ArrayList<PolylineInfo>) intent.getSerializableExtra("POLYLINEINFO");
+
 
         initalise();
 
         this.title.setText(activity.getTitle());
         this.description.setText(activity.getDescription());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy\tHH:mm");
         this.startTime.setText(activity.getStartTime());
         this.endTime.setText(activity.getEndTime());
 
@@ -109,7 +107,10 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         }
 
         this.editButton.setOnClickListener(l -> {
-            Intent editIntent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent editIntent = new Intent(getApplicationContext(), EditSportActivity.class);
+            editIntent.putExtra("SPORT", this.activity);
+            editIntent.putExtra("POLY", this.infos);
+            startActivity(editIntent);
         });
 
         this.deleteButton.setOnClickListener(l -> {
@@ -117,6 +118,11 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
             Intent delete = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(delete);
 
+        });
+
+        this.returnButton.setOnClickListener(l -> {
+            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(main);
         });
     }
 
@@ -134,7 +140,6 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detailed_map);
         mapFragment.getMapAsync(this);
-        this.handler = new DBHandler(getApplicationContext());
         this.title = findViewById(R.id.detailed_title);
         this.description = findViewById(R.id.detailed_text_description);
         this.startTime = findViewById(R.id.detailed_date_text);
@@ -149,6 +154,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
         this.deleteButton = findViewById(R.id.detailed_delete_button);
         this.editButton = findViewById(R.id.detailed_edit_button);
+        this.returnButton = findViewById(R.id.detailed_return_button);
 
 
     }

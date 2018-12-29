@@ -92,8 +92,6 @@ public class EnteringDetails extends AppCompatActivity {
         this.category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItem = (String) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), clickedItem + " selected", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
