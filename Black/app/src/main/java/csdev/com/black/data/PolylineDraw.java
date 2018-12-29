@@ -13,7 +13,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +32,6 @@ public class PolylineDraw {
         mMap.clear();
         mMap.addPolyline(options);
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (LatLng latLng : polygon) {
-            builder.include(latLng);
-        }
-
-        final LatLngBounds bounds = builder.build();
-
-        //BOUND_PADDING is an int to specify padding of bound.. try 100.
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
-        mMap.animateCamera(cu);
-    }
-
-    public void updatePolygon( double latitude, double longitude,GoogleMap mMap,List<LatLng> polygon){
-        polygon.add(new LatLng(latitude,longitude));
-        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
-        options.addAll(polygon);
-        mMap.clear();
-        mMap.addPolyline(options);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LatLng latLng : polygon) {
@@ -60,5 +44,41 @@ public class PolylineDraw {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
         mMap.animateCamera(cu);
     }
+
+    public void updatePolygon(LatLng old,LatLng fresh, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines, String identifier){
+        polygon.add(fresh);
+        ArrayList<LatLng> cur = new ArrayList<>();
+        cur.add(old);
+        cur.add(fresh);
+
+        Polyline polyline = mMap.addPolyline(new PolylineOptions()
+                .addAll(cur)
+                .width(15)
+                .color(Color.BLUE)
+                .geodesic(true));
+        polyline.setClickable(true);
+        polyline.setTag(identifier);
+        polylines.add(polyline);
+
+
+
+//        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true).clickable(true);
+//        options.addAll(polygon);
+//        mMap.clear();
+//        mMap.addPolyline(options);
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng latLng : polygon) {
+            builder.include(latLng);
+        }
+
+        final LatLngBounds bounds = builder.build();
+
+        //BOUND_PADDING is an int to specify padding of bound.. try 100.
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+        mMap.animateCamera(cu);
+    }
+
+
 }
 

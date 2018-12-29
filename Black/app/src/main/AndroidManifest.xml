@@ -55,7 +55,8 @@
             android:name=".view.layout.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".view.layout.InsertInfoFragment" />
-        <activity android:name=".view.layout.EnteringDetails"></activity>
+        <activity android:name=".view.layout.EnteringDetails" />
+        <activity android:name=".view.layout.polyline_info_screen"></activity>
     </application>
 
 </manifest>

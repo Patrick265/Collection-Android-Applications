@@ -24,12 +24,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import csdev.com.black.R;
 import csdev.com.black.data.LocationCallbackListener;
@@ -37,6 +41,7 @@ import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.PolylineInfo;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
@@ -50,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PolylineDraw polylineDraw;
     private List<LatLng> polygon;
     private Dialog dMessage;
+    private Dialog dPolyMessage;
     private Boolean startTracking;
     private TextView distance;
     private double distanceInteger;
@@ -57,6 +63,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private SimpleDateFormat sdfDate;
     private Boolean startButtonControl;
     private Boolean stopButtonControl;
+    private ArrayList<PolylineInfo> infos;
+    private LocalDateTime startTime;
+    private int i;
+    private ArrayList<Polyline> polyLines = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +88,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         firstTime = true;
         polygon = new ArrayList<>();
         distanceInteger = 0;
+        i = 0;
+        infos = new ArrayList<>();
 
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
         dMessage.setCancelable(false);
+
+        dPolyMessage = new Dialog(this);
+        dPolyMessage.setCancelable(false);
+        dPolyMessage.setCanceledOnTouchOutside(false);
 
         loc = new LocationCallbackHandler();
         loc.addListener(this);
@@ -95,31 +112,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startButtonControl = false;
 
 
-        mapButtonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(stopButtonControl)
-                {
-                    showMessage();
-                }
+        mapButtonStop.setOnClickListener(v -> {
+            if(stopButtonControl)
+            {
+                showMessage();
             }
         });
 
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(startButtonControl)
-                {
-                    startTracking = true;
-                    Date now = new Date();
-                    startDate = sdfDate.format(now);
-                    startButtonControl = false;
-                   // mapButton.setFocusable(false);
-                    mapButton.setAlpha(0.5f);
-                    stopButtonControl = true;
-                  //  mapButtonStop.setFocusable(true);
-                    mapButtonStop.setAlpha(1f);
-                }
+        mapButton.setOnClickListener(v -> {
+            if(startButtonControl)
+            {
+                startTracking = true;
+                Date now = new Date();
+                startTime = LocalDateTime.now();
+                startDate = sdfDate.format(now);
+                startButtonControl = false;
+                mapButton.setAlpha(0.5f);
+                stopButtonControl = true;
+                mapButtonStop.setAlpha(1f);
             }
         });
 
@@ -142,6 +152,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        mGoogleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+                for(PolylineInfo p : infos)
+                {
+                    if(polyline.getTag().equals(String.valueOf(p.getId())))
+                    {
+                       // Toast.makeText(getApplicationContext(), "Length: " + p.getLength(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Time: " + p.getTime(), Toast.LENGTH_SHORT).show();
+                        showPolylineDetails(polyline, p);
+                      //  Log.i("WOW", p.getTime() + " seconds");
+                    }
+                }
+            }
+        });
+
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
@@ -229,12 +256,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (startTracking) {
                 this.runOnUiThread(() -> {
                     //The last location in the list is the newest
+
+                    Location mPrevloc = mLastLocation;
                     mLastLocation = location;
-                    if (polylineDraw != null) {
-                        polylineDraw.updatePolygon(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mGoogleMap, polygon);
-                        if(distance != null) {
-                            distanceInteger = (int)SphericalUtil.computeLength(polygon);
+
+                    if(mPrevloc != null) {
+                        LatLng fresh = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                        LatLng old = new LatLng(mPrevloc.getLatitude(), mPrevloc.getLongitude());
+                        ArrayList<LatLng> hide = new ArrayList<>();
+                        hide.add(old);
+                        hide.add(fresh);
+                        LocalDateTime now = LocalDateTime.now();
+
+                        if (polylineDraw != null) {
+                            i++;
+                            if (polygon.size() >= 1) {
+                                if(infos.isEmpty())
+                                {
+                                    long difference = Duration.between(startTime, now).toMillis();
+                                    infos.add(new PolylineInfo((SphericalUtil.computeLength(hide)),difference, i));
+                                    startTime = LocalDateTime.now();
+                                }
+                                else
+                                {
+                                    for(PolylineInfo f : infos)
+                                    {
+                                        if(f.getId() == (i - 1))
+                                        {
+                                            long difference = Duration.between(startTime, now).toMillis();
+                                            PolylineInfo p = new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i);
+                                            infos.add(p);
+                                            startTime = LocalDateTime.now();
+                                            Log.i("WOW", p.getTime() + "");
+                                        }
+                                    }
+                                }
+                            }
+                            polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                            distanceInteger = (int) SphericalUtil.computeLength(polygon);
                             distance.setText(distanceInteger + " meter");
+
                         }
                     }
                 });
@@ -247,19 +308,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dMessage.setContentView(R.layout.activity_confirmation);
             dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dMessage.show();
-            Button ok = dMessage.findViewById(R.id.btn_confirmationOK);
+            Button ok = dMessage.findViewById(R.id.btn_confirmationOk);
             Button cancel = dMessage.findViewById(R.id.btn_confirmationCancel);
+
+            ok.setOnClickListener(v -> bundleUp());
+            cancel.setOnClickListener(v -> dMessage.hide());
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
+        }
+    }
+
+    private void showPolylineDetails(Polyline polyline, PolylineInfo polylineInfo)
+    {
+        try {
+            polyline.setColor(Color.RED);
+            dPolyMessage.setContentView(R.layout.activity_polyline_info_screen);
+            dPolyMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            Button ok = dPolyMessage.findViewById(R.id.poly_ok);
+            TextView time = dPolyMessage.findViewById(R.id.polyline_time_fill);
+            TextView distance = dPolyMessage.findViewById(R.id.polyline_distance_fill);
+            TextView velocity = dPolyMessage.findViewById(R.id.polyline_velocity_fill);
+
+            time.setText(polylineInfo.getTime() + " seconds" );
+            distance.setText(polylineInfo.getLength() + " meters");
+            velocity.setText(polylineInfo.getSpeed() + " km/h");
+
+            dPolyMessage.show();
 
             ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bundleUp();
-                }
-            });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dMessage.hide();
+                    polyline.setColor(Color.BLUE);
+                    dPolyMessage.hide();
                 }
             });
 
