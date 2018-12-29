@@ -371,6 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putSerializable("start", startDate );
         bundle.putSerializable("end", endDate);
         bundle.putSerializable("avgspeed", 0.0);
+        bundle.putSerializable("info", infos);
         intent.putExtras(bundle);
         stopButtonControl = false;
         mapButtonStop.setAlpha(0.5f);

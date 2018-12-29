@@ -1,9 +1,15 @@
 package csdev.com.black.view.layout;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +18,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 
 import java.lang.reflect.Array;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +28,7 @@ import java.util.List;
 import csdev.com.black.R;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.SportActivity;
 
 public class DetailedActivity extends FragmentActivity implements OnMapReadyCallback
@@ -32,8 +40,11 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private TextView date;
     private TextView distance;
     private ArrayList<LatLng> latLngList;
+    private ArrayList<PolylineInfo> infos;
     private PolylineDraw polylineDraw;
     private SportActivity activity;
+    private ArrayList<Polyline> polylines = new ArrayList<>();
+    private Dialog dPolyMessage;
 
     private ImageView category;
 
@@ -47,6 +58,8 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         Intent intent = getIntent();
 
         this.activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
+        this.infos = (ArrayList<PolylineInfo>) intent.getSerializableExtra("POLYLINEINFO");
+
         initalise();
 
         this.title.setText(activity.getTitle());
@@ -56,6 +69,10 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.date.setText(activity.getStartTime());
 
         this.distance.setText(activity.getDistance() + " Km");
+
+        dPolyMessage = new Dialog(this);
+        dPolyMessage.setCancelable(false);
+        dPolyMessage.setCanceledOnTouchOutside(false);
 
 
         switch (activity.getType())
@@ -98,16 +115,79 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+    private void fillPolyLines(GoogleMap mMap)
+    {
+        int i = 2;
+        for(int b = 0; b < latLngList.size(); b++)
+        {
+            if((b + 1) < latLngList.size())
+            {
+                LatLng first = latLngList.get(b);
+                LatLng second = latLngList.get(b +1);
+                polylineDraw.updatePolygonFresh(polylines, String.valueOf(i), mMap, first,second);
+                i++;
+            }
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         convertCoordinates(activity.getCoordinates());
-        if(!latLngList.isEmpty()) {
-            polylineDraw.addAllPolygon(latLngList, mGoogleMap);
+        this.mGoogleMap.setOnMapLoadedCallback(() ->
+        {
+            if(!latLngList.isEmpty()) {
+                fillPolyLines(mGoogleMap);
+                polylineDraw.setCamera(latLngList,mGoogleMap);
+            }
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+            mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+        });
+
+
+        mGoogleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+                for(PolylineInfo p : infos)
+                {
+                    if(polyline.getTag().equals(String.valueOf(p.getIdentificationID())))
+                    {
+                        showPolylineDetails(polyline, p);
+                    }
+                }
+            }
+        });
+    }
+
+    private void showPolylineDetails(Polyline polyline, PolylineInfo polylineInfo)
+    {
+        try {
+            polyline.setColor(Color.RED);
+            dPolyMessage.setContentView(R.layout.activity_polyline_info_screen);
+            dPolyMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            Button ok = dPolyMessage.findViewById(R.id.poly_ok);
+            TextView time = dPolyMessage.findViewById(R.id.polyline_time_fill);
+            TextView distance = dPolyMessage.findViewById(R.id.polyline_distance_fill);
+            TextView velocity = dPolyMessage.findViewById(R.id.polyline_velocity_fill);
+
+            time.setText(polylineInfo.getTime() + " seconds" );
+            distance.setText(polylineInfo.getLength() + " meters");
+            velocity.setText(polylineInfo.getSpeed() + " km/h");
+
+            dPolyMessage.show();
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    polyline.setColor(Color.BLUE);
+                    dPolyMessage.hide();
+                }
+            });
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
         }
-        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
     }
 }

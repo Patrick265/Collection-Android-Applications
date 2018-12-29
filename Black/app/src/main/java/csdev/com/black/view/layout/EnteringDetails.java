@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import csdev.com.black.R;
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.SportActivity;
 import csdev.com.black.service.DBHandler;
 import csdev.com.black.view.adapter.spinner.SpinnerItem;
@@ -42,6 +43,7 @@ public class EnteringDetails extends AppCompatActivity {
     private ArrayList<Coordinate> latLngList;
     private double distance;
     private double avgspeed;
+    private ArrayList<PolylineInfo> infos;
 
 
     @SuppressWarnings("unchecked")
@@ -60,10 +62,11 @@ public class EnteringDetails extends AppCompatActivity {
         this.endTime = (String) bundle.getSerializable("end");
         this.latLngList = (ArrayList<Coordinate>) bundle.getSerializable("coordinates");
         this.avgspeed = (double) bundle.getSerializable("avgspeed");
+        this.infos = (ArrayList<PolylineInfo>) bundle.getSerializable("info");
 
         this.save.setOnClickListener(l -> {
             if(validate() && this.activity != null) {
-                handler.insert(this.activity, null);
+                handler.insert(this.activity, infos);
                 Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intentToMain);
             }

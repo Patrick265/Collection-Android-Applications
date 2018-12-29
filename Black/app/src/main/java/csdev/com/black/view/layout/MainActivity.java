@@ -12,6 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import csdev.com.black.R;
+import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.SportActivity;
 import csdev.com.black.service.DBHandler;
 import csdev.com.black.view.adapter.ListCell;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity
             Log.i("CELL", "Clicked on cell" + activity.getTitle());
             Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
             intent.putExtra("SPORTACTIVITY", activity);
+            intent.putExtra("POLYLINEINFO", this.handler.PRetrieveByActivity(activity));
             startActivity(intent);
         }, this.activities);
 

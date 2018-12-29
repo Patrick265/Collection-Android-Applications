@@ -25,25 +25,13 @@ public class PolylineInfo implements Serializable {
         this.identificationID = identificationID;
     }
 
-    public PolylineInfo(String dbId, double length, long time, int identificationID)
-    {
-        this.dbId = dbId;
-        this.length = Double.valueOf(df2.format(length));
-        double cur = (((length/((double)time / 1000))) * 3.60);
-        this.speed = Double.valueOf(df2.format(cur));
-        this.time =  Double.valueOf(df2.format(time));
-        this.time = time /1000.00;
-        this.identificationID = identificationID;
-    }
-
     public PolylineInfo(String dbId, double length, double time, int identificationID)
     {
         this.dbId = dbId;
         this.length = Double.valueOf(df2.format(length));
-        double cur = (((length/(time / 1000))) * 3.60);
+        double cur = (((length/(time))) * 3.6);
         this.speed = Double.valueOf(df2.format(cur));
         this.time =  Double.valueOf(df2.format(time));
-        this.time = time /1000.00;
         this.identificationID = identificationID;
     }
 
