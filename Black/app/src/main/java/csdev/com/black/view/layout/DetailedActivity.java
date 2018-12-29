@@ -82,7 +82,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.startTime.setText(activity.getStartTime());
         this.endTime.setText(activity.getEndTime());
 
-        this.distance.setText(activity.getDistance() + " Km");
+        this.distance.setText(activity.getDistance() + " m");
 
         dPolyMessage = new Dialog(this);
         dPolyMessage.setCancelable(false);
@@ -267,7 +267,6 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         long hours = tempDateTime.until( end, ChronoUnit.HOURS);
         tempDateTime = tempDateTime.plusHours( hours );
 
-
         long days = tempDateTime.until( end, ChronoUnit.DAYS);
         tempDateTime = tempDateTime.plusDays(days);
 
@@ -276,7 +275,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         long minutes = tempDateTime.until( end, ChronoUnit.MINUTES);
 
         tempDateTime = tempDateTime.plusMinutes( minutes );
-        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds);
+        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds % 60);
 
         DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.duration.setText(DATEFORMATTER.format(localTime));

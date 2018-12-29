@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         initalise();
     }
 
-    
+
 
     private void initalise() {
         this.handler = new DBHandler(getApplicationContext());
