@@ -20,4 +20,8 @@
     <string name="category">Category</string>
     <string name="save">Save</string>
     <string name="rate">Rate your sport activity</string>
+    <string name="polylineInfoTitle">Detailed information</string>
+    <string name="polylineInfoDistance">Distance</string>
+    <string name="polylineInfoTime">Estimated time</string>
+    <string name="polylineInfoSpeed">Estimated velocity</string>
 </resources>

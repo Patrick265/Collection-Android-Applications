@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -26,17 +25,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.zip.Inflater;
 
 import csdev.com.black.R;
 import csdev.com.black.data.LocationCallbackListener;
@@ -58,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PolylineDraw polylineDraw;
     private List<LatLng> polygon;
     private Dialog dMessage;
+    private Dialog dPolyMessage;
     private Boolean startTracking;
     private TextView distance;
     private double distanceInteger;
@@ -96,6 +94,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
         dMessage.setCancelable(false);
+
+        dPolyMessage = new Dialog(this);
+        dPolyMessage.setCancelable(false);
+        dPolyMessage.setCanceledOnTouchOutside(false);
 
         loc = new LocationCallbackHandler();
         loc.addListener(this);
@@ -160,8 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                        // Toast.makeText(getApplicationContext(), "Length: " + p.getLength(), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(getApplicationContext(), "Time: " + p.getTime(), Toast.LENGTH_SHORT).show();
-                        polyline.setColor(Color.RED);
-                        Log.i("WOW", p.getTime() + " seconds");
+                        showPolylineDetails(polyline, p);
+                      //  Log.i("WOW", p.getTime() + " seconds");
                     }
                 }
             }
@@ -271,8 +273,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             if (polygon.size() >= 1) {
                                 if(infos.isEmpty())
                                 {
-                                    long difference = Duration.between(startTime, now).toMillis() / 1000;
-                                    infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
+                                    long difference = Duration.between(startTime, now).toMillis();
+                                    infos.add(new PolylineInfo((SphericalUtil.computeLength(hide)),difference, i));
                                     startTime = LocalDateTime.now();
                                 }
                                 else
@@ -281,7 +283,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     {
                                         if(f.getId() == (i - 1))
                                         {
-                                            long difference = Duration.between(startTime, now).toMillis() / 1000;
+                                            long difference = Duration.between(startTime, now).toMillis();
                                             PolylineInfo p = new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i);
                                             infos.add(p);
                                             startTime = LocalDateTime.now();
@@ -306,11 +308,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dMessage.setContentView(R.layout.activity_confirmation);
             dMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dMessage.show();
-            Button ok = dMessage.findViewById(R.id.btn_confirmationOK);
+            Button ok = dMessage.findViewById(R.id.btn_confirmationOk);
             Button cancel = dMessage.findViewById(R.id.btn_confirmationCancel);
 
             ok.setOnClickListener(v -> bundleUp());
             cancel.setOnClickListener(v -> dMessage.hide());
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
+        }
+    }
+
+    private void showPolylineDetails(Polyline polyline, PolylineInfo polylineInfo)
+    {
+        try {
+            polyline.setColor(Color.RED);
+            dPolyMessage.setContentView(R.layout.activity_polyline_info_screen);
+            dPolyMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            Button ok = dPolyMessage.findViewById(R.id.poly_ok);
+            TextView time = dPolyMessage.findViewById(R.id.polyline_time_fill);
+            TextView distance = dPolyMessage.findViewById(R.id.polyline_distance_fill);
+            TextView velocity = dPolyMessage.findViewById(R.id.polyline_velocity_fill);
+
+            time.setText(polylineInfo.getTime() + " seconds" );
+            distance.setText(polylineInfo.getLength() + " meters");
+            velocity.setText(polylineInfo.getSpeed() + " km/h");
+
+            dPolyMessage.show();
+
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    polyline.setColor(Color.BLUE);
+                    dPolyMessage.hide();
+                }
+            });
 
         } catch (Exception e) {
             Log.d("ERROR", e.toString());

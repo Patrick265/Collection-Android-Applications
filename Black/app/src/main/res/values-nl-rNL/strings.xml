@@ -11,4 +11,8 @@
     <string name="title">Titel</string>
     <string name="well_done">Goed Gedaan!</string>
     <string name="rate">Geef een cijfer aan je sport activiteit</string>
+    <string name="polylineInfoTitle">Gedetailleerde informatie</string>
+    <string name="polylineInfoDistance">Afstand</string>
+    <string name="polylineInfoTime">Geschatte tijd</string>
+    <string name="polylineInfoSpeed">Geschatte snelheid</string>
 </resources>
