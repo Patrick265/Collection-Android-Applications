@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ListCell_date_TextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_baseline_date_range_24px" />
+                app:srcCompat="@drawable/ic_baseline_timer_24px" />
 
             <TextView
                 android:id="@+id/ListCell_distance_TextView"

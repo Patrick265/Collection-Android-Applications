@@ -26,7 +26,7 @@ public class SportActivity implements Serializable
         this.averageSpeed = averageSpeed;
         this.coordinates = coordinates;
         this.id = UUID.randomUUID().toString();
-        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:MM");
+        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:MM:ss");
         this.startTime = this.formatter.format(LocalDateTime.now());
         this.endTime = this.formatter.format(LocalDateTime.now());
         this.rating = rating;
@@ -51,7 +51,7 @@ public class SportActivity implements Serializable
     public SportActivity()
     {
         this.id = UUID.randomUUID().toString();
-        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:MM");
+        this.formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:MM:ss");
     }
 
     public void setCoordinates(ArrayList<Coordinate> coordinates)

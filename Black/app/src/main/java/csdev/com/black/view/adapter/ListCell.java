@@ -5,7 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -52,7 +56,7 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
 
 
         viewHolder.getTitle().setText(activity.getTitle());
-        viewHolder.getDate().setText(activity.getStartTime());
+        viewHolder.getDate().setText(calcDuration(activity.getStartTime(), activity.getEndTime()));
         String distance = activity.getDistance() + " Km";
         viewHolder.getDistance().setText(distance);
         viewHolder.bindActivity(activity, this.listener);
@@ -78,5 +82,45 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
     public void setActivityList(List<SportActivity> activityList)
     {
         this.activityList = activityList;
+    }
+
+    public String calcDuration(String startTime, String endTime) {
+
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        try {
+            start = LocalDateTime.parse(startTime, DATEFORMATTER);
+            end = LocalDateTime.parse(endTime, DATEFORMATTER);
+        } catch(RuntimeException e) {
+            DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            start = LocalDateTime.parse(startTime, DATEFORMATTER);
+            end = LocalDateTime.parse(endTime, DATEFORMATTER);
+        }
+
+
+        LocalDateTime tempDateTime = LocalDateTime.from( start );
+
+        long years = tempDateTime.until( end, ChronoUnit.YEARS);
+        tempDateTime = tempDateTime.plusYears( years );
+
+        long months = tempDateTime.until( end, ChronoUnit.MONTHS);
+        tempDateTime = tempDateTime.plusMonths( months );
+
+        long days = tempDateTime.until( end, ChronoUnit.DAYS);
+        tempDateTime = tempDateTime.plusDays( days );
+
+
+        long hours = tempDateTime.until( end, ChronoUnit.HOURS);
+        tempDateTime = tempDateTime.plusHours( hours );
+
+        long minutes = tempDateTime.until( end, ChronoUnit.MINUTES);
+        tempDateTime = tempDateTime.plusMinutes( minutes );
+
+        long seconds = tempDateTime.until( end, ChronoUnit.SECONDS);
+        DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds);
+
+        return DATEFORMATTER.format(localTime);
     }
 }

@@ -129,7 +129,6 @@ public class EnteringDetails extends AppCompatActivity {
     {
         if(title.getText().length() > 0 &&
             title.getText().length() < 1000 &&
-            description.getText().length() > 0 &&
             description.getText().length() < 2000)
         {
             this.activity.setTitle(String.valueOf(this.title.getText()));
@@ -143,6 +142,7 @@ public class EnteringDetails extends AppCompatActivity {
             this.activity.setCoordinates(this.latLngList);
             return true;
         }
+        Toast.makeText(getApplicationContext(), "Add a title and a description, Title cannot be longer then 1000 character and description cannot be longer then 2000 charachters", Toast.LENGTH_SHORT).show();
         return false;
     }
 }

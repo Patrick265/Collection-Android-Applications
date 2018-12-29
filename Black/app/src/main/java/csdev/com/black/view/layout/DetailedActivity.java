@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,31 +15,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 
-import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.List;
 
 import csdev.com.black.R;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.model.Coordinate;
 import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.SportActivity;
+import csdev.com.black.service.DBHandler;
 
 public class DetailedActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
     private GoogleMap mGoogleMap;
-    private TextView title;
-    private TextView description;
-    private TextView date;
-    private TextView distance;
     private ArrayList<LatLng> latLngList;
     private ArrayList<PolylineInfo> infos;
     private PolylineDraw polylineDraw;
@@ -46,7 +45,23 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private ArrayList<Polyline> polylines = new ArrayList<>();
     private Dialog dPolyMessage;
 
+
+
+    private TextView title;
+    private TextView description;
+    private TextView startTime;
+    private TextView distance;
+    private TextView endTime;
+    private TextView duration;
+
+
     private ImageView category;
+    private ImageView iconCategory;
+
+    private ImageButton editButton;
+    private ImageButton deleteButton;
+
+    private DBHandler handler;
 
 
     @Override
@@ -66,27 +81,43 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.description.setText(activity.getDescription());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy\tHH:mm");
-        this.date.setText(activity.getStartTime());
+        this.startTime.setText(activity.getStartTime());
+        this.endTime.setText(activity.getEndTime());
 
         this.distance.setText(activity.getDistance() + " Km");
 
         dPolyMessage = new Dialog(this);
         dPolyMessage.setCancelable(false);
         dPolyMessage.setCanceledOnTouchOutside(false);
+        calcDuration(this.activity.getStartTime(), this.activity.getEndTime());
 
 
         switch (activity.getType())
         {
             case "Cycling":
                 this.category.setImageResource(R.color.BicycleColor);
+                this.iconCategory.setImageResource(R.drawable.ic_baseline_bike_24px);
                 break;
             case "Running":
                 this.category.setImageResource(R.color.RunningColor);
+                this.iconCategory.setImageResource(R.drawable.ic_baseline_run_24px);
                 break;
             case "Walking":
                 this.category.setImageResource(R.color.WalkingColor);
+                this.iconCategory.setImageResource(R.drawable.ic_baseline_walk_24px);
                 break;
         }
+
+        this.editButton.setOnClickListener(l -> {
+            Intent editIntent = new Intent(getApplicationContext(), MainActivity.class);
+        });
+
+        this.deleteButton.setOnClickListener(l -> {
+            this.handler.delete(this.activity);
+            Intent delete = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(delete);
+
+        });
     }
 
     private void convertCoordinates(ArrayList<Coordinate> coordinateList)
@@ -100,18 +131,25 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
     private void initalise() {
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.detailed_map);
+        mapFragment.getMapAsync(this);
+        this.handler = new DBHandler(getApplicationContext());
         this.title = findViewById(R.id.detailed_title);
         this.description = findViewById(R.id.detailed_text_description);
-        this.date = findViewById(R.id.detailed_date_text);
+        this.startTime = findViewById(R.id.detailed_date_text);
         this.distance = findViewById(R.id.detailed_distance_text);
         this.polylineDraw = new PolylineDraw();
 
         this.category = findViewById(R.id.detailed_category_image);
+        this.endTime = findViewById(R.id.detailed_date_textEnd);
+        this.duration = findViewById(R.id.detailed_text_time);
 
+        this.iconCategory = findViewById(R.id.detailed_icon_typeSport);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.detailed_map);
-        mapFragment.getMapAsync(this);
+        this.deleteButton = findViewById(R.id.detailed_delete_button);
+        this.editButton = findViewById(R.id.detailed_edit_button);
+
 
     }
 
@@ -188,6 +226,44 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
         } catch (Exception e) {
             Log.d("ERROR", e.toString());
+
+    public void calcDuration(String startTime, String endTime) {
+
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        try {
+            start = LocalDateTime.parse(startTime, DATEFORMATTER);
+            end = LocalDateTime.parse(endTime, DATEFORMATTER);
+        } catch(RuntimeException e) {
+            DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            start = LocalDateTime.parse(startTime, DATEFORMATTER);
+            end = LocalDateTime.parse(endTime, DATEFORMATTER);
         }
+
+
+        long years = tempDateTime.until( end, ChronoUnit.YEARS);
+        LocalDateTime tempDateTime = LocalDateTime.from( start );
+
+        tempDateTime = tempDateTime.plusYears( years );
+        long months = tempDateTime.until( end, ChronoUnit.MONTHS);
+
+        tempDateTime = tempDateTime.plusMonths( months );
+
+        long hours = tempDateTime.until( end, ChronoUnit.HOURS);
+
+
+        tempDateTime = tempDateTime.plusDays( days );
+        long days = tempDateTime.until( end, ChronoUnit.DAYS);
+        this.duration.setText(DATEFORMATTER.format(localTime));
+
+        LocalTime localTime = LocalTime.of((int) hours, (int) minutes, (int) seconds);
+        DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+        long seconds = tempDateTime.until( end, ChronoUnit.SECONDS);
+
+        tempDateTime = tempDateTime.plusMinutes( minutes );
+        long minutes = tempDateTime.until( end, ChronoUnit.MINUTES);
+
+        tempDateTime = tempDateTime.plusHours( hours );
     }
 }

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".EditSportActivity">
+
+    <TextView
+        android:id="@+id/entering_text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/title"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_title"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/entering_edittext_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:autofillHints=""
+        android:background="@drawable/rounded_edit_text"
+        android:fontFamily="@font/roboto"
+        android:inputType="text"
+        android:maxLines="1000"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entering_text_title" />
+
+    <TextView
+        android:id="@+id/entering_TextView_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/description"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/entering_text_title"
+        app:layout_constraintStart_toStartOf="@+id/entering_text_title"
+        app:layout_constraintTop_toBottomOf="@+id/entering_edittext_title" />
+
+    <EditText
+        android:id="@+id/entering_edittext_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:autofillHints=""
+        android:background="@drawable/rounded_edit_text"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:maxLines="2000"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/entering_TextView_Rating"
+        app:layout_constraintEnd_toEndOf="@+id/entering_TextView_description"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/entering_TextView_description"
+        app:layout_constraintTop_toBottomOf="@+id/entering_TextView_description" />
+
+    <TextView
+        android:id="@+id/entering_TextView_Rating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/rate"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/entering_TextView_Rating_text"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_description"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_description" />
+
+    <SeekBar
+        android:id="@+id/entering_SeekBar_Rating"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:colorControlActivated="@color/SelectedSeekbar"
+        android:max="5"
+        android:maxHeight="5dp"
+        android:progress="0"
+
+        android:progressDrawable="@drawable/seekbar_style"
+        android:thumb="@drawable/seekbar_thumb"
+        app:layout_constraintBottom_toTopOf="@+id/entering_TextView_category"
+        app:layout_constraintEnd_toStartOf="@+id/entering_TextView_Rating_text"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/entering_TextView_Rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="0 / 5"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/entering_SeekBar_Rating"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/entering_TextView_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/roboto_light"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/category"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/entering_Spinner_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/entering_Spinner_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/entering_button_finished"
+        app:layout_constraintEnd_toEndOf="@+id/entering_edittext_description"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/entering_edittext_description" />
+
+    <Button
+        android:id="@+id/entering_button_finished"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_style"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/entering_Spinner_category"
+        app:layout_constraintStart_toEndOf="@+id/entering_button_finished2" />
+
+    <Button
+        android:id="@+id/entering_button_finished2"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_style"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/entering_button_finished"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
