@@ -11,14 +11,18 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PolylineDraw {
@@ -49,13 +53,15 @@ public class PolylineDraw {
 
     public void updatePolygonFresh(ArrayList<Polyline> polylines, String identifier, GoogleMap mMap, LatLng first, LatLng second)
     {
+
+
         ArrayList<LatLng> cur = new ArrayList<>();
         cur.add(first);
         cur.add(second);
 
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .addAll(cur)
-                .width(15)
+                .width(20)
                 .color(Color.BLUE)
                 .geodesic(true));
         polyline.setClickable(true);

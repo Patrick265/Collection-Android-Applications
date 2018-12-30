@@ -57,7 +57,7 @@ public class ListCell extends RecyclerView.Adapter<ViewHolder>
 
         viewHolder.getTitle().setText(activity.getTitle());
         viewHolder.getDate().setText(calcDuration(activity.getStartTime(), activity.getEndTime()));
-        String distance = activity.getDistance() + " Km";
+        String distance = activity.getDistance() + " meter";
         viewHolder.getDistance().setText(distance);
         viewHolder.bindActivity(activity, this.listener);
 

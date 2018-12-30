@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -51,6 +52,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private TextView distance;
     private TextView endTime;
     private TextView duration;
+    private TextView velocity;
 
 
     private ImageView category;
@@ -148,6 +150,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.startTime = findViewById(R.id.detailed_date_text);
         this.distance = findViewById(R.id.detailed_distance_text);
         this.polylineDraw = new PolylineDraw();
+        this.velocity = findViewById(R.id.detailed_text_avgspeed);
 
         this.category = findViewById(R.id.detailed_category_image);
         this.endTime = findViewById(R.id.detailed_date_textEnd);
@@ -279,5 +282,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
 
         DATEFORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.duration.setText(DATEFORMATTER.format(localTime));
+        long second = (days * 86400) + (hours * 60 * 60) + (minutes * 60) + (seconds % 60);
+        this.velocity.setText(new DecimalFormat("##.##").format((activity.getDistance() / second) * 3.6) + " km/h");
     }
 }
