@@ -25,44 +25,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import csdev.com.black.R;
+import csdev.com.black.model.PolylineInfo;
+
 public class PolylineDraw {
 
     public PolylineDraw() {
     }
 
-    public void addAllPolygon(ArrayList<LatLng> polygon, GoogleMap mMap)
+    public void updatePolygonFresh(ArrayList<Polyline> polylines, String identifier, GoogleMap mMap, LatLng first, LatLng second, PolylineInfo f)
     {
-        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
-        options.addAll(polygon);
-        mMap.clear();
-        mMap.addPolyline(options);
-
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (LatLng latLng : polygon) {
-            builder.include(latLng);
-        }
-
-        final LatLngBounds bounds = builder.build();
-
-        //BOUND_PADDING is an int to specify padding of bound.. try 100.
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
-
-        mMap.animateCamera(cu);
-    }
-
-    public void updatePolygonFresh(ArrayList<Polyline> polylines, String identifier, GoogleMap mMap, LatLng first, LatLng second)
-    {
-
-
         ArrayList<LatLng> cur = new ArrayList<>();
         cur.add(first);
         cur.add(second);
 
+        int color;
+        if(f.getSpeed() >= 30.00)
+        {
+            color = Color.rgb(255,0,0);
+        }
+        else if(f.getSpeed() >= 20.00)
+        {
+            color = Color.rgb(255,126,0);
+        }
+        else
+        {
+            color = Color.rgb(0,255,27);
+        }
+
+
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .addAll(cur)
                 .width(20)
-                .color(Color.BLUE)
+                .color(color)
                 .geodesic(true));
         polyline.setClickable(true);
         polyline.setTag(identifier);
@@ -83,7 +78,7 @@ public class PolylineDraw {
         mMap.animateCamera(cu);
     }
 
-    public void updatePolygon(LatLng old,LatLng fresh, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines, String identifier){
+    public void updatePolygon(LatLng old,LatLng fresh, GoogleMap mMap, List<LatLng> polygon, ArrayList<Polyline> polylines, String identifier, int color){
         polygon.add(fresh);
         ArrayList<LatLng> cur = new ArrayList<>();
         cur.add(old);
@@ -92,7 +87,7 @@ public class PolylineDraw {
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .addAll(cur)
                 .width(15)
-                .color(Color.BLUE)
+                .color(color)
                 .geodesic(true));
         polyline.setClickable(true);
         polyline.setTag(identifier);

@@ -33,7 +33,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import csdev.com.black.R;
 import csdev.com.black.data.LocationCallbackListener;
@@ -67,6 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocalDateTime startTime;
     private int i;
     private ArrayList<Polyline> polyLines = new ArrayList<>();
+    private int purpleColor;
 
 
     @Override
@@ -82,6 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             checkLocationPermission();
         }
+
+        purpleColor = Color.rgb(201,64,234);
 
         startTracking = false;
         polylineDraw = new PolylineDraw();
@@ -276,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     long difference = Duration.between(startTime, now).toMillis();
                                     infos.add(new PolylineInfo((SphericalUtil.computeLength(hide)),difference, i));
                                     startTime = LocalDateTime.now();
-                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i), purpleColor);
                                     distanceInteger = (int) SphericalUtil.computeLength(polygon);
                                     distance.setText(distanceInteger + " meter");
                                 }
@@ -285,14 +287,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     long difference = Duration.between(startTime, now).toMillis();
                                     infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
                                     startTime = LocalDateTime.now();
-                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                    polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i), purpleColor);
                                     distanceInteger = (int) SphericalUtil.computeLength(polygon);
                                     distance.setText(distanceInteger + " meter");
                                 }
                             }
                             else
                             {
-                                polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i));
+                                polylineDraw.updatePolygon(old, fresh, mGoogleMap, polygon, polyLines, String.valueOf(i), purpleColor);
                                 distanceInteger = (int) SphericalUtil.computeLength(polygon);
                                 distance.setText(distanceInteger + " meter");
                             }

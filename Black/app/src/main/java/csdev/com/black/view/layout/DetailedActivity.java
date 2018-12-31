@@ -43,6 +43,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private SportActivity activity;
     private ArrayList<Polyline> polylines = new ArrayList<>();
     private Dialog dPolyMessage;
+    private int purpleColor;
 
 
 
@@ -74,8 +75,8 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         Intent intent = getIntent();
         this.activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
         this.infos = (ArrayList<PolylineInfo>) intent.getSerializableExtra("POLYLINEINFO");
-
-
+        purpleColor = Color.rgb(201,64,234);
+        
         initalise();
 
         this.title.setText(activity.getTitle());
@@ -174,7 +175,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
             {
                 LatLng first = latLngList.get(b);
                 LatLng second = latLngList.get(b +1);
-                polylineDraw.updatePolygonFresh(polylines, String.valueOf(i), mMap, first,second);
+                polylineDraw.updatePolygonFresh(polylines, String.valueOf(i), mMap, first,second, infos.get(b));
                 i++;
             }
         }
@@ -213,7 +214,8 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private void showPolylineDetails(Polyline polyline, PolylineInfo polylineInfo)
     {
         try {
-            polyline.setColor(Color.RED);
+            int c1 = polyline.getColor();
+            polyline.setColor(purpleColor);
             dPolyMessage.setContentView(R.layout.activity_polyline_info_screen);
             dPolyMessage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -233,6 +235,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
                 public void onClick(View v) {
                     polyline.setColor(Color.BLUE);
                     dPolyMessage.hide();
+                    polyline.setColor(c1);
                 }
             });
 
