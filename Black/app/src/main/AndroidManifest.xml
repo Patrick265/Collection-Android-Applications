@@ -57,7 +57,9 @@
         <activity android:name=".view.layout.InsertInfoFragment" />
         <activity android:name=".view.layout.EnteringDetails" />
         <activity android:name=".view.layout.polyline_info_screen" />
-        <activity android:name=".view.layout.EditSportActivity"></activity>
+        <activity android:name=".view.layout.EditSportActivity" />
+        <activity android:name=".view.layout.SettingsActivity" />
+        <activity android:name=".view.adapter.spinner.SpinnerSettingsActivity"></activity>
     </application>
 
 </manifest>
