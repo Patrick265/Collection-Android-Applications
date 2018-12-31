@@ -67,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int i;
     private ArrayList<Polyline> polyLines = new ArrayList<>();
     private int purpleColor;
+    private Boolean checkOnce = true;
 
 
     @Override
@@ -130,8 +131,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startDate = sdfDate.format(now);
                 startButtonControl = false;
                 mapButton.setAlpha(0.5f);
-                stopButtonControl = true;
-                mapButtonStop.setAlpha(1f);
             }
         });
 
@@ -284,6 +283,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 }
                                 else
                                 {
+                                    if(checkOnce)
+                                    {
+                                        stopButtonControl = true;
+                                        mapButtonStop.setAlpha(1f);
+                                    }
+                                    checkOnce = false;
                                     long difference = Duration.between(startTime, now).toMillis();
                                     infos.add(new PolylineInfo((int)(SphericalUtil.computeLength(hide)),difference, i));
                                     startTime = LocalDateTime.now();

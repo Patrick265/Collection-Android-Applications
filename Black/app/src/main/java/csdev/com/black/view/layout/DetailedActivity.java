@@ -76,7 +76,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.activity = (SportActivity) intent.getSerializableExtra("SPORTACTIVITY");
         this.infos = (ArrayList<PolylineInfo>) intent.getSerializableExtra("POLYLINEINFO");
         purpleColor = Color.rgb(201,64,234);
-        
+
         initalise();
 
         this.title.setText(activity.getTitle());
