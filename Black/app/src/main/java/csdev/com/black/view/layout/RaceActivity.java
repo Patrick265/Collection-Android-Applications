@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import csdev.com.black.R;
 import csdev.com.black.data.LocationCallbackHandler;
@@ -54,6 +55,7 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<LatLng> latlngList;
 
     private ArrayList<PolylineInfo> compareInfos;
+    private ArrayList<LatLng> copyOfPrevious;
 
     private ArrayList<Polyline> polyLines;
 
@@ -71,7 +73,10 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
     private SimpleDateFormat sdfDate;
     private Boolean checkOnce = true;
     private Dialog dPolyMessage;
+    private int counter;
+    private int position;
 
+    private LocalDateTime expiredTime;
     private double distanceInteger;
     private Dialog dMessage;
     private int i;
@@ -82,6 +87,7 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
     private SportActivity activity;
 
     private Location mLastLocation;
+    private ArrayList<Double> totalTimes;
 
 
     @Override
@@ -103,6 +109,11 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         this.latlngList = new ArrayList<>();
         this.polyLines =  new ArrayList<>();
         this.infos = new ArrayList<>();
+        this.copyOfPrevious = new ArrayList<>();
+        this.counter = 0;
+        this.position = 0;
+        this.timer = new Timer();
+
 
         Intent intent = getIntent();
         this.activity = (SportActivity) intent.getSerializableExtra("RACEACTIVITY");
@@ -113,6 +124,8 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             checkLocationPermission();
         }
+
+        convertCoordinates(activity.getCoordinates());
 
         dMessage = new Dialog(this);
         dMessage.setCanceledOnTouchOutside(false);
@@ -132,6 +145,19 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         this.i = 0;
         color = Color.rgb(201,64,234);
 
+        double b = 0;
+
+        totalTimes = new ArrayList<>();
+        for(int i = 0; i < compareInfos.size() + 1; i++)
+        {
+           for(int k = 0; k < i; k++)
+           {
+               b += compareInfos.get(k).getTime();
+           }
+           totalTimes.add(b);
+           b = 0;
+        }
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +168,32 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
                 startDate = sdfDate.format(now);
                 startButtonControl = false;
                 startButton.setAlpha(0.5f);
+                expiredTime = startTime;
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(position < totalTimes.size())
+                                {
+                                    if(totalTimes.get(position) < counter)
+                                    {
+                                        Log.i("WEW", position + "");
+                                        copyOfPrevious.add(latlngList.get(position));
+                                        polylineDraw.addList(mMap, copyOfPrevious);
+                                        position++;
+                                    }
+                                }
+                                else
+                                {
+                                    timer.cancel();
+                                }
+                                counter++;
+                            }
+                        });
+                    }
+                },0,1000);
             }
         });
 
@@ -156,6 +208,11 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.raceMap);
         mapFragment.getMapAsync(this);
+    }
+
+    private void checkProgress()
+    {
+
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
