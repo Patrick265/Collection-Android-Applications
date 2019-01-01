@@ -13,7 +13,7 @@ public class SPHandlerTest
 {
 
     private SPHandler handler = SPHandler.getInstance(InstrumentationRegistry.getTargetContext());
-    private Settings settings = new Settings(true, MapType.NORMAL, "A to Z - Title");
+    private Settings settings = new Settings(true, MapType.Normal, "Distance");
 
     @Test
     public void write()

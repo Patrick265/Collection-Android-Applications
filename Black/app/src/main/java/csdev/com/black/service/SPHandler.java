@@ -3,7 +3,6 @@ package csdev.com.black.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.EditText;
 
 import csdev.com.black.model.MapType;
 import csdev.com.black.model.Settings;
@@ -11,7 +10,7 @@ import csdev.com.black.model.Settings;
 public class SPHandler
 {
     private final String PREFS = "csdev.com.black";
-    private final String SETTINGS = "Settings";
+    private final String PREFSNAME = "Settings";
     private final String MAPKEY = "MAP";
     private final String SORTKEY = "SORT";
     private final String APIKEY = "API";
@@ -44,19 +43,14 @@ public class SPHandler
                 Log.e("SPHANDLER", "COULD NOT WRITE TO SHARED PREFERENCES BECAUSE MAP/SORT WAS EITHER NULL OR THE LENGTH WAS 0");
             }
         } else {
-            throw new Error("SETTINGS IS NULL");
+            throw new Error("PREFSNAME IS NULL");
         }
     }
 
     public void read() {
-        if(this.settings != null) {
-            this.settings.setMap(MapType.valueOf(this.preferences.getString(this.MAPKEY, MapType.SATELLITE.toString())));
+            this.settings.setMap(MapType.valueOf(this.preferences.getString(this.MAPKEY, MapType.Satellite.toString())));
             this.settings.setApi(this.preferences.getBoolean(APIKEY, true ));
             this.settings.setSort(this.preferences.getString(SORTKEY, "DISTANCE"));
-
-        } else {
-            throw new Error("SETTINGS IS NULL");
-        }
     }
 
     public String getPREFS()
@@ -64,9 +58,9 @@ public class SPHandler
         return PREFS;
     }
 
-    public String getSETTINGS()
+    public String getPREFSNAME()
     {
-        return SETTINGS;
+        return PREFSNAME;
     }
 
     public String getMAPKEY()

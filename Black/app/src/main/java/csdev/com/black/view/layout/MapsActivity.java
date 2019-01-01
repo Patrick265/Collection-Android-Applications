@@ -40,7 +40,10 @@ import csdev.com.black.data.MyService;
 import csdev.com.black.data.PolylineDraw;
 import csdev.com.black.data.LocationCallbackHandler;
 import csdev.com.black.model.Coordinate;
+import csdev.com.black.model.MapType;
 import csdev.com.black.model.PolylineInfo;
+import csdev.com.black.model.Settings;
+import csdev.com.black.service.SPHandler;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
 
@@ -68,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Polyline> polyLines = new ArrayList<>();
     private int purpleColor;
     private Boolean checkOnce = true;
+    private SPHandler handler;
 
 
     @Override
@@ -75,8 +79,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         this.context = getApplicationContext();
-        sdfDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        this.handler = SPHandler.getInstance(this.context);
+        this.sdfDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             startForegroundService(new Intent(context, MyService.class));
@@ -173,7 +179,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void googleMapSettings(GoogleMap mGoogleMap) {
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        MapType mapType = this.handler.getSettings().getMap();
+        switch (mapType)
+        {
+            case Hybrid:
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                break;
+            case Terrain:
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                break;
+            case Normal:
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                break;
+            case Satellite:
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                break;
+        }
         mGoogleMap.setMaxZoomPreference(22);
         mGoogleMap.setMinZoomPreference(10);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
