@@ -24,5 +24,10 @@
     <string name="polylineInfoDistance">Distance</string>
     <string name="polylineInfoTime">Estimated time</string>
     <string name="polylineInfoSpeed">Estimated velocity</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
+    <string name="settingsRetrieveWeather">Retrieve weather on startup?</string>
+    <string name="settingsMap">Map</string>
+    <string name="settingsSortingActivity">Sorting of saved activitys</string>
+    <string name="settingsOther">Other</string>
+    <string name="settingsMapType">What kind of map would you like to use?</string>
 </resources>

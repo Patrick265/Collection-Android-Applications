@@ -15,4 +15,10 @@
     <string name="polylineInfoDistance">Afstand</string>
     <string name="polylineInfoTime">Geschatte tijd</string>
     <string name="polylineInfoSpeed">Geschatte snelheid</string>
+    <string name="cancel">Annuleren</string>
+    <string name="settingsRetrieveWeather">Informatie over het weer ophalen bij de opstart?</string>
+    <string name="settingsMap">Kaart</string>
+    <string name="settingsSortingActivity">Sorteren van opgeslagen activiteiten</string>
+    <string name="settingsOther">Anders</string>
+    <string name="settingsMapType">Welk type kaart wilt u gebruiken?</string>
 </resources>
