@@ -62,6 +62,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
     private ImageButton editButton;
     private ImageButton deleteButton;
     private ImageButton returnButton;
+    private ImageButton raceButton;
 
     private DBHandler handler;
 
@@ -130,6 +131,14 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
             startActivity(main);
             finish();
         });
+
+        this.raceButton.setOnClickListener(l -> {
+            Intent race = new Intent(getApplicationContext(), RaceActivity.class);
+            race.putExtra("RACEACTIVITY", this.activity);
+            race.putExtra("RACEINFO", this.infos);
+            startActivity(race);
+            finish();
+        });
     }
 
     private void convertCoordinates(ArrayList<Coordinate> coordinateList)
@@ -162,8 +171,7 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         this.deleteButton = findViewById(R.id.detailed_delete_button);
         this.editButton = findViewById(R.id.detailed_edit_button);
         this.returnButton = findViewById(R.id.detailed_return_button);
-
-
+        this.raceButton = findViewById(R.id.detailed_race);
     }
 
     private void fillPolyLines(GoogleMap mMap)
