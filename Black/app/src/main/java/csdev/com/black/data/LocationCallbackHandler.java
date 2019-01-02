@@ -37,7 +37,6 @@ public class LocationCallbackHandler extends LocationCallback {
         locationList = locationResult.getLocations();
         if (locationList.size() > 0) {
             Location location = locationList.get(locationList.size() - 1);
-            Log.i("WEW", locationResult.getLastLocation().getLatitude() + " " + locationResult.getLastLocation().getLatitude());
             for (LocationCallbackListener e : listeners) {
                 e.onLocationAvailable(location);
             }

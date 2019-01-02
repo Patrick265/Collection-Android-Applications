@@ -59,7 +59,10 @@
         <activity android:name=".view.layout.polyline_info_screen" />
         <activity android:name=".view.layout.EditSportActivity" />
         <activity android:name=".view.layout.SettingsActivity" />
-        <activity android:name=".view.adapter.spinner.SpinnerSettingsActivity"></activity>
+        <activity android:name=".view.adapter.spinner.SpinnerSettingsActivity" />
+        <activity
+            android:name=".view.layout.RaceActivity"
+            android:label="@string/title_activity_race"></activity>
     </application>
 
 </manifest>

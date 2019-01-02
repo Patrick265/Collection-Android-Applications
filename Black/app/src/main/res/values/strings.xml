@@ -30,6 +30,7 @@
     <string name="settingsSortingActivity">Sorting of saved activitys</string>
     <string name="settingsOther">Other</string>
     <string name="settingsMapType">What kind of map would you like to use?</string>
+    <string name="title_activity_race">Map2</string>
     <string name="distance">Distance:</string>
     <string name="degrees">Degrees:</string>
 </resources>

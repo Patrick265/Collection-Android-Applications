@@ -112,6 +112,18 @@ public class PolylineDraw {
         mMap.animateCamera(cu);
     }
 
+    public void addList(GoogleMap mMap, List<LatLng> polygon)
+    {
+        PolylineOptions poly = new PolylineOptions();
+        poly.addAll(polygon);
+        poly.width(15);
+        poly.color(Color.RED);
+        poly.geodesic(true);
+
+
+        mMap.addPolyline(poly);
+    }
+
 
 }
 
