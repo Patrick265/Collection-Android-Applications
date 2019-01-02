@@ -43,9 +43,13 @@ import csdev.com.black.model.Coordinate;
 import csdev.com.black.model.MapType;
 import csdev.com.black.model.PolylineInfo;
 import csdev.com.black.model.Settings;
+import csdev.com.black.model.Weather;
+import csdev.com.black.service.APIHandler;
 import csdev.com.black.service.SPHandler;
+import csdev.com.black.util.OnWeatherAvailable;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationCallbackListener, OnWeatherAvailable
+{
 
     private GoogleMap mGoogleMap;
     private Button mapButton;
@@ -59,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Dialog dMessage;
     private Dialog dPolyMessage;
     private Boolean startTracking;
-    private TextView distance;
+
     private double distanceInteger;
     private String startDate;
     private SimpleDateFormat sdfDate;
@@ -71,8 +75,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Polyline> polyLines = new ArrayList<>();
     private int purpleColor;
     private Boolean checkOnce = true;
+    private Weather weather;
     private SPHandler handler;
+    private APIHandler APIHandler;
+    private boolean APICalled;
 
+    private TextView distance;
+    private TextView degrees;
+    private TextView windspeed;
+    private TextView winddirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         this.context = getApplicationContext();
         this.handler = SPHandler.getInstance(this.context);
+
         this.sdfDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -112,6 +124,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         loc.addListener(this);
 
         distance = findViewById(R.id.txt_distance);
+        this.degrees = findViewById(R.id.maps_txt_degrees);
+        this.winddirection = findViewById(R.id.maps_txt_winddirection);
+        this.windspeed = findViewById(R.id.maps_txt_windspeed);
 
         mapButtonStop = findViewById(R.id.btn_map2);
         stopButtonControl = false;
@@ -270,6 +285,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationAvailable(Location location) {
+        if(!APICalled) {
+            this.APIHandler = new APIHandler(getApplicationContext(), new Coordinate(location.getLatitude(), location.getLongitude()), this);
+            this.APIHandler.retrieve();
+        }
+
         if (mGoogleMap != null) {
             if (firstTime) {
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
@@ -404,6 +424,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stopButtonControl = false;
         mapButtonStop.setAlpha(0.5f);
         startActivity(intent);
+    }
+
+    @Override
+    public void OnWeatherAvailable(Weather weather)
+    {
+        this.weather = weather;
+        this.windspeed.setText(String.valueOf(this.weather.getWindSpeed()));
+        this.degrees.setText(String.valueOf(this.weather.getTemperature()));
+        this.winddirection.setText(String.valueOf(this.weather.getWindDir()));
+        Log.i("WEATHER", this.weather.toString());
+        this.APICalled = true;
+    }
+
+    @Override
+    public void OnWeatherError(Error error)
+    {
+        Log.e("VERROR", error.getMessage());
     }
 }
 
