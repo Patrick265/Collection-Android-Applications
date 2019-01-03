@@ -10,7 +10,7 @@ public class Weather
     private double pressure;
 
     private double windSpeed;
-    private double windDir;
+    private String windDir;
 
     private double rainMM;
     private double cloudPercentage;
@@ -18,13 +18,13 @@ public class Weather
 
     public Weather(double temperature, double temperatureMin, double temperatureMax, double humidity, double pressure, double windSpeed, double windDir, double rainMM, double cloudPercentage, String cityName)
     {
-        this.temperature = temperature;
-        this.temperatureMin = temperatureMin;
-        this.temperatureMax = temperatureMax;
+        this.temperature = temperature - 273.15;
+        this.temperatureMin = temperatureMin - 273.15;
+        this.temperatureMax = temperatureMax - 273.15;
         this.humidity = humidity;
         this.pressure = pressure;
         this.windSpeed = windSpeed;
-        this.windDir = windDir;
+        this.windDir = setWindDir(windDir);
         this.rainMM = rainMM;
         this.cloudPercentage = cloudPercentage;
         this.cityName = cityName;
@@ -32,13 +32,13 @@ public class Weather
 
     public Weather(double temperature, double temperatureMin, double temperatureMax, double humidity, double pressure, double windSpeed, double windDir, double cloudPercentage, String cityName)
     {
-        this.temperature = temperature;
-        this.temperatureMin = temperatureMin;
-        this.temperatureMax = temperatureMax;
+        this.temperature = temperature - 273.15;
+        this.temperatureMin = temperatureMin - 273.15;
+        this.temperatureMax = temperatureMax - 273.15;
         this.humidity = humidity;
         this.pressure = pressure;
         this.windSpeed = windSpeed;
-        this.windDir = windDir;
+        this.windDir = setWindDir(windDir);
         this.cloudPercentage = cloudPercentage;
         this.cityName = cityName;
     }
@@ -73,7 +73,7 @@ public class Weather
         return windSpeed;
     }
 
-    public double getWindDir()
+    public String getWindDir()
     {
         return windDir;
     }
@@ -108,5 +108,37 @@ public class Weather
                 ", cloudPercentage=" + cloudPercentage +
                 ", cityName='" + cityName + '\'' +
                 '}';
+    }
+
+    private String setWindDir(double degrees)
+    {
+        if (degrees == 0 || degrees == 360)
+        {
+            return "North";
+        } else if (degrees > 0 && degrees < 90)
+        {
+            return "North-East";
+        } else if (degrees == 90)
+        {
+            return "East";
+        } else if (degrees > 90 && degrees < 180)
+        {
+            return "South-East";
+        } else if (degrees == 180)
+        {
+            return "South";
+        } else if (degrees > 180 && degrees < 270)
+        {
+            return "South-West";
+        } else if (degrees == 270)
+        {
+            return "West";
+        } else if (degrees > 270 && degrees < 360)
+        {
+            return "North-West";
+        }
+        else {
+            return "-";
+        }
     }
 }

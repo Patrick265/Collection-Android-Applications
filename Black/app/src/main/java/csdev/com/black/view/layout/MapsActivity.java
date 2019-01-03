@@ -27,6 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.maps.android.SphericalUtil;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -285,7 +287,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationAvailable(Location location) {
-        if(!APICalled) {
+        if(!APICalled && this.handler.getSettings().isApi()) {
             this.APIHandler = new APIHandler(getApplicationContext(), new Coordinate(location.getLatitude(), location.getLongitude()), this);
             this.APIHandler.retrieve();
         }
@@ -430,8 +432,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void OnWeatherAvailable(Weather weather)
     {
         this.weather = weather;
-        this.windspeed.setText(String.valueOf(this.weather.getWindSpeed()));
-        this.degrees.setText(String.valueOf(this.weather.getTemperature()));
+        NumberFormat formatter = new DecimalFormat("#0,0");
+        this.windspeed.setText(formatter.format(this.weather.getWindSpeed()) + " M/s");
+        this.degrees.setText(formatter.format(this.weather.getTemperature()) + " Celsius");
         this.winddirection.setText(String.valueOf(this.weather.getWindDir()));
         Log.i("WEATHER", this.weather.toString());
         this.APICalled = true;
