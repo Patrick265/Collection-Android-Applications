@@ -21,4 +21,8 @@
     <string name="settingsSortingActivity">Sorteren van opgeslagen activiteiten</string>
     <string name="settingsOther">Anders</string>
     <string name="settingsMapType">Welk type kaart wilt u gebruiken?</string>
+    <string name="previousTime">Vorige keer</string>
+    <string name="currentTime">Huidige tijd</string>
+    <string name="diffTime">Verschil</string>
+    <string name="continueButton">Voortgaan</string>
 </resources>

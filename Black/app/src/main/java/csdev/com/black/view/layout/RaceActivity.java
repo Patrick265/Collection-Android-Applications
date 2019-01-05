@@ -114,6 +114,9 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         this.position = 0;
         this.timer = new Timer();
 
+        stopButtonControl = false;
+        stopButton.setAlpha(0.5f);
+
 
         Intent intent = getIntent();
         this.activity = (SportActivity) intent.getSerializableExtra("RACEACTIVITY");
@@ -162,45 +165,45 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTracking = true;
-                Date now = new Date();
-                startTime = LocalDateTime.now();
-                startDate = sdfDate.format(now);
-                startButtonControl = false;
-                startButton.setAlpha(0.5f);
-                expiredTime = startTime;
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(position < totalTimes.size())
-                                {
-                                    if(totalTimes.get(position) < counter)
-                                    {
-                                        Log.i("WEW", position + "");
-                                        copyOfPrevious.add(latlngList.get(position));
-                                        polylineDraw.addList(mMap, copyOfPrevious);
-                                        position++;
+                if (startButtonControl) {
+                    startTracking = true;
+                    Date now = new Date();
+                    startTime = LocalDateTime.now();
+                    startDate = sdfDate.format(now);
+                    startButtonControl = false;
+                    startButton.setAlpha(0.5f);
+                    expiredTime = startTime;
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (position < totalTimes.size()) {
+                                        if (totalTimes.get(position) < counter) {
+                                            copyOfPrevious.add(latlngList.get(position));
+                                            polylineDraw.addList(mMap, copyOfPrevious);
+                                            position++;
+                                        }
+                                    } else {
+                                        timer.cancel();
                                     }
+                                    counter++;
                                 }
-                                else
-                                {
-                                    timer.cancel();
-                                }
-                                counter++;
-                            }
-                        });
-                    }
-                },0,1000);
+                            });
+                        }
+                    }, 0, 1000);
+                }
             }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMessage();
+                if(stopButtonControl)
+                {
+                    showMessage();
+                }
             }
         });
 
@@ -307,7 +310,6 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
                                     startTime = LocalDateTime.now();
                                     polylineDraw.updatePolygon(old, fresh, mMap, latlngList, polyLines, String.valueOf(i), color);
                                     distanceInteger = (int) SphericalUtil.computeLength(latlngList);
-                                   // distance.setText(distanceInteger + " meter");
                                 }
                                 else
                                 {
@@ -322,14 +324,12 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
                                     startTime = LocalDateTime.now();
                                     polylineDraw.updatePolygon(old, fresh, mMap, latlngList, polyLines, String.valueOf(i), color);
                                     distanceInteger = (int) SphericalUtil.computeLength(latlngList);
-                                   // distance.setText(distanceInteger + " meter");
                                 }
                             }
                             else
                             {
                                 polylineDraw.updatePolygon(old, fresh, mMap, latlngList, polyLines, String.valueOf(i), color);
                                 distanceInteger = (int) SphericalUtil.computeLength(latlngList);
-                                //distance.setText(distanceInteger + " meter");
                             }
                         }
                     }
@@ -359,28 +359,29 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
     {
         startTracking = false;
 
-        Intent intent = new Intent(getApplicationContext(), EnteringDetails.class);
+        Intent intent = new Intent(getApplicationContext(), RaceFinalScreen.class);
         Bundle bundle = new Bundle();
 
         Date date = new Date();
         String endDate = sdfDate.format(date);
 
-//        ArrayList<Coordinate> coordinates = new ArrayList<>();
-//        for(LatLng poly : polygon)
-//        {
-//            coordinates.add(new Coordinate(poly.latitude,poly.longitude));
-//        }
-//
-//        bundle.putSerializable("distance", distanceInteger);
-//        bundle.putSerializable("coordinates", coordinates);
-//        bundle.putSerializable("start", startDate );
-//        bundle.putSerializable("end", endDate);
-//        bundle.putSerializable("avgspeed", 0.0);
-//        bundle.putSerializable("info", infos);
-//        intent.putExtras(bundle);
-//        stopButtonControl = false;
-//        mapButtonStop.setAlpha(0.5f);
-//        startActivity(intent);
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for(LatLng poly : latlngList)
+        {
+            coordinates.add(new Coordinate(poly.latitude,poly.longitude));
+        }
+
+        bundle.putSerializable("distance", distanceInteger);
+        bundle.putSerializable("coordinates", coordinates);
+        bundle.putSerializable("start", startDate );
+        bundle.putSerializable("end", endDate);
+        bundle.putSerializable("avgspeed", 0.0);
+        bundle.putSerializable("info", infos);
+        bundle.putSerializable("SACTIVITY",activity);
+        intent.putExtras(bundle);
+        stopButtonControl = false;
+        stopButton.setAlpha(0.5f);
+        startActivity(intent);
     }
 
     private void showPolylineDetails(Polyline polyline, PolylineInfo polylineInfo)

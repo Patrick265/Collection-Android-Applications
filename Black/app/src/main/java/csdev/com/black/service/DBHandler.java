@@ -153,6 +153,9 @@ public class DBHandler extends SQLiteOpenHelper
 
     public void update(@NonNull SportActivity activity) {
         ContentValues values = new ContentValues();
+
+        values.put(DBQuery.COL_MAIN_STARTIME, activity.getStartTime());
+        values.put(DBQuery.COL_MAIN_ENDTIME, activity.getEndTime());
         values.put(DBQuery.COL_MAIN_TITLE, activity.getTitle());
         values.put(DBQuery.COL_MAIN_RATING, activity.getRating());
         values.put(DBQuery.COL_MAIN_DESCRIPTION, activity.getDescription());
