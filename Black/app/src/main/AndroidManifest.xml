@@ -8,8 +8,11 @@
          location permissions for the 'MyLocation' functionality. 
     -->
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".data.App"
@@ -26,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.adapter.ListCell" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -54,12 +56,10 @@
         <activity
             android:name=".view.layout.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".view.layout.InsertInfoFragment" />
         <activity android:name=".view.layout.EnteringDetails" />
         <activity android:name=".view.layout.polyline_info_screen" />
         <activity android:name=".view.layout.EditSportActivity" />
         <activity android:name=".view.layout.SettingsActivity" />
-        <activity android:name=".view.adapter.spinner.SpinnerSettingsActivity" />
         <activity
             android:name=".view.layout.RaceActivity"
             android:label="@string/title_activity_race"></activity>
