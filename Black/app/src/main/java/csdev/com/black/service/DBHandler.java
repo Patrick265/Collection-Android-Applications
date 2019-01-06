@@ -208,7 +208,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DBQuery.COL_POLYLINEINFO_PTime, polylineInfo.getTime());
         values.put(DBQuery.COL_POLYLINEINFO_PSpeed, polylineInfo.getSpeed());
 
-        getWritableDatabase().update(DBQuery.HEADERPOLYLINE, values,"ActivityID = \"" + id + "\"" + "AND PIdentification = "  + polylineInfo.getIdentificationID(),null);
+        getWritableDatabase().update(DBQuery.HEADERPOLYLINE, values,"ActivityID = \"" + id + "\"",null);
     }
 
 

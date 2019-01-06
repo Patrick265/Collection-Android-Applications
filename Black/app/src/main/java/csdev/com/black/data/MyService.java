@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -44,10 +45,11 @@ public class MyService extends Service {
          //       0, notificationIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Black")
-                .setContentText("Oof")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-            //    .setContentIntent(pendingIntent)
+                .setContentText("Started sport activity")
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        R.drawable.ic_launcher_foreground))
                 .build();
 
         startForeground(1, notification);

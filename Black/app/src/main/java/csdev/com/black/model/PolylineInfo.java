@@ -62,6 +62,16 @@ public class PolylineInfo implements Serializable {
         this.length = length;
     }
 
+    public void setTime(double time)
+    {
+        this.time = time;
+    }
+
+    public void setSpeed(double speed)
+    {
+        this.speed = speed;
+    }
+
     @Override
     public String toString() {
         return "PolylineInfo{" +

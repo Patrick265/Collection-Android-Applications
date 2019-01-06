@@ -12,145 +12,141 @@
         android:id="@+id/detailed_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="419dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".view.layout.MapsActivity" />
 
-    <Button
-        android:id="@+id/btn_map"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/button_style"
-        android:singleLine="true"
-        android:text="@string/startBtn"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/btn_map2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-    <Button
-        android:id="@+id/btn_map2"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/button_style"
-        android:singleLine="true"
-        android:text="Stop"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintStart_toEndOf="@+id/btn_map"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="135dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_map"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/txt_distance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/maps_icon_distance"
-        app:layout_constraintEnd_toEndOf="@+id/btn_map"
-        app:layout_constraintStart_toEndOf="@+id/maps_icon_distance"
-        app:layout_constraintTop_toTopOf="@+id/maps_icon_distance" />
+        <TextView
+            android:id="@+id/maps_txt_winddirection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="@+id/btn_map2"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
-    <TextView
-        android:id="@+id/maps_txt_degrees"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/txt_distance"
-        app:layout_constraintStart_toStartOf="@+id/txt_distance"
-        app:layout_constraintTop_toBottomOf="@+id/txt_distance" />
+        <ImageView
+            android:id="@+id/maps_icon_windspeed"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_baseline_windspeed_24px"
+            app:layout_constraintBottom_toBottomOf="@+id/maps_icon_distance"
+            app:layout_constraintStart_toStartOf="@+id/btn_map2"
+            app:layout_constraintTop_toTopOf="@+id/maps_icon_distance" />
 
-    <ImageView
-        android:id="@+id/maps_icon_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_baseline_distance_24px"
-        app:layout_constraintStart_toStartOf="@+id/btn_map"
-        app:layout_constraintTop_toBottomOf="@+id/btn_map" />
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_winddirection_24px"
+            app:layout_constraintBottom_toBottomOf="@+id/maps_icon_degrees"
+            app:layout_constraintStart_toStartOf="@+id/maps_icon_windspeed"
+            app:layout_constraintTop_toTopOf="@+id/maps_icon_degrees" />
 
-    <ImageView
-        android:id="@+id/maps_icon_degrees"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_baseline_degrees_24px"
-        app:layout_constraintBottom_toBottomOf="@+id/maps_txt_degrees"
-        app:layout_constraintEnd_toStartOf="@+id/maps_txt_degrees"
-        app:layout_constraintStart_toStartOf="@+id/maps_icon_distance"
-        app:layout_constraintTop_toTopOf="@+id/maps_txt_degrees" />
+        <Button
+            android:id="@+id/btn_map"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_style"
+            android:singleLine="true"
+            android:text="@string/startBtn"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/btn_map2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/maps_icon_windspeed"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_baseline_windspeed_24px"
-        app:layout_constraintBottom_toBottomOf="@+id/maps_icon_distance"
-        app:layout_constraintStart_toStartOf="@+id/btn_map2"
-        app:layout_constraintTop_toTopOf="@+id/maps_icon_distance" />
+        <Button
+            android:id="@+id/btn_map2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/button_style"
+            android:singleLine="true"
+            android:text="Stop"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_map"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_winddirection_24px"
-        app:layout_constraintBottom_toBottomOf="@+id/maps_icon_degrees"
-        app:layout_constraintStart_toStartOf="@+id/maps_icon_windspeed"
-        app:layout_constraintTop_toTopOf="@+id/maps_icon_degrees" />
+        <TextView
+            android:id="@+id/maps_txt_degrees"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/txt_distance"
+            app:layout_constraintStart_toStartOf="@+id/txt_distance"
+            app:layout_constraintTop_toBottomOf="@+id/txt_distance" />
 
-    <TextView
-        android:id="@+id/maps_txt_windspeed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/maps_icon_windspeed"
-        app:layout_constraintEnd_toEndOf="@+id/btn_map2"
-        app:layout_constraintStart_toEndOf="@+id/maps_icon_windspeed"
-        app:layout_constraintTop_toTopOf="@+id/maps_icon_windspeed" />
+        <TextView
+            android:id="@+id/txt_distance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/maps_icon_distance"
+            app:layout_constraintEnd_toEndOf="@+id/btn_map"
+            app:layout_constraintStart_toEndOf="@+id/maps_icon_distance" />
 
-    <TextView
-        android:id="@+id/maps_txt_winddirection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/btn_map2"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+        <ImageView
+            android:id="@+id/maps_icon_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_distance_24px"
+            app:layout_constraintStart_toStartOf="@+id/btn_map"
+            app:layout_constraintTop_toBottomOf="@+id/btn_map" />
+
+        <TextView
+            android:id="@+id/maps_txt_windspeed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/maps_icon_windspeed"
+            app:layout_constraintEnd_toEndOf="@+id/btn_map2"
+            app:layout_constraintStart_toEndOf="@+id/maps_icon_windspeed"
+            app:layout_constraintTop_toTopOf="@+id/maps_icon_windspeed" />
+
+        <ImageView
+            android:id="@+id/maps_icon_degrees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_degrees_24px"
+            app:layout_constraintBottom_toBottomOf="@+id/maps_txt_degrees"
+            app:layout_constraintEnd_toStartOf="@+id/maps_txt_degrees"
+            app:layout_constraintStart_toStartOf="@+id/maps_icon_distance"
+            app:layout_constraintTop_toTopOf="@+id/maps_txt_degrees" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

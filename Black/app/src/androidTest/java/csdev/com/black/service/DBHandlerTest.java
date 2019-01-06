@@ -95,9 +95,14 @@ public class DBHandlerTest
     public void Pupdate()
     {
         SportActivity activity = this.handler.retrieveAll().get(1);
-        ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
-        poly.get(0).setLength(500000);
-        this.handler.Pupdate(poly.get(0), activity.getId());
+        ArrayList<PolylineInfo> poly = new ArrayList<>();
+        for (int i = 0; i < 5 ; i++)
+        {
+            poly.add(new PolylineInfo(50, (long) 50, (int) (Math.random() * 500)));
+        }
+        for(PolylineInfo p : poly) {
+            this.handler.Pupdate(p,activity.getId());
+        }
     }
 
     @Test
@@ -106,13 +111,5 @@ public class DBHandlerTest
         SportActivity activity = this.handler.retrieveAll().get(1);
         ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
         this.handler.PDelete(poly.get(0));
-    }
-
-    @Test
-    public void tom() {
-
-        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM MAIN", null)));
-        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM COORDINATES", null)));
-        Log.d("DB123542", DatabaseUtils.dumpCursorToString(this.handler.getReadableDatabase().rawQuery("SELECT * FROM POLYLINEINFO", null)));
     }
 }
