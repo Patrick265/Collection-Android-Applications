@@ -145,11 +145,7 @@ public class RaceFinalScreen extends AppCompatActivity {
         this.activity.setEndTime(endDate);
         this.activity.setDistance(distance);
         this.activity.setAverageSpeed(avgSpeed);
-
-        for(PolylineInfo f: infos)
-        {
-            this.handler.Pupdate(f,activity.getId());
-        }
+        this.handler.Pupdate(infos,activity.getId());
 
         this.handler.update(activity);
     }

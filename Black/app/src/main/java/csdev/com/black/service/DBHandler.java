@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import csdev.com.black.model.Coordinate;
 import csdev.com.black.model.PolylineInfo;
@@ -166,6 +168,7 @@ public class DBHandler extends SQLiteOpenHelper
         getWritableDatabase().update(DBQuery.HEADERMAIN, values,"ID = \"" + activity.getId() + "\"",null);
     }
 
+
     public void delete(SportActivity activity) {
         this.getWritableDatabase().delete(DBQuery.HEADERPOLYLINE, DBQuery.COL_POLYLINEINFO_PAID + " = ?", new String[]{activity.getId()});
         this.getWritableDatabase().delete(DBQuery.HEADERCOORDINATES, DBQuery.COL_COORDINATES_ID + " = ?", new String[]{activity.getId()});
@@ -201,16 +204,29 @@ public class DBHandler extends SQLiteOpenHelper
         }
     }
 
-
-    public void Pupdate(@NonNull PolylineInfo polylineInfo, @NonNull String id) {
-        ContentValues values = new ContentValues();
-        values.put(DBQuery.COL_POLYLINEINFO_PLength, polylineInfo.getLength());
-        values.put(DBQuery.COL_POLYLINEINFO_PTime, polylineInfo.getTime());
-        values.put(DBQuery.COL_POLYLINEINFO_PSpeed, polylineInfo.getSpeed());
-
-        getWritableDatabase().update(DBQuery.HEADERPOLYLINE, values,"ActivityID = \"" + id + "\"",null);
+    public void Pupdate(@NonNull List<PolylineInfo> poly, @NonNull String id)
+    {
+        this.getWritableDatabase().delete(DBQuery.HEADERPOLYLINE, DBQuery.COL_POLYLINEINFO_PAID + " = ?", new String[]{id});
+        for(PolylineInfo polylineInfo : poly) {
+            Pinsert(polylineInfo, id);
+        }
     }
 
+
+    public void Cupdate(List<Coordinate> coordinates, String id) {
+        this.getWritableDatabase().delete(DBQuery.HEADERCOORDINATES, DBQuery.COL_POLYLINEINFO_PAID + " = ?", new String[]{id});
+        for(Coordinate c : coordinates) {
+            Cinsert(c, id);
+        }
+    }
+
+    public void Cinsert(Coordinate c, String id) {
+        ContentValues values = new ContentValues();
+        values.put(DBQuery.COL_COORDINATES_ID, id);
+        values.put(DBQuery.COL_COORDINATES_LONGITUDE, c.getLongitude());
+        values.put(DBQuery.COL_COORDINATES_LATITUDE, c.getLatitude());
+        getWritableDatabase().insert(DBQuery.HEADERCOORDINATES, null, values);
+    }
 
     private void Pinsert(@NonNull PolylineInfo polylineInfo, @NonNull String id) {
         ContentValues values = new ContentValues();

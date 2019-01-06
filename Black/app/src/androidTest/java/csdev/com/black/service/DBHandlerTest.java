@@ -1,6 +1,5 @@
 package csdev.com.black.service;
 
-import android.database.DatabaseUtils;
 import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
@@ -96,13 +95,12 @@ public class DBHandlerTest
     {
         SportActivity activity = this.handler.retrieveAll().get(1);
         ArrayList<PolylineInfo> poly = new ArrayList<>();
-        for (int i = 0; i < 5 ; i++)
+        for (int i = 0; i < 10 ; i++)
         {
-            poly.add(new PolylineInfo(50, (long) 50, (int) (Math.random() * 500)));
+            poly.add(new PolylineInfo(35, (long) 25, (int) (Math.random() * 500)));
         }
-        for(PolylineInfo p : poly) {
-            this.handler.Pupdate(p,activity.getId());
-        }
+
+        this.handler.Pupdate(poly, activity.getId());
     }
 
     @Test
@@ -111,5 +109,24 @@ public class DBHandlerTest
         SportActivity activity = this.handler.retrieveAll().get(1);
         ArrayList<PolylineInfo> poly = this.handler.PRetrieveByActivity(activity);
         this.handler.PDelete(poly.get(0));
+    }
+
+    @Test
+    public void cupdate()
+    {
+        SportActivity activity = this.handler.retrieveAll().get(1);
+        ArrayList<Coordinate> poly = new ArrayList<>();
+        for (int i = 0; i < 10 ; i++)
+        {
+            poly.add(new Coordinate(50, 50));
+        }
+
+        this.handler.Cupdate(poly, activity.getId());
+
+    }
+
+    @Test
+    public void cinsert()
+    {
     }
 }
