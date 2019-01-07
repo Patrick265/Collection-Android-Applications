@@ -145,7 +145,10 @@ public class RaceFinalScreen extends AppCompatActivity {
         this.activity.setEndTime(endDate);
         this.activity.setDistance(distance);
         this.activity.setAverageSpeed(avgSpeed);
-        this.handler.Pupdate(infos,activity.getId());
+
+        //Causes unexpected nullpointers, -> Patrick fix je database I swear
+      //  this.handler.Cupdate(coordinates, activity.getId());
+     //   this.handler.Pupdate(infos, activity.getId());
 
         this.handler.update(activity);
     }

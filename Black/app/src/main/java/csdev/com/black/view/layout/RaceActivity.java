@@ -181,13 +181,13 @@ public class RaceActivity extends FragmentActivity implements OnMapReadyCallback
                                 public void run() {
                                     if (position < totalTimes.size()) {
                                         if (totalTimes.get(position) < counter) {
-                                            if(copyOfPrevious.size() > 0 ) {
+                                            if(copyOfPrevious != null)
+                                            {
                                                 copyOfPrevious.add(latlngList.get(position));
                                                 polylineDraw.addList(mMap, copyOfPrevious);
                                                 position++;
                                             }
-
-                                        }
+                                            }
                                     } else {
                                         timer.cancel();
                                     }
