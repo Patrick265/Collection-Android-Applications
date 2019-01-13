@@ -296,4 +296,14 @@ public class DetailedActivity extends FragmentActivity implements OnMapReadyCall
         long second = (days * 86400) + (hours * 60 * 60) + (minutes * 60) + (seconds % 60);
         this.velocity.setText(new DecimalFormat("##.##").format((activity.getDistance() / second) * 3.6) + " km/h");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dPolyMessage != null)
+        {
+            dPolyMessage.dismiss();
+            dPolyMessage = null;
+        }
+    }
 }

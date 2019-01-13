@@ -56,7 +56,7 @@
         <activity
             android:name=".view.layout.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"/>
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".view.layout.EnteringDetails"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.layout.polyline_info_screen"
@@ -68,7 +68,7 @@
         <activity
             android:name=".view.layout.RaceActivity"
             android:label="@string/title_activity_race"
-            android:screenOrientation="portrait"/>
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".view.layout.RaceFinalScreen"
             android:screenOrientation="portrait">
 
